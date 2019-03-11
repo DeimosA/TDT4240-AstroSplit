@@ -9,9 +9,11 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		Configuration gameConfig = Configuration.getInstance();
+
 		config.title = gameConfig.gameName;
-		config.height = gameConfig.viewPortHeight;
-		config.width = (int) (gameConfig.viewPortHeight * gameConfig.defaultAspect);
+		config.height = gameConfig.viewPortRenderHeight;
+		config.width = (int) (gameConfig.viewPortRenderHeight * gameConfig.defaultAspect);
+
 		new LwjglApplication(new AstroSplit(), config);
 	}
 }
