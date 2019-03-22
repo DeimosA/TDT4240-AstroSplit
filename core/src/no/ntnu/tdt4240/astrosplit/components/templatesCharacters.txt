@@ -1,0 +1,10 @@
+
+Character Templates:
+
+Ex.
+	Warrior
+	-MovementComponent(x=2,y=2)
+	-PositionComponent(x=init, y=init)
+	-HealthComponent(hp=300)
+	-ActionComponent$TYPE$(var=var), where $TYPE$ is implementation of specific action
+	-GraphicalComponent$WARRIOR$(color=red)
