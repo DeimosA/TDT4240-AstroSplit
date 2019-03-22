@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.views.ViewStateManager;
 
 public class AstroSplit implements ApplicationListener {
@@ -18,6 +19,7 @@ public class AstroSplit implements ApplicationListener {
 	public void create () {
 		vsm = ViewStateManager.getInstance();
 		batch = new SpriteBatch();
+		Configuration.getInstance().load();
 //		img = new Texture("badlogic.jpg");
 	}
 
