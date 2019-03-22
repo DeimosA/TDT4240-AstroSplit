@@ -34,6 +34,6 @@ public class Configuration implements Model {
 	}
 
 	public int getViewPortRenderWidth() {
-		return (int) defaultAspect * viewPortRenderHeight;
+		return (int) (viewPortRenderHeight * defaultAspect);
 	}
 }
