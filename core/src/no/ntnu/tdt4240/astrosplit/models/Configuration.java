@@ -32,4 +32,8 @@ public class Configuration implements Model {
 	public void save() {
 		prefStore.flush();
 	}
+
+	public int getViewPortRenderWidth() {
+		return (int) (viewPortRenderHeight * defaultAspect);
+	}
 }
