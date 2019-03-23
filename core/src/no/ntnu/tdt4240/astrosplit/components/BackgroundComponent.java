@@ -1,4 +1,8 @@
 package no.ntnu.tdt4240.astrosplit.components;
 
-public class BackgroundComponent {
+import com.badlogic.ashley.core.Component;
+
+
+public class BackgroundComponent implements Component{
+
 }

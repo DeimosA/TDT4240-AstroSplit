@@ -1,18 +1,18 @@
 package no.ntnu.tdt4240.astrosplit.views;
 
-import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.PooledEngine;
 
 public class GameView {
 
-	private static Engine gameEngine = null;
+	private static PooledEngine gameEngine = null;
 
 	private GameView() {
 
 	}
 	
-	public static Engine getGameEngine(){
+	public static PooledEngine getGameEngine(){
 		if (gameEngine == null){
-			gameEngine = new Engine();
+			gameEngine = new PooledEngine();
 		}
 		return gameEngine;
 	}
