@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.astrosplit;
+package no.ntnu.tdt4240.astrosplit.game;
 
 
 import com.badlogic.ashley.core.Entity;
