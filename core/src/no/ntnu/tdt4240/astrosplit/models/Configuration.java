@@ -12,7 +12,7 @@ public class Configuration implements Model {
     private Preferences prefStore;
 
     public final String gameName = "Astro Split";
-    public int viewPortRenderHeight = 720;
+    public final int viewPortRenderHeight = 720;
     public float defaultAspect = 16f/9;
 
 

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import no.ntnu.tdt4240.astrosplit.controllers.MenuController;
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 
@@ -37,6 +38,8 @@ class MainMenuView implements Screen {
 		Gdx.gl.glClearColor(0.8f, 0.1f, 0.1f, 1);
 		spriteBatch = new SpriteBatch();
 		camera = new OrthographicCamera();
+
+		new MenuController();
 
 		/* Divide screen in rows */
 		renderHeight = Configuration.getInstance().viewPortRenderHeight;
