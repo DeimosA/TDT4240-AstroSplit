@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.astrosplit.systems;
+package no.ntnu.tdt4240.astrosplit.game.systems;
 
 
 import com.badlogic.ashley.core.ComponentMapper;
@@ -7,11 +7,11 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 
 import no.ntnu.tdt4240.astrosplit.World;
-import no.ntnu.tdt4240.astrosplit.components.ActionComponent;
-import no.ntnu.tdt4240.astrosplit.components.HealthComponent;
-import no.ntnu.tdt4240.astrosplit.components.MovementComponent;
-import no.ntnu.tdt4240.astrosplit.components.PositionComponent;
-import no.ntnu.tdt4240.astrosplit.components.TypeComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
 
 import com.badlogic.gdx.math.Vector2;
 

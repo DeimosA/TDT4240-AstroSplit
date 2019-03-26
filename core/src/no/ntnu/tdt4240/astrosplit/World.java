@@ -7,12 +7,12 @@ import com.badlogic.ashley.core.PooledEngine;
 
 
 
-import no.ntnu.tdt4240.astrosplit.components.ActionComponent;
-import no.ntnu.tdt4240.astrosplit.components.HealthComponent;
-import no.ntnu.tdt4240.astrosplit.components.MovementComponent;
-import no.ntnu.tdt4240.astrosplit.components.PositionComponent;
-import no.ntnu.tdt4240.astrosplit.components.TextureComponent;
-import no.ntnu.tdt4240.astrosplit.components.TypeComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
 
