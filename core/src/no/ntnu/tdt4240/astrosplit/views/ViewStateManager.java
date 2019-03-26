@@ -22,4 +22,8 @@ public final class ViewStateManager {
 	public Screen get() {
 		return currentScreen;
 	}
+
+	void setScreen(Screen newScreen) {
+		currentScreen = newScreen;
+	}
 }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import no.ntnu.tdt4240.astrosplit.controllers.MenuController;
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 
@@ -26,6 +27,7 @@ class MainMenuView implements Screen {
 
 	// Menu background
 	private Texture background;
+	private Texture title;
 
 	// Buttons
 	private int buttonCount = 3;
@@ -37,32 +39,37 @@ class MainMenuView implements Screen {
 		spriteBatch = new SpriteBatch();
 		camera = new OrthographicCamera();
 
+		new MenuController();
+
 		/* Divide screen in rows */
 		renderHeight = Configuration.getInstance().viewPortRenderHeight;
 		renderWidth = Configuration.getInstance().getViewPortRenderWidth();
-		rowHeight = renderHeight / (buttonCount + 2);
+		rowHeight = renderHeight / (buttonCount + 3);
 		camera.setToOrtho(false, renderWidth, renderHeight);
 
 		/* Buttons */
 		buttons = new MenuButton[buttonCount];
+		// Start game button
 		buttons[0] = new MenuButton(
 			renderWidth / 2,
-			renderHeight - (rowHeight * 2),
-			new Texture("buttonTask1.png")
+			renderHeight - (rowHeight * 3),
+			new Texture("Astro/buttonStart.png")
 		);
 		buttons[1] = new MenuButton(
 			renderWidth / 2,
-			renderHeight - (rowHeight * 3),
-			new Texture("buttonTask2.png")
+			renderHeight - (rowHeight * 4),
+			new Texture("Astro/buttonSettings.png")
 		);
 		buttons[2] = new MenuButton(
 			renderWidth / 2,
-			renderHeight - (rowHeight * 4),
-			new Texture("buttonQuit.png")
+			renderHeight - (rowHeight * 5),
+			new Texture("Astro/buttonQuit.png")
 		);
 
 		/* Menu background */
-		background = new Texture("background.png");
+		background = new Texture("Astro/backgroundAstro.png");
+		/* Title */
+		title = new Texture("Astro/logoAstro.png");
 	}
 
 	private void handleInput() {
@@ -76,6 +83,7 @@ class MainMenuView implements Screen {
 			if (buttons[0].getBounds().contains(cursorPos.x, cursorPos.y)) {
 				/* Task 1 */
 				System.out.println("Chose: Task 1");
+				ViewStateManager.getInstance().setScreen(new GameView());
 
 			} else if (buttons[1].getBounds().contains(cursorPos.x, cursorPos.y)) {
 				/* Task 2 */
@@ -102,13 +110,16 @@ class MainMenuView implements Screen {
 		spriteBatch.setProjectionMatrix(camera.combined);
 
 		spriteBatch.begin();
+
 		spriteBatch.draw(background, 0, 0, renderWidth, renderHeight);
+		spriteBatch.draw(title, (renderWidth - title.getWidth()) / 2f, renderHeight - (rowHeight * 1.5f));
+
 		for (MenuButton button : buttons) {
 			Rectangle bounds = button.getBounds();
 			spriteBatch.draw(button.getTexture(), bounds.x, bounds.y);
 		}
-		spriteBatch.end();
 
+		spriteBatch.end();
 	}
 
 	@Override
