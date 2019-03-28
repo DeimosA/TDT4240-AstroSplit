@@ -65,10 +65,6 @@ public class UnitSystem extends IteratingSystem {
 		MovementComponent movement 		= mm.get(entity);
 		PositionComponent position 		= pm.get(entity);
 
-
-
-
-
 	}
 
 	//Attack another entity of type UNIT

@@ -30,17 +30,13 @@ public class World {
 		Entity worldEntity = new Entity();
 		this.engine = GameView.getGameEngine();
 		//this.engine.addEntity(worldEntity);
-
 	}
 
 	//this method should create all units to be shown, (including background tiles?)
 	public void create()
 	{
-		for(int i = 0; i < 10; i++)
-		{
-			//createTestEntity(new Vector2(i*100,i*50));
-		}
 		createUnit(new Vector2(640,360),null);
+
 	}
 
 
@@ -98,7 +94,6 @@ public class World {
 		entity.add(tc);
 		entity.add(ac);
 		entity.add(tm);
-
 		engine.addEntity(entity);
 
 		return entity;
@@ -129,6 +124,7 @@ public class World {
 		position_component.position.set(position);
 		//Should specify what texture
 		//Should specify scale
+
 
 		entity.add(position_component);
 		entity.add(texture);
