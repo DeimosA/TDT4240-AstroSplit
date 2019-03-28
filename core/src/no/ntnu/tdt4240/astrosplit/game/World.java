@@ -38,9 +38,9 @@ public class World {
 	{
 		for(int i = 0; i < 10; i++)
 		{
-			createTestEntity(new Vector2(i*50,i*50));
+			//createTestEntity(new Vector2(i*100,i*50));
 		}
-		createUnit(null,null);
+		createUnit(new Vector2(640,360),null);
 	}
 
 
@@ -59,7 +59,11 @@ public class World {
 		TransformComponent transform 		= engine.createComponent(TransformComponent.class);
 
 		//should specifytexture
-		texture.region = new TextureRegion(new Texture("warrior.png"),32,32);
+		texture.region = new TextureRegion(new Texture("warrior.png"));
+		//Set scale
+		transform.scale.set(0.2f,0.2f);
+
+		//allows for null values
 		if(position_spawn != null) position.position.set(position_spawn);
 		if(type_unit != null) type.type = type_unit;
 
@@ -88,6 +92,7 @@ public class World {
 		tc.region = new TextureRegion(new Texture("warrior.png"));
 		tm.scale.set(0.2f,0.2f);
 		pc.position = pos;
+		System.out.println(pos);
 
 		entity.add(pc);
 		entity.add(tc);
@@ -123,6 +128,7 @@ public class World {
 
 		position_component.position.set(position);
 		//Should specify what texture
+		//Should specify scale
 
 		entity.add(position_component);
 		entity.add(texture);

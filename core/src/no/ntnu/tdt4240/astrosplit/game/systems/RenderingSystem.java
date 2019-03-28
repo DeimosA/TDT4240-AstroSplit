@@ -26,7 +26,7 @@ public class RenderingSystem extends IteratingSystem{
 
 
 
-	private OrthographicCamera camera;
+	//private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Comparator<Entity> comparator;
 	private Array<Entity> renderQueue;
@@ -58,9 +58,9 @@ public class RenderingSystem extends IteratingSystem{
 
 		this.batch = batch;
 
-		this.camera = new OrthographicCamera(renderWidth, renderHeight);
-		camera.position.set(renderWidth/2, renderHeight/2, 0);
-
+	//	this.camera = new OrthographicCamera(renderWidth, renderHeight);
+	//	camera.position.set(renderWidth/2, renderHeight/2, 0);
+		System.out.println("RenderWidth: " + renderWidth + "\tRenderHeight: " + renderHeight);
 
 	}
 
@@ -88,10 +88,9 @@ public class RenderingSystem extends IteratingSystem{
 			TransformComponent t = transformMapper.get(entity);
 			PositionComponent p = positionMapper.get(entity);
 
-			//NB. TextureComponent.region has to be set with width and height
-			//May be fixed with scaling
-			float width = tex.region.getRegionWidth();
-			float height = tex.region.getRegionHeight();
+
+			float width = tex.region.getRegionWidth()*t.scale.x;
+			float height = tex.region.getRegionHeight()*t.scale.y;
 			float originX = width/2;
 			float originY = height/2;
 
@@ -112,10 +111,5 @@ public class RenderingSystem extends IteratingSystem{
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
 		renderQueue.add(entity);
-	}
-
-	public OrthographicCamera getCamera()
-	{
-		return camera;
 	}
 }
