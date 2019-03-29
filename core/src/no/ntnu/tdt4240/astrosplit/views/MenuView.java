@@ -11,12 +11,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import no.ntnu.tdt4240.astrosplit.presenters.MenuPresenter;
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
+import no.ntnu.tdt4240.astrosplit.presenters.MenuPresenter;
 import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 
 
-class MainMenuView implements Screen {
+public class MenuView implements Screen {
 
 	private OrthographicCamera camera;
 	private Viewport viewport;
@@ -27,18 +27,18 @@ class MainMenuView implements Screen {
 	// Divide screen
 	private int renderHeight;
 	private int renderWidth;
-	private int rowHeight;
+//	private int rowHeight;
 
 	// Menu background
 	private Texture background;
 	private Texture title;
 
 	// Buttons
-	private int buttonCount = 3;
-	private MenuButton[] buttons;
+//	private int buttonCount = 3;
+//	private MenuButton[] buttons;
 
 
-	MainMenuView() {
+	MenuView() {
 		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
 		spriteBatch = new SpriteBatch();
 		camera = new OrthographicCamera();
@@ -48,11 +48,12 @@ class MainMenuView implements Screen {
 		/* Divide screen in rows */
 		renderHeight = Configuration.getInstance().viewPortRenderHeight;
 		renderWidth = Configuration.getInstance().getViewPortRenderWidth();
-		rowHeight = renderHeight / (buttonCount + 3);
+//		rowHeight = renderHeight / (buttonCount + 3);
 		camera.setToOrtho(false, renderWidth, renderHeight);
 		viewport = new ExtendViewport(renderWidth, renderHeight, camera);
 
 		/* Buttons */
+		/*
 		buttons = new MenuButton[buttonCount];
 		// Start game button
 		buttons[0] = new MenuButton(
@@ -70,6 +71,7 @@ class MainMenuView implements Screen {
 			renderHeight - (rowHeight * 5),
 			new Texture("Astro/buttonQuit.png")
 		);
+		*/
 
 		/* Menu background */
 		background = new Texture("Astro/backgroundAstro.png");
@@ -85,18 +87,18 @@ class MainMenuView implements Screen {
 			cursorPos.y = Gdx.input.getY();
 			camera.unproject(cursorPos);
 
-			if (buttons[0].getBounds().contains(cursorPos.x, cursorPos.y)) {
-				/* Start game */
-				ViewStateManager.getInstance().setScreen(new GameView());
-
-			} else if (buttons[1].getBounds().contains(cursorPos.x, cursorPos.y)) {
-				/* Settings */
-				System.out.println("Chose: Settings");
-
-			} else if (buttons[2].getBounds().contains(cursorPos.x, cursorPos.y)) {
-				/* Quit */
-				Gdx.app.exit();
-			}
+//			if (buttons[0].getBounds().contains(cursorPos.x, cursorPos.y)) {
+//				/* Start game */
+//				ViewStateManager.getInstance().setScreen(new GameView());
+//
+//			} else if (buttons[1].getBounds().contains(cursorPos.x, cursorPos.y)) {
+//				/* Settings */
+//				System.out.println("Chose: Settings");
+//
+//			} else if (buttons[2].getBounds().contains(cursorPos.x, cursorPos.y)) {
+//				/* Quit */
+//				Gdx.app.exit();
+//			}
 		}
 	}
 
@@ -117,20 +119,20 @@ class MainMenuView implements Screen {
 
 		// Background and title
 		spriteBatch.draw(background, 0, 0, renderWidth, renderHeight);
-		spriteBatch.draw(title, (renderWidth - title.getWidth()) / 2f, renderHeight - (rowHeight * 1.8f));
+		spriteBatch.draw(title, (renderWidth - title.getWidth()) / 2f, renderHeight - title.getHeight() - 20);
 
 		// Buttons
-		for (MenuButton button : buttons) {
-			Rectangle bounds = button.getBounds();
-			spriteBatch.draw(button.getTexture(), bounds.x, bounds.y);
-		}
+//		for (MenuButton button : buttons) {
+//			Rectangle bounds = button.getBounds();
+//			spriteBatch.draw(button.getTexture(), bounds.x, bounds.y);
+//		}
 
 		spriteBatch.end();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-
+		viewport.update(width, height, true);
 	}
 
 	@Override
@@ -151,9 +153,10 @@ class MainMenuView implements Screen {
 	@Override
 	public void dispose() {
 		background.dispose();
-		for (MenuButton button : buttons) {
-			button.dispose();
-		}
+		title.dispose();
+//		for (MenuButton button : buttons) {
+//			button.dispose();
+//		}
 		System.out.println("Menu State Disposed");
 	}
 }
