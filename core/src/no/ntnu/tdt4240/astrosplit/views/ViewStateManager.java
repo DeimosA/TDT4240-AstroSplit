@@ -9,7 +9,7 @@ public final class ViewStateManager {
 	private Screen currentScreen;
 
 	private ViewStateManager() {
-		currentScreen = new MenuView();
+		currentScreen = new MainMenuView();
 	}
 
 	public static ViewStateManager getInstance() {
@@ -25,6 +25,5 @@ public final class ViewStateManager {
 
 	void setScreen(Screen newScreen) {
 		currentScreen = newScreen;
-		// TODO stack screens?
 	}
 }

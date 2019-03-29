@@ -27,9 +27,7 @@ public class World {
 
 
 	public World() {
-		Entity worldEntity = new Entity();
 		this.engine = GameView.getGameEngine();
-		//this.engine.addEntity(worldEntity);
 	}
 
 	//this method should create all units to be shown, (including background tiles?)
