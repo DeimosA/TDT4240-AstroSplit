@@ -47,6 +47,10 @@ public class RenderingSystem extends IteratingSystem{
 
 		renderQueue = new Array<Entity>();
 
+
+		/*
+			Orders by z-index (height)
+		 */
 		comparator = new Comparator<Entity>()
 		{
 			@Override
@@ -58,13 +62,14 @@ public class RenderingSystem extends IteratingSystem{
 
 		this.batch = batch;
 
-	//	this.camera = new OrthographicCamera(renderWidth, renderHeight);
-	//	camera.position.set(renderWidth/2, renderHeight/2, 0);
-		System.out.println("RenderWidth: " + renderWidth + "\tRenderHeight: " + renderHeight);
 
 	}
 
 
+
+	/*
+		Called on every tick
+	 */
 	@Override
 	public void update(float delta)
 	{
@@ -72,8 +77,6 @@ public class RenderingSystem extends IteratingSystem{
 
 		renderQueue.sort(comparator);
 
-		//camera.update();
-		//batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 
 		for(Entity entity : renderQueue)
@@ -107,7 +110,10 @@ public class RenderingSystem extends IteratingSystem{
 
 	}
 
-
+	/*
+		Called on every entity, every tick
+		Seems to activate before update()
+	 */
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
 		renderQueue.add(entity);

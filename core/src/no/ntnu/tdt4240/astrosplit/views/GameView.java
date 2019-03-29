@@ -1,17 +1,20 @@
 package no.ntnu.tdt4240.astrosplit.views;
 
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector3;
 
 import no.ntnu.tdt4240.astrosplit.game.World;
 import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
+import no.ntnu.tdt4240.astrosplit.models.Map;
 
 public class GameView implements Screen {
 
@@ -26,21 +29,20 @@ public class GameView implements Screen {
 	private static PooledEngine engine = null;
 	private World world;
 
-	//Textures
-	private Texture background;
-	private Texture unitTexture;
+
+	private Map map;
 
 	GameView()
 	{
 
 		Gdx.gl.glClearColor(0.8f, 0.1f, 0.1f, 1);
 		spriteBatch = new SpriteBatch();
-		camera = new OrthographicCamera();
-
 
 		renderHeight = Configuration.getInstance().viewPortRenderHeight;
 		renderWidth = Configuration.getInstance().getViewPortRenderWidth();
+		camera = new OrthographicCamera();
 		camera.setToOrtho(false, renderWidth, renderHeight);
+
 
 		engine = new PooledEngine();
 		this.world = new World();
@@ -50,9 +52,10 @@ public class GameView implements Screen {
 
 		world.create();
 
+		this.map = new Map();
+		this.map.setCamera(camera);
 
-		/* Menu background */
-		background = new Texture("background.png");
+
 
 		//pauseSystems();
 
@@ -60,9 +63,14 @@ public class GameView implements Screen {
 
 	}
 
+	/*
+		Pauses all systems connnected to engine
+	 */
 	private void pauseSystems() {
-		engine.getSystem(UnitSystem.class).setProcessing(false);
-		engine.getSystem(RenderingSystem.class).setProcessing(false);
+		for(EntitySystem system : getGameEngine().getSystems())
+		{
+			system.setProcessing(false);
+		}
 	}
 
 	public static PooledEngine getGameEngine(){
@@ -72,15 +80,11 @@ public class GameView implements Screen {
 		return engine;
 	}
 
-	private void update(float delta)
-	{
-
-		engine.update(delta);
 
 
-		//Can get state of game here
-	}
-
+	/*
+		Dummy inputhandler, has no purpose yet
+	 */
 	private void handleInput() {
 
 		/* Texture pos touched */
@@ -98,18 +102,24 @@ public class GameView implements Screen {
 
 	}
 
+
+	/*
+		Is called on every tick,
+			updates engine,
+			draws UI
+	 */
 	@Override
 	public void render(float delta) {
 		//handleInput();
-		engine.update(delta);
-		drawUI();
+
+		engine.update(delta);	//Will update the RenderingSystem, displaying game characters
+		drawUI();	//Overlay
 
 
 	}
 
+	//Draws overlay UI
 	private void drawUI() {
-		//camera.update();
-		spriteBatch.setProjectionMatrix(camera.combined);
 		spriteBatch.begin();
 		/*
 			Draw some UI
