@@ -56,12 +56,6 @@ public class GameView implements Screen {
 
 		this.map.setCamera(camera);
 
-
-
-		//pauseSystems();
-
-
-
 	}
 
 	/*
