@@ -1,14 +1,15 @@
-package no.ntnu.tdt4240.astrosplit.controllers;
+package no.ntnu.tdt4240.astrosplit.presenters;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Screen;
 
 
-public class MenuController {
+public class MenuPresenter {
 
 
-	public MenuController() {
+	public MenuPresenter(Screen currentScreen) {
 		Gdx.input.setCatchBackKey(true);
 		Gdx.input.setInputProcessor(new BackInputProcessor());
 	}
