@@ -38,9 +38,6 @@ public class GameView implements Screen {
 
 		renderHeight = Configuration.getInstance().viewPortRenderHeight;
 		renderWidth = Configuration.getInstance().getViewPortRenderWidth();
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, renderWidth, renderHeight);
-
 
 		engine = new PooledEngine();
 		this.world = new World();
@@ -51,6 +48,12 @@ public class GameView implements Screen {
 		world.create();
 
 		this.map = new Map();
+
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false,map.getMapWidthInPixels(), map.getMapHeightInPixels());
+		camera.position.x = map.getMapWidthInPixels()*0.5f;
+		camera.position.y = map.getMapHeightInPixels()*0.5f;
+
 		this.map.setCamera(camera);
 
 
