@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 
@@ -21,7 +22,7 @@ public class Map {
 	private TiledMapTileLayer layer;
 
 	private OrthographicCamera camera;
-	private MapRenderer mapRenderer;
+	private OrthogonalTiledMapRenderer mapRenderer;
 
 
 	/*
@@ -36,7 +37,7 @@ public class Map {
 		this.TILE_WIDTH_PX = (int) renderWidth/layer.getWidth();
 		this.TILE_HEIGHT_PX = (int) renderHeight/layer.getHeight();
 
-		this.mapRenderer = new MapRenderer() {
+		this.mapRenderer = new OrthogonalTiledMapRenderer(map) {
 			@Override
 			public void setView(OrthographicCamera camera) {
 
