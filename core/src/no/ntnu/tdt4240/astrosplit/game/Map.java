@@ -1,6 +1,7 @@
 package no.ntnu.tdt4240.astrosplit.game;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
@@ -21,6 +22,7 @@ public class Map {
 	static final float renderHeight = Configuration.getInstance().viewPortRenderHeight;
 
 	private TiledMap map;
+	private MapProperties properties;
 	private TiledMapTileLayer layer;
 
 	private OrthographicCamera camera;
@@ -34,7 +36,10 @@ public class Map {
 	public Map()
 	{
 		this.map = new TmxMapLoader().load("map/map_01.tmx");
+		this.properties = map.getProperties();
 		this.layer = (TiledMapTileLayer) map.getLayers().get(0);
+
+
 
 		this.TILE_WIDTH_PX = (int) renderWidth/layer.getWidth();
 		this.TILE_HEIGHT_PX = (int) renderHeight/layer.getHeight();
@@ -42,7 +47,7 @@ public class Map {
 		this.mapRenderer = new OrthogonalTiledMapRenderer(map) {
 			@Override
 			public void setView(OrthographicCamera camera) {
-
+				super.setView(camera);
 			}
 
 			@Override
@@ -52,7 +57,7 @@ public class Map {
 
 			@Override
 			public void render() {
-
+				super.render();
 			}
 
 			@Override
@@ -78,7 +83,9 @@ public class Map {
 		if(camera == null)
 		{
 			System.out.println("please set camera first");
+			return;
 		}
+		camera.update();
 		mapRenderer.setView(camera);
 		mapRenderer.render();
 	}
@@ -88,8 +95,16 @@ public class Map {
 		return map;
 	}
 
+	public MapProperties getProperties() {
+		return properties;
+	}
 
-
-
-
+	public int getMapWidthInPixels()
+	{
+		return properties.get("tilewidth",Integer.class)* properties.get("width", Integer.class);
+	}
+	public int getMapHeightInPixels()
+	{
+		return properties.get("tileheight", Integer.class)* properties.get("height", Integer.class);
+	}
 }
