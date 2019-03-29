@@ -1,13 +1,15 @@
-package no.ntnu.tdt4240.astrosplit.models;
+package no.ntnu.tdt4240.astrosplit.game;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
+
+import no.ntnu.tdt4240.astrosplit.models.Configuration;
 
 public class Map {
 
@@ -31,7 +33,7 @@ public class Map {
 	 */
 	public Map()
 	{
-		this.map = new TiledMap(); //should load map from assets
+		this.map = new TmxMapLoader().load("map/map_01.tmx");
 		this.layer = (TiledMapTileLayer) map.getLayers().get(0);
 
 		this.TILE_WIDTH_PX = (int) renderWidth/layer.getWidth();
@@ -85,6 +87,8 @@ public class Map {
 	{
 		return map;
 	}
+
+
 
 
 
