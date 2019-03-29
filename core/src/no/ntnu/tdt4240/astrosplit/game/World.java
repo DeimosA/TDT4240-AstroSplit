@@ -14,11 +14,13 @@ import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
+import no.ntnu.tdt4240.astrosplit.models.Map;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 
 public class World {
@@ -30,17 +32,13 @@ public class World {
 		Entity worldEntity = new Entity();
 		this.engine = GameView.getGameEngine();
 		//this.engine.addEntity(worldEntity);
-
 	}
 
 	//this method should create all units to be shown, (including background tiles?)
 	public void create()
 	{
-		for(int i = 0; i < 10; i++)
-		{
-			//createTestEntity(new Vector2(i*100,i*50));
-		}
-		createUnit(new Vector2(640,360),null);
+		createTestEntity(new Vector2(640,360));
+
 	}
 
 
@@ -59,7 +57,7 @@ public class World {
 		TransformComponent transform 		= engine.createComponent(TransformComponent.class);
 
 		//should specifytexture
-		texture.region = new TextureRegion(new Texture("warrior.png"));
+		texture.region = new TextureRegion(new Texture("ground.png"));
 		//Set scale
 		transform.scale.set(0.2f,0.2f);
 
@@ -89,7 +87,7 @@ public class World {
 		ActionComponent ac 			= engine.createComponent(ActionComponent.class);
 		TransformComponent tm 		= engine.createComponent(TransformComponent.class);
 
-		tc.region = new TextureRegion(new Texture("warrior.png"));
+		tc.region = new TextureRegion(new Texture("ground.png"));
 		tm.scale.set(0.2f,0.2f);
 		pc.position = pos;
 		System.out.println(pos);
@@ -98,7 +96,6 @@ public class World {
 		entity.add(tc);
 		entity.add(ac);
 		entity.add(tm);
-
 		engine.addEntity(entity);
 
 		return entity;
@@ -129,6 +126,7 @@ public class World {
 		position_component.position.set(position);
 		//Should specify what texture
 		//Should specify scale
+
 
 		entity.add(position_component);
 		entity.add(texture);
