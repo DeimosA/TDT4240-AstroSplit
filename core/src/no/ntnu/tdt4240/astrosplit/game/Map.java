@@ -40,7 +40,6 @@ public class Map {
 		this.layer = (TiledMapTileLayer) map.getLayers().get(0);
 
 
-
 		this.TILE_WIDTH_PX = (int) renderWidth/layer.getWidth();
 		this.TILE_HEIGHT_PX = (int) renderHeight/layer.getHeight();
 
@@ -85,7 +84,7 @@ public class Map {
 			System.out.println("please set camera first");
 			return;
 		}
-		camera.update();
+
 		mapRenderer.setView(camera);
 		mapRenderer.render();
 	}

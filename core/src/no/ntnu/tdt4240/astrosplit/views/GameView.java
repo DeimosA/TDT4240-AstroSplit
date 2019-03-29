@@ -112,6 +112,7 @@ public class GameView implements Screen {
 	@Override
 	public void render(float delta) {
 		//handleInput();
+		camera.update();
 		map.render();
 		engine.update(delta);	//Will update the RenderingSystem, displaying game characters
 		drawUI();	//Overlay
