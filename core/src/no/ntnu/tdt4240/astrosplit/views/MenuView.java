@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.presenters.MenuPresenter;
+import no.ntnu.tdt4240.astrosplit.views.widgets.ButtonList;
 import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 
 
@@ -27,6 +28,8 @@ public class MenuView implements Screen {
 	// Divide screen
 	private int renderHeight;
 	private int renderWidth;
+	private int padding = 20;
+	private int titlePosY;
 //	private int rowHeight;
 
 	// Menu background
@@ -34,6 +37,7 @@ public class MenuView implements Screen {
 	private Texture title;
 
 	// Buttons
+	private ButtonList buttonList;
 //	private int buttonCount = 3;
 //	private MenuButton[] buttons;
 
@@ -52,31 +56,41 @@ public class MenuView implements Screen {
 		camera.setToOrtho(false, renderWidth, renderHeight);
 		viewport = new ExtendViewport(renderWidth, renderHeight, camera);
 
-		/* Buttons */
-		/*
-		buttons = new MenuButton[buttonCount];
-		// Start game button
-		buttons[0] = new MenuButton(
-			renderWidth / 2,
-			renderHeight - (rowHeight * 3),
-			new Texture("Astro/buttonStart.png")
-		);
-		buttons[1] = new MenuButton(
-			renderWidth / 2,
-			renderHeight - (rowHeight * 4),
-			new Texture("Astro/buttonSettings.png")
-		);
-		buttons[2] = new MenuButton(
-			renderWidth / 2,
-			renderHeight - (rowHeight * 5),
-			new Texture("Astro/buttonQuit.png")
-		);
-		*/
-
 		/* Menu background */
 		background = new Texture("Astro/backgroundAstro.png");
 		/* Title */
 		title = new Texture("Astro/logoAstro.png");
+		titlePosY = renderHeight - title.getHeight() - padding;
+
+		/* Buttons */
+		Rectangle blBounds = new Rectangle(padding, padding,
+			renderWidth - padding, titlePosY - 2 * padding
+		);
+		buttonList = new ButtonList(blBounds,
+			new MenuButton[] {
+				new MenuButton(new Texture("Astro/buttonStart.png")) {
+					@Override
+					public void click() {
+						// Start game
+						ViewStateManager.getInstance().setScreen(new GameView());
+					}
+				},
+				new MenuButton(new Texture("Astro/buttonSettings.png")) {
+					@Override
+					public void click() {
+						// Settings
+						System.out.println("Chose: Settings");
+					}
+				},
+				new MenuButton(new Texture("Astro/buttonQuit.png")) {
+					@Override
+					public void click() {
+						// Quit
+						Gdx.app.exit();
+					}
+				}
+			}
+		);
 	}
 
 	private void handleInput() {
@@ -87,18 +101,7 @@ public class MenuView implements Screen {
 			cursorPos.y = Gdx.input.getY();
 			camera.unproject(cursorPos);
 
-//			if (buttons[0].getBounds().contains(cursorPos.x, cursorPos.y)) {
-//				/* Start game */
-//				ViewStateManager.getInstance().setScreen(new GameView());
-//
-//			} else if (buttons[1].getBounds().contains(cursorPos.x, cursorPos.y)) {
-//				/* Settings */
-//				System.out.println("Chose: Settings");
-//
-//			} else if (buttons[2].getBounds().contains(cursorPos.x, cursorPos.y)) {
-//				/* Quit */
-//				Gdx.app.exit();
-//			}
+			buttonList.handleInput(cursorPos);
 		}
 	}
 
@@ -108,7 +111,7 @@ public class MenuView implements Screen {
 	}
 
 	@Override
-	public void render(float delta) {
+	public void render(float deltaTime) {
 		handleInput();
 
 		/* Render */
@@ -119,13 +122,9 @@ public class MenuView implements Screen {
 
 		// Background and title
 		spriteBatch.draw(background, 0, 0, renderWidth, renderHeight);
-		spriteBatch.draw(title, (renderWidth - title.getWidth()) / 2f, renderHeight - title.getHeight() - 20);
+		spriteBatch.draw(title, (renderWidth - title.getWidth()) / 2f, titlePosY);
 
-		// Buttons
-//		for (MenuButton button : buttons) {
-//			Rectangle bounds = button.getBounds();
-//			spriteBatch.draw(button.getTexture(), bounds.x, bounds.y);
-//		}
+		buttonList.render(spriteBatch, deltaTime);
 
 		spriteBatch.end();
 	}
@@ -154,9 +153,7 @@ public class MenuView implements Screen {
 	public void dispose() {
 		background.dispose();
 		title.dispose();
-//		for (MenuButton button : buttons) {
-//			button.dispose();
-//		}
+		buttonList.dispose();
 		System.out.println("Menu State Disposed");
 	}
 }
