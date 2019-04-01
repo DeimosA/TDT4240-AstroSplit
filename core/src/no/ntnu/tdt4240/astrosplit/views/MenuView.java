@@ -13,8 +13,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.presenters.MenuPresenter;
-import no.ntnu.tdt4240.astrosplit.views.widgets.ButtonList;
-import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 
 
 public class MenuView implements Screen {
@@ -30,16 +28,11 @@ public class MenuView implements Screen {
 	private int renderWidth;
 	private int padding = 20;
 	private int titlePosY;
-//	private int rowHeight;
 
-	// Menu background
+	// Disposables
 	private Texture background;
 	private Texture title;
-
-	// Buttons
-	private ButtonList buttonList;
-//	private int buttonCount = 3;
-//	private MenuButton[] buttons;
+	private SubView subView;
 
 
 	MenuView() {
@@ -49,10 +42,8 @@ public class MenuView implements Screen {
 
 		menuPresenter = new MenuPresenter(this);
 
-		/* Divide screen in rows */
 		renderHeight = Configuration.getInstance().viewPortRenderHeight;
 		renderWidth = Configuration.getInstance().getViewPortRenderWidth();
-//		rowHeight = renderHeight / (buttonCount + 3);
 		camera.setToOrtho(false, renderWidth, renderHeight);
 		viewport = new ExtendViewport(renderWidth, renderHeight, camera);
 
@@ -62,35 +53,10 @@ public class MenuView implements Screen {
 		title = new Texture("Astro/logoAstro.png");
 		titlePosY = renderHeight - title.getHeight() - padding;
 
-		/* Buttons */
-		Rectangle blBounds = new Rectangle(padding, padding,
-			renderWidth - padding, titlePosY - 2 * padding
+		Rectangle subViewBounds = new Rectangle(padding, padding,
+			renderWidth - 2 * padding, titlePosY - 2 * padding
 		);
-		buttonList = new ButtonList(blBounds,
-			new MenuButton[] {
-				new MenuButton(new Texture("Astro/buttonStart.png")) {
-					@Override
-					public void click() {
-						// Start game
-						ViewStateManager.getInstance().setScreen(new GameView());
-					}
-				},
-				new MenuButton(new Texture("Astro/buttonSettings.png")) {
-					@Override
-					public void click() {
-						// Settings
-						System.out.println("Chose: Settings");
-					}
-				},
-				new MenuButton(new Texture("Astro/buttonQuit.png")) {
-					@Override
-					public void click() {
-						// Quit
-						Gdx.app.exit();
-					}
-				}
-			}
-		);
+		subView = new MainMenuSubView(subViewBounds);
 	}
 
 	private void handleInput() {
@@ -101,7 +67,7 @@ public class MenuView implements Screen {
 			cursorPos.y = Gdx.input.getY();
 			camera.unproject(cursorPos);
 
-			buttonList.handleInput(cursorPos);
+			subView.handleInput(cursorPos);
 		}
 	}
 
@@ -124,7 +90,7 @@ public class MenuView implements Screen {
 		spriteBatch.draw(background, 0, 0, renderWidth, renderHeight);
 		spriteBatch.draw(title, (renderWidth - title.getWidth()) / 2f, titlePosY);
 
-		buttonList.render(spriteBatch, deltaTime);
+		subView.render(spriteBatch, deltaTime);
 
 		spriteBatch.end();
 	}
@@ -153,7 +119,7 @@ public class MenuView implements Screen {
 	public void dispose() {
 		background.dispose();
 		title.dispose();
-		buttonList.dispose();
+		subView.dispose();
 		System.out.println("Menu State Disposed");
 	}
 }
