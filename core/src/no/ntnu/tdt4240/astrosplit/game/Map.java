@@ -67,7 +67,9 @@ public class Map {
 
 	}
 
-
+	/*
+		Return cell from position
+	 */
 	public Cell getCell(Vector2 position)
 	{
 		return layer.getCell((int) position.x/TILE_WIDTH_PX, (int) position.y/TILE_HEIGHT_PX);

@@ -8,6 +8,7 @@ import com.badlogic.ashley.core.PooledEngine;
 
 
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.ActorComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
@@ -18,12 +19,15 @@ import no.ntnu.tdt4240.astrosplit.views.GameView;
 
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class World {
 
 	private PooledEngine engine;
+
 
 
 	public World() {
@@ -33,7 +37,7 @@ public class World {
 	//this method should create all units to be shown, (including background tiles?)
 	public void create()
 	{
-		createTestEntity(new Vector2(640,360));
+		createTestEntity(new Vector2(0,0));
 
 	}
 
@@ -55,7 +59,7 @@ public class World {
 		//should specifytexture
 		texture.region = new TextureRegion(new Texture("ground.png"));
 		//Set scale
-		transform.scale.set(0.2f,0.2f);
+		transform.scale.set(0.3f,0.3f);
 
 		//allows for null values
 		if(position_spawn != null) position.position.set(position_spawn);
@@ -82,9 +86,10 @@ public class World {
 		TextureComponent tc 		= engine.createComponent(TextureComponent.class);
 		ActionComponent ac 			= engine.createComponent(ActionComponent.class);
 		TransformComponent tm 		= engine.createComponent(TransformComponent.class);
+		ActorComponent am 			= engine.createComponent(ActorComponent.class);
 
-		tc.region = new TextureRegion(new Texture("ground.png"));
-		tm.scale.set(0.2f,0.2f);
+		tc.region = new TextureRegion(new Texture("units/marine_ranged.png"));
+		tm.scale.set(0.1f,0.2f);
 		pc.position = pos;
 		System.out.println(pos);
 
@@ -92,6 +97,7 @@ public class World {
 		entity.add(tc);
 		entity.add(ac);
 		entity.add(tm);
+		entity.add(am);
 		engine.addEntity(entity);
 
 		return entity;
