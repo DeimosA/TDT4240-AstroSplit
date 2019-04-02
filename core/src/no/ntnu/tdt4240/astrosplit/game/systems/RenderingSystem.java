@@ -62,11 +62,7 @@ public class RenderingSystem extends IteratingSystem{
 
 		this.batch = batch;
 		this.stage = stage;
-
-
 	}
-
-
 
 	/*
 		Called on every tick
@@ -105,19 +101,6 @@ public class RenderingSystem extends IteratingSystem{
 				}
 			//stage.act
 			stage.draw();
-			/*
-			float width = tex.region.getRegionWidth()*t.scale.x;
-			float height = tex.region.getRegionHeight()*t.scale.y;
-			float originX = width/2;
-			float originY = height/2;
-
-			batch.draw(tex.region.getTexture(),
-				p.position.x-originX,
-				p.position.y-originY,
-				tex.region.getRegionWidth()*t.scale.x,
-				tex.region.getRegionHeight()*t.scale.y
-			);
-			*/
 
 
 		}

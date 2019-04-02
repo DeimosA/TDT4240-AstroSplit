@@ -91,7 +91,6 @@ public class World {
 		tc.region = new TextureRegion(new Texture("units/marine_ranged.png"));
 		tm.scale.set(0.1f,0.2f);
 		pc.position = pos;
-		System.out.println(pos);
 
 		entity.add(pc);
 		entity.add(tc);

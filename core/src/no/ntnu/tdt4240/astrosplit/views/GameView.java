@@ -51,7 +51,6 @@ public class GameView implements Screen {
 		Gdx.input.setInputProcessor(stage);
 
 
-
 		engine = new PooledEngine();
 		this.world = new World();
 		spriteBatch = new SpriteBatch();
