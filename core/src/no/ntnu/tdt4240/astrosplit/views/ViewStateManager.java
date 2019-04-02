@@ -9,7 +9,7 @@ public final class ViewStateManager {
 	private Screen currentScreen;
 
 	private ViewStateManager() {
-		currentScreen = new MainMenuView();
+		currentScreen = new GameView();
 	}
 
 	public static ViewStateManager getInstance() {
