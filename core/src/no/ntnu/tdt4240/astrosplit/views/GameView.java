@@ -7,6 +7,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import no.ntnu.tdt4240.astrosplit.game.World;
 import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
@@ -19,9 +22,8 @@ public class GameView implements Screen {
 	private OrthographicCamera camera;
 	private SpriteBatch spriteBatch;
 	private Vector3 cursorPos = new Vector3();
+	private Stage stage;
 
-	private int renderHeight;
-	private int renderWidth;
 
 
 	private static PooledEngine engine = null;
@@ -34,18 +36,7 @@ public class GameView implements Screen {
 	{
 
 		Gdx.gl.glClearColor(0.8f, 0.1f, 0.1f, 1);
-		spriteBatch = new SpriteBatch();
 
-		renderHeight = Configuration.getInstance().viewPortRenderHeight;
-		renderWidth = Configuration.getInstance().getViewPortRenderWidth();
-
-		engine = new PooledEngine();
-		this.world = new World();
-
-		engine.addSystem(new UnitSystem(world));
-		engine.addSystem(new RenderingSystem(spriteBatch));
-
-		world.create();
 
 		this.map = new Map();
 
@@ -54,7 +45,31 @@ public class GameView implements Screen {
 		camera.position.x = map.getMapWidthInPixels()*0.5f;
 		camera.position.y = map.getMapHeightInPixels()*0.5f;
 
+
+		stage = new Stage(new FitViewport(
+			map.getMapWidthInPixels(), map.getMapHeightInPixels()));
+		Gdx.input.setInputProcessor(stage);
+
+
+		engine = new PooledEngine();
+		this.world = new World();
+		spriteBatch = new SpriteBatch();
+
+
+		engine.addSystem(new UnitSystem(world));
+		engine.addSystem(new RenderingSystem(spriteBatch,stage));
+
+		world.create();
+
+
+
+
+
 		this.map.setCamera(camera);
+		spriteBatch.setProjectionMatrix(camera.combined);
+
+
+
 
 	}
 

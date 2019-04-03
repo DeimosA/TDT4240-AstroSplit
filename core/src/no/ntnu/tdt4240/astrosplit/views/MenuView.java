@@ -8,68 +8,55 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
-import no.ntnu.tdt4240.astrosplit.controllers.MenuController;
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
-import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
+import no.ntnu.tdt4240.astrosplit.presenters.MenuPresenter;
 
 
-class MainMenuView implements Screen {
+public class MenuView implements Screen {
 
 	private OrthographicCamera camera;
+	private Viewport viewport;
 	private SpriteBatch spriteBatch;
 	private Vector3 cursorPos = new Vector3();
+	private MenuPresenter menuPresenter;
 
 	// Divide screen
 	private int renderHeight;
 	private int renderWidth;
-	private int rowHeight;
+	private int padding = 20;
+	private int titlePosY;
 
-	// Menu background
+	// Disposables
 	private Texture background;
 	private Texture title;
-
-	// Buttons
-	private int buttonCount = 3;
-	private MenuButton[] buttons;
+	private SubView subView;
 
 
-	MainMenuView() {
-		Gdx.gl.glClearColor(0.8f, 0.1f, 0.1f, 1);
+	MenuView() {
+		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
 		spriteBatch = new SpriteBatch();
 		camera = new OrthographicCamera();
 
-		new MenuController();
+		menuPresenter = new MenuPresenter(this);
 
-		/* Divide screen in rows */
 		renderHeight = Configuration.getInstance().viewPortRenderHeight;
 		renderWidth = Configuration.getInstance().getViewPortRenderWidth();
-		rowHeight = renderHeight / (buttonCount + 3);
 		camera.setToOrtho(false, renderWidth, renderHeight);
-
-		/* Buttons */
-		buttons = new MenuButton[buttonCount];
-		// Start game button
-		buttons[0] = new MenuButton(
-			renderWidth / 2,
-			renderHeight - (rowHeight * 3),
-			new Texture("Astro/buttonStart.png")
-		);
-		buttons[1] = new MenuButton(
-			renderWidth / 2,
-			renderHeight - (rowHeight * 4),
-			new Texture("Astro/buttonSettings.png")
-		);
-		buttons[2] = new MenuButton(
-			renderWidth / 2,
-			renderHeight - (rowHeight * 5),
-			new Texture("Astro/buttonQuit.png")
-		);
+		viewport = new ExtendViewport(renderWidth, renderHeight, camera);
 
 		/* Menu background */
 		background = new Texture("Astro/backgroundAstro.png");
 		/* Title */
 		title = new Texture("Astro/logoAstro.png");
+		titlePosY = renderHeight - title.getHeight() - padding;
+
+		Rectangle subViewBounds = new Rectangle(padding, padding,
+			renderWidth - 2 * padding, titlePosY - 2 * padding
+		);
+		subView = new MainMenuSubView(subViewBounds);
 	}
 
 	private void handleInput() {
@@ -80,20 +67,7 @@ class MainMenuView implements Screen {
 			cursorPos.y = Gdx.input.getY();
 			camera.unproject(cursorPos);
 
-			if (buttons[0].getBounds().contains(cursorPos.x, cursorPos.y)) {
-				/* Task 1 */
-				System.out.println("Chose: Task 1");
-				ViewStateManager.getInstance().setScreen(new GameView());
-
-			} else if (buttons[1].getBounds().contains(cursorPos.x, cursorPos.y)) {
-				/* Task 2 */
-				System.out.println("Chose: Task 2");
-
-			} else if (buttons[2].getBounds().contains(cursorPos.x, cursorPos.y)) {
-				/* Quit */
-				System.out.println("Chose: Quit game");
-				Gdx.app.exit();
-			}
+			subView.handleInput(cursorPos);
 		}
 	}
 
@@ -103,28 +77,27 @@ class MainMenuView implements Screen {
 	}
 
 	@Override
-	public void render(float delta) {
+	public void render(float deltaTime) {
 		handleInput();
 
+		/* Render */
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		spriteBatch.setProjectionMatrix(camera.combined);
 
 		spriteBatch.begin();
 
+		// Background and title
 		spriteBatch.draw(background, 0, 0, renderWidth, renderHeight);
-		spriteBatch.draw(title, (renderWidth - title.getWidth()) / 2f, renderHeight - (rowHeight * 1.5f));
+		spriteBatch.draw(title, (renderWidth - title.getWidth()) / 2f, titlePosY);
 
-		for (MenuButton button : buttons) {
-			Rectangle bounds = button.getBounds();
-			spriteBatch.draw(button.getTexture(), bounds.x, bounds.y);
-		}
+		subView.render(spriteBatch, deltaTime);
 
 		spriteBatch.end();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-
+		viewport.update(width, height, true);
 	}
 
 	@Override
@@ -145,9 +118,8 @@ class MainMenuView implements Screen {
 	@Override
 	public void dispose() {
 		background.dispose();
-		for (MenuButton button : buttons) {
-			button.dispose();
-		}
+		title.dispose();
+		subView.dispose();
 		System.out.println("Menu State Disposed");
 	}
 }
