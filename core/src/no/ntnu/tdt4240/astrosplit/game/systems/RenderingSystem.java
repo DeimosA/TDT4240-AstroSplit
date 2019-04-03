@@ -5,10 +5,13 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.Comparator;
 
+import no.ntnu.tdt4240.astrosplit.game.actors.UnitActor;
+import no.ntnu.tdt4240.astrosplit.game.components.ActorComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
@@ -18,7 +21,7 @@ public class RenderingSystem extends IteratingSystem{
 
 	static final float renderWidth = Configuration.getInstance().getViewPortRenderWidth();
 	static final float renderHeight = Configuration.getInstance().viewPortRenderHeight;
-
+	private final Stage stage;
 
 
 	//private OrthographicCamera camera;
@@ -30,15 +33,17 @@ public class RenderingSystem extends IteratingSystem{
 	private ComponentMapper<TextureComponent> textureMapper;
 	private ComponentMapper<TransformComponent> transformMapper;
 	private ComponentMapper<PositionComponent> positionMapper;
+	private ComponentMapper<ActorComponent> actorMapper;
 
 
-	public RenderingSystem(SpriteBatch batch)
+	public RenderingSystem(SpriteBatch batch, Stage stage)
 	{
-		super(Family.all(TransformComponent.class, TextureComponent.class, PositionComponent.class).get());
+		super(Family.all(TransformComponent.class, TextureComponent.class, PositionComponent.class, ActorComponent.class).get());
 
 		textureMapper = ComponentMapper.getFor(TextureComponent.class);
 		transformMapper = ComponentMapper.getFor(TransformComponent.class);
 		positionMapper = ComponentMapper.getFor(PositionComponent.class);
+		actorMapper = ComponentMapper.getFor(ActorComponent.class);
 
 		renderQueue = new Array<Entity>();
 
@@ -56,11 +61,8 @@ public class RenderingSystem extends IteratingSystem{
 		};
 
 		this.batch = batch;
-
-
+		this.stage = stage;
 	}
-
-
 
 	/*
 		Called on every tick
@@ -76,6 +78,7 @@ public class RenderingSystem extends IteratingSystem{
 
 		for(Entity entity : renderQueue)
 		{
+
 			TextureComponent tex = textureMapper.get(entity);
 
 			if(tex.region == null)
@@ -86,17 +89,19 @@ public class RenderingSystem extends IteratingSystem{
 			TransformComponent t = transformMapper.get(entity);
 			PositionComponent p = positionMapper.get(entity);
 
+			ActorComponent actor = actorMapper.get(entity);
+			if(actor.actor == null)
+			{
+				actor.actor = new UnitActor(tex,t,p);
+				stage.addActor(actor.actor);
+			}
+			else
+				{
+					actor.actor.updateActor(tex,t,p);
+				}
+			//stage.act
+			stage.draw();
 
-			float width = tex.region.getRegionWidth()*t.scale.x;
-			float height = tex.region.getRegionHeight()*t.scale.y;
-			float originX = width/2;
-			float originY = height/2;
-
-			batch.draw(tex.region.getTexture(),
-				p.position.x - originX, p.position.y - originY,
-				originX,originY,
-				width,height,
-				t.scale.x,t.scale.y);
 
 		}
 
