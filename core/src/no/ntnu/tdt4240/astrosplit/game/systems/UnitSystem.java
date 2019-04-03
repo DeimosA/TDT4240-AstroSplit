@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 
 import no.ntnu.tdt4240.astrosplit.game.World;
+import no.ntnu.tdt4240.astrosplit.game.abilities.AttackKt;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
@@ -73,11 +74,11 @@ public class UnitSystem extends IteratingSystem {
 		//Is unit entity
 		if(!family.matches(offender) || !family.matches(victim)) return;
 
-		HealthComponent health = victim.getComponent(HealthComponent.class);
-		ActionComponent action = offender.getComponent(ActionComponent.class);
-		health.health = health.health - action.damage;
+		AttackKt.attack(offender,victim, offender.getComponent(TypeComponent.class));
 
-		if(health.health <= 0) killUnit(victim);
+		HealthComponent health = hm.get(victim);
+		if (health.health <= 0) world.killUnit(victim);
+
 
 	}
 
