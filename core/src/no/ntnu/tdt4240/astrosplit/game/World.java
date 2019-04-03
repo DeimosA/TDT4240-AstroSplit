@@ -37,7 +37,9 @@ public class World {
 	//this method should create all units to be shown, (including background tiles?)
 	public void create()
 	{
-		createTestEntity(new Vector2(0,0));
+		Entity firstEntity = createTestEntity(new Vector2(50,0));
+		Entity secondEntity = createTestEntity(new Vector2(-50,0));
+		firstEntity.getComponent(ActionComponent.class).attackList.add(secondEntity);
 
 	}
 

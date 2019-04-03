@@ -1,7 +1,5 @@
 package no.ntnu.tdt4240.astrosplit.game.actors;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -10,12 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
-import java.awt.Rectangle;
 
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
-import com.badlogic.gdx.math.Vector2;
+
 
 //Object has sprite and position,
 //Handles on click events
@@ -42,6 +39,12 @@ public class UnitActor extends Actor {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				System.out.println("clicked");
+				/*
+					TODO
+					-Show some UI to choose action
+					-Choose action
+					-Move
+				 */
 				return true;
 			}
 		});
