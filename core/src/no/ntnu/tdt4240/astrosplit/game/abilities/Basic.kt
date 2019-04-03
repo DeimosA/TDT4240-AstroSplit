@@ -11,7 +11,7 @@ object Basic {
         val healthComponent: HealthComponent? = victim.getComponent(HealthComponent::class.java)
 
         val health = victim.getComponent(HealthComponent::class.java)
-        val action = attacker.getComponent(ActionComponent::class.java)
+        val action = attacker.getComponent(ActionComponentAttack::class.java)
         health.health = health.health - action.damage
     }
 }

@@ -66,6 +66,16 @@ public class UnitSystem extends IteratingSystem {
 		MovementComponent movement 		= mm.get(entity);
 		PositionComponent position 		= pm.get(entity);
 
+		for(Entity attackedEntity : action.attackList)
+		{
+
+			System.out.println("Before attack health: " + attackedEntity.getComponent(HealthComponent.class).health);
+			attack(entity, attackedEntity);
+			action.attackList.remove(attackedEntity);
+			System.out.println("Attacked unit");
+			System.out.println("After attack health: " + attackedEntity.getComponent(HealthComponent.class).health);
+		}
+
 	}
 
 	//Attack another entity of type UNIT
