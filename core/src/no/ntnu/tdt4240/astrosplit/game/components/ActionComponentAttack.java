@@ -4,5 +4,5 @@ import com.badlogic.ashley.core.Component;
 
 public class ActionComponentAttack implements Component {
 	public int damage = 25;
-	public int range = 10;
+	public int range = 100;
 }

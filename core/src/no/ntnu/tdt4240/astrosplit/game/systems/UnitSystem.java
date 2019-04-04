@@ -9,6 +9,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import no.ntnu.tdt4240.astrosplit.game.World;
 import no.ntnu.tdt4240.astrosplit.game.abilities.AttackKt;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
@@ -52,6 +53,7 @@ public class UnitSystem extends IteratingSystem {
 		this.tm = ComponentMapper.getFor(TypeComponent.class);
 		this.world = world;
 
+
 	}
 
 	// Iterates over each entity every time the entity system is updated.
@@ -66,14 +68,16 @@ public class UnitSystem extends IteratingSystem {
 		MovementComponent movement 		= mm.get(entity);
 		PositionComponent position 		= pm.get(entity);
 
-		for(Entity attackedEntity : action.attackList)
+		if(entity.getComponent(ActionComponentAttack.class) != null)
 		{
+			for(Entity attackedEntity : action.attackList)
+			{
 
-			System.out.println("Before attack health: " + attackedEntity.getComponent(HealthComponent.class).health);
-			attack(entity, attackedEntity);
-			action.attackList.remove(attackedEntity);
-			System.out.println("Attacked unit");
-			System.out.println("After attack health: " + attackedEntity.getComponent(HealthComponent.class).health);
+				System.out.println("Before attack health: " + hm.get(attackedEntity).health);
+				attack(entity, attackedEntity);
+				System.out.println("After attack health: " + hm.get(attackedEntity).health);
+			}
+			action.attackList.clear();
 		}
 
 	}
@@ -84,7 +88,8 @@ public class UnitSystem extends IteratingSystem {
 		//Is unit entity
 		if(!family.matches(offender) || !family.matches(victim)) return;
 
-		AttackKt.attack(offender,victim, offender.getComponent(TypeComponent.class));
+
+		AttackKt.attack(offender,victim, tm.get(offender));
 
 		HealthComponent health = hm.get(victim);
 		if (health.health <= 0) world.killUnit(victim);
