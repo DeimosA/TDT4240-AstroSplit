@@ -34,8 +34,18 @@ public class MenuView implements Screen {
 	private Texture title;
 	private SubView subView;
 
+	/* Team select */
+	private Texture rosterBox;
+	// Box bounds
+	private int boxPosY;
+	private int boxPosX;
+	private int boxHeight;
+	private int menuType;
 
-	MenuView() {
+
+	MenuView(int menuType) {
+		this.menuType = menuType;
+
 		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
 		spriteBatch = new SpriteBatch();
 		camera = new OrthographicCamera();
@@ -53,10 +63,30 @@ public class MenuView implements Screen {
 		title = new Texture("Astro/logoAstro.png");
 		titlePosY = renderHeight - title.getHeight() - padding;
 
-		Rectangle subViewBounds = new Rectangle(padding, padding,
-			renderWidth - 2 * padding, titlePosY - 2 * padding
-		);
-		subView = new MainMenuSubView(subViewBounds);
+		/* Main menu */
+		if(menuType == 1) {
+			Rectangle subViewBounds = new Rectangle(padding, padding,
+				renderWidth - 2 * padding, titlePosY - 2 * padding
+			);
+			subView = new MainMenuSubView(subViewBounds, 1);
+		}
+
+		/* Team select */
+		else if (menuType == 2) {
+			/* Box/ background */
+			rosterBox = new Texture("Astro/TeamSelect/rosterBox.png");
+			boxPosY = renderHeight - (rosterBox.getHeight() + padding);
+			boxPosX = renderWidth - rosterBox.getWidth();
+
+			boxHeight = rosterBox.getHeight() - (title.getHeight());
+
+
+			Rectangle subViewBounds = new Rectangle(boxPosX / 2, boxPosY,
+				renderWidth / 2, boxHeight
+			);
+
+			subView = new MainMenuSubView(subViewBounds, 2);
+		}
 	}
 
 	private void handleInput() {
@@ -89,6 +119,12 @@ public class MenuView implements Screen {
 		// Background and title
 		spriteBatch.draw(background, 0, 0, renderWidth, renderHeight);
 		spriteBatch.draw(title, (renderWidth - title.getWidth()) / 2f, titlePosY);
+
+		/* Team select box */
+		if(menuType == 2) {
+			spriteBatch.draw(rosterBox, boxPosX / 2f, boxPosY,
+				renderWidth / 2, boxHeight);
+		}
 
 		subView.render(spriteBatch, deltaTime);
 
