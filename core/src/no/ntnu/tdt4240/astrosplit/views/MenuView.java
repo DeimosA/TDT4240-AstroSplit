@@ -71,8 +71,16 @@ public class MenuView implements Screen {
 			subView = new MainMenuSubView(subViewBounds, 1);
 		}
 
-		/* Team select */
-		else if (menuType == 2) {
+		/* Game mode selection */
+		if(menuType == 2) {
+			Rectangle subViewBounds = new Rectangle(padding, padding,
+				renderWidth - 2 * padding, titlePosY - 2 * padding
+			);
+			subView = new MainMenuSubView(subViewBounds, 2);
+		}
+
+		/* Team selection */
+		else if (menuType == 3) {
 			/* Box/ background */
 			rosterBox = new Texture("Astro/TeamSelect/rosterBox.png");
 			boxPosY = renderHeight - (rosterBox.getHeight() + padding);
@@ -85,7 +93,7 @@ public class MenuView implements Screen {
 				renderWidth / 2, boxHeight
 			);
 
-			subView = new MainMenuSubView(subViewBounds, 2);
+			subView = new MainMenuSubView(subViewBounds, 3);
 		}
 	}
 
@@ -121,7 +129,7 @@ public class MenuView implements Screen {
 		spriteBatch.draw(title, (renderWidth - title.getWidth()) / 2f, titlePosY);
 
 		/* Team select box */
-		if(menuType == 2) {
+		if(menuType == 3) {
 			spriteBatch.draw(rosterBox, boxPosX / 2f, boxPosY,
 				renderWidth / 2, boxHeight);
 		}
@@ -155,6 +163,9 @@ public class MenuView implements Screen {
 	public void dispose() {
 		background.dispose();
 		title.dispose();
+		if(menuType == 3) {
+			rosterBox.dispose();
+		}
 		subView.dispose();
 		System.out.println("Menu State Disposed");
 	}

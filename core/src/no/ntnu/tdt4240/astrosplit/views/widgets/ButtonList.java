@@ -14,12 +14,15 @@ public class ButtonList {
 	private Rectangle bounds;
 	private MenuButton[] buttons;
 
-
-	private int subMenuType;
-
+	private boolean save = false;
 	private boolean selected = false;
 
-	// teamSelected() positions
+	// Row
+	private float rowHeight;
+	private float rowCenter;
+	private float xCenter;
+
+	// Column
 	private float colWidth;
 	private float colCenter;
 	private float yCenter;
@@ -31,95 +34,143 @@ public class ButtonList {
 	public ButtonList(int subMenuType, Rectangle bounds, MenuButton[] buttons) {
 		this.bounds = bounds;
 		this.buttons = buttons;
-		// Main menu / team select
-		this.subMenuType = subMenuType;
 
 		// Calculate positions for buttons within bounds
-		float rowHeight = bounds.height / buttons.length;
-		float rowCenter = rowHeight / 2;
-		float xCenter = bounds.width / 2;
+		this.rowHeight = bounds.height / buttons.length;
+		this.rowCenter = rowHeight / 2;
+		this.xCenter = bounds.width / 2;
 
-		// Sub menu: Team select
-		colWidth = bounds.width / 3;
-		colCenter = colWidth / 2;
-		yCenter = bounds.height / 2;
+		// Columns
+		this.colWidth = bounds.width / 3;
+		this.colCenter = colWidth / 2;
+		this.yCenter = bounds.height / 2;
 		// Viewport X/Y
-		renderHeight = Configuration.getInstance().viewPortRenderHeight;
-		renderWidth = Configuration.getInstance().getViewPortRenderWidth();
+		this.renderHeight = Configuration.getInstance().viewPortRenderHeight;
+		this.renderWidth = Configuration.getInstance().getViewPortRenderWidth();
 
 
 		/* Main menu */
 		if (subMenuType == 1) {
-			for (int i = 0; i < buttons.length; i++) {
-				int reverseIndex = buttons.length - 1 - i;
-				buttons[reverseIndex].setCenterPosition(
-					xCenter,
-					rowCenter + i * rowHeight
-				);
-			}
+			mainMenuButtons();
+		}
 
-			/* Team select */
-		} else if (subMenuType == 2) {
-			// Title
-			buttons[0].setCenterPosition(
+		/* Game mode selection */
+		else if (subMenuType == 2) {
+			gameModeButtons();
+		}
+
+		/* Team selection */
+		else if (subMenuType == 3) {
+			teamSelectButtons();
+		}
+	}
+
+	/* Draw buttons */
+	private void mainMenuButtons() {
+		for (int i = 0; i < buttons.length; i++) {
+			int reverseIndex = buttons.length - 1 - i;
+			buttons[reverseIndex].setCenterPosition(
 				xCenter,
-				bounds.getHeight() - buttons[0].getTexture().getHeight()
+				rowCenter + i * rowHeight
 			);
+		}
+	} //menu 1
 
-			// Team
-			for (int i = 0; i < 3; i++) {
-
-				buttons[i + 1].setCenterPosition(
-					colCenter + i * colWidth,
-					yCenter
-				);
-			}
-
-			// Button: back
-			buttons[4].setCenterPosition(
-				buttons[4].getTexture().getWidth(),
-				buttons[4].getTexture().getHeight()
+	private void gameModeButtons() {
+		for (int i = 0; i < buttons.length; i++) {
+			int reverseIndex = buttons.length - 1 - i;
+			buttons[reverseIndex].setCenterPosition(
+				xCenter,
+				rowCenter + (i) * rowHeight
 			);
+		}
+		/* Draw outside viewport */
+		// White continue button
+		buttons[buttons.length - 1].setCenterPosition(
+			renderWidth + buttons[0].getTexture().getWidth(),
+			renderHeight + buttons[0].getTexture().getHeight()
+		);
+	} //menu 2
 
-			// Button: confirm
-			buttons[5].setCenterPosition(
-				buttons[5].getTexture().getWidth() + bounds.width / 2,
-				buttons[5].getBounds().height
-			);
+	private void teamSelectButtons() {
+		// Title
+		buttons[0].setCenterPosition(
+			xCenter,
+			bounds.getHeight() - buttons[0].getTexture().getHeight()
+		);
 
-			// Button: golden confirm
-			buttons[6].setCenterPosition(
-				renderWidth - buttons[6].getTexture().getWidth(),
-				renderHeight - buttons[6].getTexture().getHeight()
+		// Team
+		for (int i = 0; i < 3; i++) {
+			buttons[i + 1].setCenterPosition(
+				colCenter + i * colWidth,
+				yCenter
 			);
-			//Golden frame
-			buttons[7].setCenterPosition(
-				renderWidth - buttons[7].getTexture().getWidth(),
-				renderHeight - buttons[7].getTexture().getHeight()
+		}
+
+		// Button: back
+		buttons[4].setCenterPosition(
+			buttons[4].getTexture().getWidth(),
+			buttons[4].getTexture().getHeight()
+		);
+
+		// Button: confirm
+		buttons[5].setCenterPosition(
+			buttons[5].getTexture().getWidth() + bounds.width / 2,
+			buttons[5].getBounds().height
+		);
+
+		/* Draw outside viewport */
+		// Button: golden confirm
+		buttons[6].setCenterPosition(
+			renderWidth - buttons[6].getTexture().getWidth(),
+			renderHeight - buttons[6].getTexture().getHeight()
+		);
+		//Golden frame
+		buttons[7].setCenterPosition(
+			renderWidth - buttons[7].getTexture().getWidth(),
+			renderHeight - buttons[7].getTexture().getHeight()
+		);
+	} // menu 3
+
+	// Game mode continue
+	public void setSave() {
+		//test
+		save = true;
+
+		// Draw over existing texture
+		if (save) {
+			//Button: white continue
+			buttons[buttons.length - 1].setCenterPosition(
+				xCenter,
+				rowCenter + (buttons.length - 1) * rowHeight
 			);
 		}
 	}
 
-	// Texture feedback on selection
+	public boolean getSave(){
+		return save;
+	}
+
+	// Team selection feedback
 	public void teamSelected(int buttonNumber) {
 
 		// Draw over existing texture
 
-			//Button: golden confirm
-			buttons[6].setCenterPosition(
-				buttons[5].getTexture().getWidth() + bounds.width / 2,
-				buttons[5].getBounds().height
-			);
-			//Golden frame
-			buttons[7].setCenterPosition(
-				colCenter + buttonNumber * colWidth,
-				yCenter
-			);
+		//Button: golden confirm
+		buttons[6].setCenterPosition(
+			buttons[5].getTexture().getWidth() + bounds.width / 2,
+			buttons[5].getBounds().height
+		);
+		//Golden frame
+		buttons[7].setCenterPosition(
+			colCenter + buttonNumber * colWidth,
+			yCenter
+		);
 
-			selected = true;
+		selected = true;
 	}
 
-	public boolean getSelected(){
+	public boolean getSelected() {
 		return selected;
 	}
 
@@ -142,24 +193,13 @@ public class ButtonList {
 		for (MenuButton button : buttons) {
 			Rectangle bb = button.getBounds(); // Button bounds
 
-			if (subMenuType == 1) {
-				sb.draw(
-					button.getTexture(),
-					bounds.x + bb.x,
-					bounds.y + bb.y,
-					bb.width,
-					bb.height
-				);
-
-			} else if (subMenuType == 2) {
-				sb.draw(
-					button.getTexture(),
-					bounds.x + bb.x,
-					bounds.y + bb.y,
-					bb.width,
-					bb.height
-				);
-			}
+			sb.draw(
+				button.getTexture(),
+				bounds.x + bb.x,
+				bounds.y + bb.y,
+				bb.width,
+				bb.height
+			);
 		}
 	}
 

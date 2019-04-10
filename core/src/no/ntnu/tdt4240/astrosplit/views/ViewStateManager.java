@@ -10,7 +10,6 @@ public final class ViewStateManager {
 
 	private ViewStateManager() {
 		currentScreen = new MenuView(1);
-//		currentScreen = new MenuRosterView();
 	}
 
 	public static ViewStateManager getInstance() {
