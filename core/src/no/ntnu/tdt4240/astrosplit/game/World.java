@@ -35,14 +35,21 @@ public class World {
 		this.engine = GameView.getGameEngine();
 	}
 
-	//this method should create all units to be shown, (including background tiles?)
+	//this method should create all units to be shown
 	public void create()
 	{
 		Entity firstEntity = createTestEntity(new Vector2(50,0));
 		Entity secondEntity = createTestEntity(new Vector2(-50,0));
-		firstEntity.getComponent(ActionComponent.class).attackList.add(secondEntity);
+
+		attack(firstEntity,secondEntity);
+
+		//firstEntity.remove(MovementComponent.class);
+
+		moveTo(firstEntity, new Vector2(50,100));
 
 	}
+
+
 
 
 	public Entity createTestEntity(Vector2 pos)
@@ -75,6 +82,17 @@ public class World {
 		engine.addEntity(entity);
 
 		return entity;
+	}
+
+	public void attack(Entity offender, Entity defender)
+	{
+		if(offender.getComponent(ActionComponent.class) != null)
+			offender.getComponent(ActionComponent.class).attackList.add(defender);
+	}
+
+	private void moveTo(Entity entity, Vector2 position) {
+		if(entity.getComponent(MovementComponent.class) != null)
+			entity.getComponent(MovementComponent.class).position = position;
 	}
 
 

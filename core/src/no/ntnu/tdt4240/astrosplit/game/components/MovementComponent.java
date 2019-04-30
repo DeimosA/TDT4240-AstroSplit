@@ -5,8 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class MovementComponent implements Component {
 	//What kind of movement do we wish to have?
-	private int tile_radius = 1;
-	public double distance = Math.sqrt(2) * tile_radius;
+	public double distance = 100;
+	public Vector2 position = null;
 
 
 
