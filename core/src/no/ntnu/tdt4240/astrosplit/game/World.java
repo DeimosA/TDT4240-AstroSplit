@@ -66,7 +66,7 @@ public class World {
 		MovementComponent mc 		= engine.createComponent(MovementComponent.class);
 		ActionComponentAttack aca 	= engine.createComponent(ActionComponentAttack.class);
 
-		tc.region = new TextureRegion(new Texture("units/marine_ranged.png"));
+		tc.region = new TextureRegion(new Texture("Units/marine_ranged.png"));
 		tm.scale.set(0.1f,0.2f);
 		pc.position = pos;
 
