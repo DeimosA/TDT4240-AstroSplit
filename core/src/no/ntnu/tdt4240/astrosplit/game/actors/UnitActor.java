@@ -1,14 +1,17 @@
 package no.ntnu.tdt4240.astrosplit.game.actors;
 
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 
+import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
@@ -23,19 +26,26 @@ public class UnitActor extends Actor {
 	TransformComponent transformComponent;
 	TextureComponent textureComponent;
 	PositionComponent positionComponent;
+	MovementComponent movementComponent = null;
 
-	public UnitActor(TextureComponent texture, TransformComponent transform, PositionComponent pos)
+
+	public UnitActor(TextureComponent texture, TransformComponent transform, PositionComponent pos, Entity entity)
 	{
 
 		this.textureComponent = texture;
 		this.transformComponent = transform;
 		this.positionComponent = pos;
+		this.movementComponent = entity.getComponent(MovementComponent.class);
 
 		this.sprite = new Sprite(textureComponent.region.getTexture());
 
 		//Every UnitActor is constructed with an eventlistener, TouchDown method.
 		setTouchable(Touchable.enabled);
 		addListener(new InputListener() {
+
+			/*
+				Does at the moment move the actor 10px up at click
+			 */
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				System.out.println("clicked");
@@ -43,8 +53,20 @@ public class UnitActor extends Actor {
 					TODO
 					-Show some UI to choose action
 					-Choose action
-					-Move
+					-Move to specific tile on grid
+					-Get next input after touched actor
+
+					Alternatively:
+					-Set this unit as chosen unit
+						-Move logic to somewhere else
 				 */
+
+				if(movementComponent != null)
+				{
+					movementComponent.position = getPosition();
+					movementComponent.position.y += 10;
+
+				}
 				return true;
 			}
 		});
@@ -99,6 +121,11 @@ public class UnitActor extends Actor {
 			{
 				setTouchable(Touchable.disabled);
 			}
+	}
+
+	public Vector2 getPosition()
+	{
+		return positionComponent.position;
 	}
 
 

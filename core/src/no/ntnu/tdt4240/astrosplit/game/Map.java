@@ -57,6 +57,7 @@ public class Map {
 			@Override
 			public void render() {
 				super.render();
+				//super.renderTileLayer(layer);
 			}
 
 			@Override

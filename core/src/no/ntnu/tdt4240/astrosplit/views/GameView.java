@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import no.ntnu.tdt4240.astrosplit.game.World;
+import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
@@ -58,6 +59,7 @@ public class GameView implements Screen {
 
 		engine.addSystem(new UnitSystem(world));
 		engine.addSystem(new RenderingSystem(spriteBatch,stage));
+		engine.addSystem(new MovementSystem());
 
 		world.create();
 

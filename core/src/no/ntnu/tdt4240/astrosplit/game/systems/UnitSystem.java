@@ -101,7 +101,7 @@ public class UnitSystem extends IteratingSystem {
 	TODO
 	Add collisiontest
 	Add out of bounds(?). Out of bounds may simply not be chosen
-*/
+
 
 
 
@@ -119,8 +119,9 @@ public class UnitSystem extends IteratingSystem {
 
 		if(distance_travel <= movement.distance) position.position.set(target_position);
 
-
 	}
+	*/
+
 	public void killUnit(Entity entity)
 	{
 		world.killUnit(entity);
