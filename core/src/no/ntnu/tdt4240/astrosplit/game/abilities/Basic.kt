@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.Entity
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent
 
-object Basic {
+/*object Basic {
     /*
         Reduces health of victim by attackers damage from ActionComponentAttack
         Gives NullPointerException when entity does not have neccessary components
@@ -24,4 +24,4 @@ object Basic {
         }
 
     }
-}
+}*/
