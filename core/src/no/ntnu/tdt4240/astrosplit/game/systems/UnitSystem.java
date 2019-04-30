@@ -7,7 +7,9 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 
 import no.ntnu.tdt4240.astrosplit.game.World;
+import no.ntnu.tdt4240.astrosplit.game.abilities.AttackKt;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
@@ -51,6 +53,7 @@ public class UnitSystem extends IteratingSystem {
 		this.tm = ComponentMapper.getFor(TypeComponent.class);
 		this.world = world;
 
+
 	}
 
 	// Iterates over each entity every time the entity system is updated.
@@ -65,6 +68,18 @@ public class UnitSystem extends IteratingSystem {
 		MovementComponent movement 		= mm.get(entity);
 		PositionComponent position 		= pm.get(entity);
 
+		if(entity.getComponent(ActionComponentAttack.class) != null)
+		{
+			for(Entity attackedEntity : action.attackList)
+			{
+
+				System.out.println("Before attack health: " + hm.get(attackedEntity).health);
+				attack(entity, attackedEntity);
+				System.out.println("After attack health: " + hm.get(attackedEntity).health);
+			}
+			action.attackList.clear();
+		}
+
 	}
 
 	//Attack another entity of type UNIT
@@ -73,11 +88,12 @@ public class UnitSystem extends IteratingSystem {
 		//Is unit entity
 		if(!family.matches(offender) || !family.matches(victim)) return;
 
-		HealthComponent health = victim.getComponent(HealthComponent.class);
-		ActionComponent action = offender.getComponent(ActionComponent.class);
-		health.health = health.health - action.damage;
 
-		if(health.health <= 0) killUnit(victim);
+		AttackKt.attack(offender,victim, tm.get(offender));
+
+		HealthComponent health = hm.get(victim);
+		if (health.health <= 0) world.killUnit(victim);
+
 
 	}
 
@@ -85,7 +101,7 @@ public class UnitSystem extends IteratingSystem {
 	TODO
 	Add collisiontest
 	Add out of bounds(?). Out of bounds may simply not be chosen
-*/
+
 
 
 
@@ -103,8 +119,9 @@ public class UnitSystem extends IteratingSystem {
 
 		if(distance_travel <= movement.distance) position.position.set(target_position);
 
-
 	}
+	*/
+
 	public void killUnit(Entity entity)
 	{
 		world.killUnit(entity);

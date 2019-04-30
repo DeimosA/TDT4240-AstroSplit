@@ -8,6 +8,7 @@ import com.badlogic.ashley.core.PooledEngine;
 
 
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.ActorComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
@@ -34,49 +35,22 @@ public class World {
 		this.engine = GameView.getGameEngine();
 	}
 
-	//this method should create all units to be shown, (including background tiles?)
+	//this method should create all units to be shown
 	public void create()
 	{
-		createTestEntity(new Vector2(0,0));
+		Entity firstEntity = createTestEntity(new Vector2(50,0));
+		Entity secondEntity = createTestEntity(new Vector2(-50,0));
+
+		attack(firstEntity,secondEntity);
+
+		//firstEntity.remove(MovementComponent.class);
+
+		moveTo(firstEntity, new Vector2(50,100));
 
 	}
 
 
-	/*Creates basic unit Entity, and ADDS to the engine
-*/
-	public Entity createUnit(Vector2 position_spawn, String type_unit)
-	{
-		Entity entity = engine.createEntity();
 
-		ActionComponent action 				= engine.createComponent(ActionComponent.class);
-		HealthComponent health				= engine.createComponent(HealthComponent.class);
-		MovementComponent movement			= engine.createComponent(MovementComponent.class);
-		PositionComponent position			= engine.createComponent(PositionComponent.class);
-		TextureComponent texture 			= engine.createComponent(TextureComponent.class);
-		TypeComponent type					= engine.createComponent(TypeComponent.class);
-		TransformComponent transform 		= engine.createComponent(TransformComponent.class);
-
-		//should specifytexture
-		texture.region = new TextureRegion(new Texture("ground.png"));
-		//Set scale
-		transform.scale.set(0.3f,0.3f);
-
-		//allows for null values
-		if(position_spawn != null) position.position.set(position_spawn);
-		if(type_unit != null) type.type = type_unit;
-
-		entity.add(action);
-		entity.add(health);
-		entity.add(movement);
-		entity.add(position);
-		entity.add(texture);
-		entity.add(type);
-		entity.add(transform);
-
-		engine.addEntity(entity);
-
-		return entity;
-	}
 
 	public Entity createTestEntity(Vector2 pos)
 	{
@@ -87,6 +61,10 @@ public class World {
 		ActionComponent ac 			= engine.createComponent(ActionComponent.class);
 		TransformComponent tm 		= engine.createComponent(TransformComponent.class);
 		ActorComponent am 			= engine.createComponent(ActorComponent.class);
+		TypeComponent tp			= engine.createComponent(TypeComponent.class);
+		HealthComponent hc 			= engine.createComponent(HealthComponent.class);
+		MovementComponent mc 		= engine.createComponent(MovementComponent.class);
+		ActionComponentAttack aca 	= engine.createComponent(ActionComponentAttack.class);
 
 		tc.region = new TextureRegion(new Texture("units/marine_ranged.png"));
 		tm.scale.set(0.1f,0.2f);
@@ -97,22 +75,30 @@ public class World {
 		entity.add(ac);
 		entity.add(tm);
 		entity.add(am);
+		entity.add(tp);
+		entity.add(hc);
+		entity.add(mc);
+		entity.add(aca);
 		engine.addEntity(entity);
 
 		return entity;
 	}
 
+	public void attack(Entity offender, Entity defender)
+	{
+		if(offender.getComponent(ActionComponent.class) != null)
+			offender.getComponent(ActionComponent.class).attackList.add(defender);
+	}
+
+	private void moveTo(Entity entity, Vector2 position) {
+		if(entity.getComponent(MovementComponent.class) != null)
+			entity.getComponent(MovementComponent.class).position = position;
+	}
+
 
 	public void killUnit(Entity entity)
 	{
-
-		Vector2 position = new Vector2(entity.getComponent(PositionComponent.class).position);
-
 		engine.removeEntity(entity);
-
-		createTerrain(position);
-
-
 	}
 
 
