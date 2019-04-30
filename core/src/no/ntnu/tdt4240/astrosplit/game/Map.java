@@ -109,4 +109,8 @@ public class Map {
 	{
 		return properties.get("tileheight", Integer.class)* properties.get("height", Integer.class);
 	}
+
+	public void dispose() {
+		map.dispose();
+	}
 }

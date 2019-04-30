@@ -36,7 +36,7 @@ public class GameView implements Screen {
 	GameView()
 	{
 
-		Gdx.gl.glClearColor(0.8f, 0.1f, 0.1f, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 
 
 		this.map = new Map();

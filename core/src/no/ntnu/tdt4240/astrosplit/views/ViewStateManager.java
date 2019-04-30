@@ -24,6 +24,7 @@ public final class ViewStateManager {
 	}
 
 	void setScreen(Screen newScreen) {
+		currentScreen.dispose();
 		currentScreen = newScreen;
 	}
 }
