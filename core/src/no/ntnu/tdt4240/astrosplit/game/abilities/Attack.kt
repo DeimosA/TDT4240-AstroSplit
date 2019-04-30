@@ -6,7 +6,7 @@ import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent
 import com.badlogic.gdx.math.Vector2
 
 
-fun attack(attacker:Entity, victim:Entity, type:TypeComponent)
+/*fun attack(attacker:Entity, victim:Entity, type:TypeComponent)
 {
     print("Attacker: $attacker\n")
     print("Victim: $victim\n")
@@ -23,4 +23,4 @@ fun rangeCheck(attacker:Entity, victim: Entity, range:Int):Boolean
     if (victimPosition.dst(attackerPosition) <= range)
         return true
     return false
-}
+}*/
