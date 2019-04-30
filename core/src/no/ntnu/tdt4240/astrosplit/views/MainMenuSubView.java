@@ -40,7 +40,6 @@ class MainMenuSubView implements SubView {
 					public void click() {
 						// Start game
 						System.out.println("Chose: Start");
-//						ViewStateManager.getInstance().setScreen(new GameView());
 						ViewStateManager.getInstance().setScreen(new MenuView(2));
 					}
 				},
@@ -90,6 +89,8 @@ class MainMenuSubView implements SubView {
 					public void click() {
 						// #3 - Local
 						System.out.println("Chose: Local");
+						ViewStateManager.getInstance().setScreen(new GameView());
+
 					}
 				},
 				new MenuButton(new Texture("Astro/GameModeSelection/buttonTutorial.png")) {
