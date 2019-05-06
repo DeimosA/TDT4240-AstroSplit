@@ -9,7 +9,7 @@ public final class ViewStateManager {
 	private Screen currentScreen;
 
 	private ViewStateManager() {
-		currentScreen = new MenuView(1);
+		currentScreen = new MenuView();
 	}
 
 	public static ViewStateManager getInstance() {
@@ -27,5 +27,5 @@ public final class ViewStateManager {
 		currentScreen.dispose();
 		currentScreen = newScreen;
 	}
-}
 
+}
