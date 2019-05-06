@@ -8,6 +8,8 @@ public class MenuButton {
 
 	private Rectangle bounds;
 	private Texture texture;
+	private Texture disabledTexture;
+	private boolean enabled = true;
 
 
 	/* Constructors */
@@ -55,20 +57,39 @@ public class MenuButton {
 		bounds.y = y - texture.getHeight() / 2f;
 	}
 
+	public void setPosition(float x, float y) {
+		bounds.x = x;
+		bounds.y = y;
+	}
+
 	public void setTexture(Texture texture) {
 		this.texture = texture;
 	}
 
+	public void setDisabledTexture(Texture texture) {
+		this.disabledTexture = texture;
+	}
+
 	public Texture getTexture() {
-		return texture;
+		if (enabled) {
+			return texture;
+		} else {
+			return disabledTexture;
+		}
 	}
 
 	public Rectangle getBounds(){
 		return bounds;
 	}
 
+	public void setEnabled(boolean enabled) {
+		if (disabledTexture != null) { // If there is no disabled texture we don't want to change this
+			this.enabled = enabled;
+		}
+	}
+
 	public boolean handleInput(float cursorX, float cursorY) {
-		if (bounds.contains(cursorX, cursorY)) {
+		if (enabled && bounds.contains(cursorX, cursorY)) {
 			this.click();
 			return true;
 		}
@@ -85,5 +106,8 @@ public class MenuButton {
 
 	public void dispose(){
 		texture.dispose();
+		if (disabledTexture != null) {
+			disabledTexture.dispose();
+		}
 	}
 }

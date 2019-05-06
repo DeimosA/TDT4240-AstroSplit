@@ -26,7 +26,6 @@ public class MenuView implements Screen {
 	// Divide screen
 	private int renderHeight;
 	private int renderWidth;
-	private int padding = 20;
 	private int titlePosY;
 
 	// Disposables
@@ -34,17 +33,8 @@ public class MenuView implements Screen {
 	private Texture title;
 	private SubView subView;
 
-	/* Team select */
-//	private Texture rosterBox;
-	// Box bounds
-	private int boxPosY;
-	private int boxPosX;
-	private int boxHeight;
-//	private int menuType;
-
 
 	MenuView() {
-//		this.menuType = menuType;
 
 		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
 		spriteBatch = new SpriteBatch();
@@ -59,23 +49,22 @@ public class MenuView implements Screen {
 
 		/* Menu background */
 		background = new Texture("Astro/backgroundAstro.png");
+
+		// Padding
+		int padding = 20;
+		int paddingTop = 0;
+		int paddingBottom = 30;
+
 		/* Title */
 		title = new Texture("Astro/logoAstro.png");
-		titlePosY = renderHeight - title.getHeight() - padding;
+		titlePosY = renderHeight - title.getHeight() - paddingTop;
 
 		/* Main menu */
-		Rectangle subViewBounds = new Rectangle(padding, padding,
-			renderWidth - 2 * padding, titlePosY - 2 * padding
+		Rectangle subViewBounds = new Rectangle(padding, paddingBottom,
+			renderWidth - 2 * padding, titlePosY - padding - paddingBottom
 		);
 		subView = new MainMenuSubView(subViewBounds, this);
 
-		/* Game mode selection */
-//		if(menuType == 2) {
-//			Rectangle subViewBounds = new Rectangle(padding, padding,
-//				renderWidth - 2 * padding, titlePosY - 2 * padding
-//			);
-//			subView = new MainMenuSubView(subViewBounds, 2);
-//		}
 
 		/* Team selection */
 //		else if (menuType == 3) {
@@ -140,12 +129,6 @@ public class MenuView implements Screen {
 		spriteBatch.draw(background, 0, 0, renderWidth, renderHeight);
 		spriteBatch.draw(title, (renderWidth - title.getWidth()) / 2f, titlePosY);
 
-		/* Team select box */
-//		if(menuType == 3) {
-//			spriteBatch.draw(rosterBox, boxPosX / 2f, boxPosY,
-//				renderWidth / 2, boxHeight);
-//		}
-
 		subView.render(spriteBatch, deltaTime);
 
 		spriteBatch.end();
@@ -175,9 +158,6 @@ public class MenuView implements Screen {
 	public void dispose() {
 		background.dispose();
 		title.dispose();
-//		if(menuType == 3) {
-//			rosterBox.dispose();
-//		}
 		subView.dispose();
 		System.out.println("Menu State Disposed");
 	}
