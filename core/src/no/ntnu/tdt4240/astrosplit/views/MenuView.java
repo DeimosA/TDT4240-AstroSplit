@@ -35,16 +35,16 @@ public class MenuView implements Screen {
 	private SubView subView;
 
 	/* Team select */
-	private Texture rosterBox;
+//	private Texture rosterBox;
 	// Box bounds
 	private int boxPosY;
 	private int boxPosX;
 	private int boxHeight;
-	private int menuType;
+//	private int menuType;
 
 
-	MenuView(int menuType) {
-		this.menuType = menuType;
+	MenuView() {
+//		this.menuType = menuType;
 
 		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
 		spriteBatch = new SpriteBatch();
@@ -64,38 +64,38 @@ public class MenuView implements Screen {
 		titlePosY = renderHeight - title.getHeight() - padding;
 
 		/* Main menu */
-		if(menuType == 1) {
-			Rectangle subViewBounds = new Rectangle(padding, padding,
-				renderWidth - 2 * padding, titlePosY - 2 * padding
-			);
-			subView = new MainMenuSubView(subViewBounds, 1);
-		}
+		Rectangle subViewBounds = new Rectangle(padding, padding,
+			renderWidth - 2 * padding, titlePosY - 2 * padding
+		);
+		subView = new MainMenuSubView(subViewBounds, this);
 
 		/* Game mode selection */
-		if(menuType == 2) {
-			Rectangle subViewBounds = new Rectangle(padding, padding,
-				renderWidth - 2 * padding, titlePosY - 2 * padding
-			);
-			subView = new MainMenuSubView(subViewBounds, 2);
-		}
+//		if(menuType == 2) {
+//			Rectangle subViewBounds = new Rectangle(padding, padding,
+//				renderWidth - 2 * padding, titlePosY - 2 * padding
+//			);
+//			subView = new MainMenuSubView(subViewBounds, 2);
+//		}
 
 		/* Team selection */
-		else if (menuType == 3) {
-			/* Box/ background */
-			rosterBox = new Texture("Astro/TeamSelect/rosterBox.png");
-			boxPosY = renderHeight - (rosterBox.getHeight() + padding);
-			boxPosX = renderWidth - rosterBox.getWidth();
-
-			boxHeight = rosterBox.getHeight() - (title.getHeight());
-
-
-			Rectangle subViewBounds = new Rectangle(boxPosX / 2, boxPosY,
-				renderWidth / 2, boxHeight
-			);
-
-			subView = new MainMenuSubView(subViewBounds, 3);
-		}
+//		else if (menuType == 3) {
+//			/* Box/ background */
+//			rosterBox = new Texture("Astro/TeamSelect/rosterBox.png");
+//			boxPosY = renderHeight - (rosterBox.getHeight() + padding);
+//			boxPosX = renderWidth - rosterBox.getWidth();
+//
+//			boxHeight = rosterBox.getHeight() - (title.getHeight());
+//
+//
+//			Rectangle subViewBounds = new Rectangle(boxPosX / 2, boxPosY,
+//				renderWidth / 2, boxHeight
+//			);
+//
+//			subView = new MainMenuSubView(subViewBounds, 3);
+//		}
 	}
+
+	/* Private methods */
 
 	private void handleInput() {
 
@@ -105,9 +105,21 @@ public class MenuView implements Screen {
 			cursorPos.y = Gdx.input.getY();
 			camera.unproject(cursorPos);
 
-			subView.handleInput(cursorPos);
+			// Let's check if we're even in area
+			if (subView.getBounds().contains(cursorPos.x, cursorPos.y)) {
+				subView.handleInput(cursorPos);
+			}
 		}
 	}
+
+	/* Package private methods */
+
+	void setSubView(SubView subView) {
+		this.subView.dispose();
+		this.subView = subView;
+	}
+
+	/* Public methods */
 
 	@Override
 	public void show() {
@@ -129,10 +141,10 @@ public class MenuView implements Screen {
 		spriteBatch.draw(title, (renderWidth - title.getWidth()) / 2f, titlePosY);
 
 		/* Team select box */
-		if(menuType == 3) {
-			spriteBatch.draw(rosterBox, boxPosX / 2f, boxPosY,
-				renderWidth / 2, boxHeight);
-		}
+//		if(menuType == 3) {
+//			spriteBatch.draw(rosterBox, boxPosX / 2f, boxPosY,
+//				renderWidth / 2, boxHeight);
+//		}
 
 		subView.render(spriteBatch, deltaTime);
 
@@ -163,9 +175,9 @@ public class MenuView implements Screen {
 	public void dispose() {
 		background.dispose();
 		title.dispose();
-		if(menuType == 3) {
-			rosterBox.dispose();
-		}
+//		if(menuType == 3) {
+//			rosterBox.dispose();
+//		}
 		subView.dispose();
 		System.out.println("Menu State Disposed");
 	}

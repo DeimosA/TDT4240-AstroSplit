@@ -55,6 +55,10 @@ public class MenuButton {
 		bounds.y = y - texture.getHeight() / 2f;
 	}
 
+	public void setTexture(Texture texture) {
+		this.texture = texture;
+	}
+
 	public Texture getTexture() {
 		return texture;
 	}
