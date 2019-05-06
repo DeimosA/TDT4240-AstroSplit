@@ -10,7 +10,7 @@ import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import com.badlogic.gdx.math.Vector2;
 
-import static no.ntnu.tdt4240.astrosplit.game.abilities.AttackKt.rangeCheck;
+//import static no.ntnu.tdt4240.astrosplit.game.abilities.Attack.rangeCheck;
 
 public class MovementSystem extends IteratingSystem {
 
