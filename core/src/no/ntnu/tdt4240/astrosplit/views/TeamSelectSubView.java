@@ -5,33 +5,148 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
+import no.ntnu.tdt4240.astrosplit.models.TeamType;
 import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 
 
 class TeamSelectSubView extends SubView {
 
-	private Texture titleTexture;
+	// Element positions
+	private Rectangle rosterBoxPosition;
+	private Rectangle playerNumberPosition;
 	private Rectangle titlePosition;
 
+	// Disposables
+	private Texture rosterBoxTexture;
+	private Texture playerNumberTexture;
+	private Texture titleTexture;
+	private Texture selectedTexture;
 	private MenuButton[] buttons;
 	private MenuButton confirmButton;
-	private Texture selectedTexture;
-	private Texture rosterBoxTexture;
 
-	private int selectedTeam = -1;
+	private TeamType selectedTeam = null;
+	private int selectedButtonIndex;
+	private boolean isLocalGame = false;
+	private LocalGameModel localGameModel;
 
 
-	TeamSelectSubView(final Rectangle bounds, final MenuView menuView) {
+	TeamSelectSubView(Rectangle bounds, MenuView menuView) {
+		this(bounds, menuView, false, null);
+	}
+
+	TeamSelectSubView(Rectangle bounds, MenuView menuView, LocalGameModel gameModel) {
+		this(bounds, menuView, true, gameModel);
+	}
+
+	TeamSelectSubView(Rectangle bounds, MenuView menuView, boolean isLocalGame) {
+		this(bounds, menuView, isLocalGame, null);
+	}
+
+	/**
+	 * Private constructor that should be used for all public
+	 * @param bounds			The bounds of the subview
+	 * @param menuView			The parent view
+	 * @param isLocalGame		Whether this is for a local multiplayer game
+	 * @param localGameModel	The game model, if it has been created
+	 */
+	private TeamSelectSubView(Rectangle bounds, MenuView menuView, boolean isLocalGame, LocalGameModel localGameModel) {
 		super(bounds, menuView);
 
-		/* Team selection buttons */
-		this.buttons = new MenuButton[]{
+		this.isLocalGame = isLocalGame;
+		this.localGameModel = localGameModel;
+
+		this.buttons = createButtons();
+
+		// Calculate positions for 3 rows
+		float rowHeight = bounds.height / 4;
+		float rowCenter = rowHeight / 2;
+		float xCenter = bounds.width / 2;
+
+		// Calculate columns for 3 team buttons
+		float colWidth = buttons[0].getTexture().getWidth() + 20;
+		float colCenter = colWidth / 2f;
+		float xFirstTeam = xCenter - 1.5f * colWidth;
+		float xCenterFirstTeam = xFirstTeam + colCenter;
+		float yCenter = bounds.height / 2;
+
+		// Roster box background
+		float rosterBoxBottomMargin = 10;
+		float rosterBoxPadding = 20;
+		rosterBoxPosition = new Rectangle(
+			xFirstTeam - rosterBoxPadding,
+			rosterBoxBottomMargin,
+			(xCenter - xFirstTeam + rosterBoxPadding) * 2,
+			bounds.height - rosterBoxBottomMargin
+		);
+		rosterBoxTexture = new Texture("Astro/TeamSelect/rosterBox.png");
+
+		// Position of title
+		titleTexture = new Texture("Astro/TeamSelect/titleTeamSelect.png");
+		titlePosition = new Rectangle(
+			xFirstTeam,
+			bounds.height - titleTexture.getHeight() - 2 * rosterBoxPadding - 46,
+			titleTexture.getWidth(), titleTexture.getHeight()
+		);
+
+		// Player number indicator
+		if (isLocalGame) {
+			if (localGameModel == null) {
+				// Local game and player 1 select
+				playerNumberTexture = new Texture("Astro/TeamSelect/headingPlayer1.png");
+			} else {
+				// Local game and player 2 select
+				playerNumberTexture = new Texture("Astro/TeamSelect/headingPlayer2.png");
+			}
+			// Player number indicator position
+			playerNumberPosition = new Rectangle(
+				titlePosition.x,
+				bounds.height - playerNumberTexture.getHeight() - rosterBoxPadding,
+				playerNumberTexture.getWidth(), playerNumberTexture.getHeight()
+			);
+		}
+
+		// Team button positions
+		for (int i = 0; i < 3; i++) {
+			buttons[i].setCenterPosition(
+				xCenterFirstTeam + i * colWidth,
+				yCenter - 20
+			);
+		}
+
+		// Back button
+		buttons[3].setPosition(
+			xFirstTeam,
+			rosterBoxBottomMargin + rosterBoxPadding
+		);
+
+		// Confirm button
+		confirmButton = buttons[4];
+		confirmButton.setPosition(
+			xFirstTeam + (3f * colWidth) - confirmButton.getTexture().getWidth(),
+			rosterBoxBottomMargin + rosterBoxPadding
+		);
+		confirmButton.setDisabledTexture(new Texture("Astro/TeamSelect/buttonConfirmGray.png"));
+		confirmButton.setEnabled(false);
+
+		// Overlay texture for team selection
+		selectedTexture = new Texture("Astro/TeamSelect/frameSelected.png");
+	}
+
+
+	/**
+	 * Team selection buttons
+	 * @return MenuButton array
+	 */
+	private MenuButton[] createButtons() {
+		return new MenuButton[]{
 			new MenuButton(new Texture("Astro/TeamSelect/teamGrays.png")) {
 				@Override
 				public void click() {
-					// #1 - Team Grays
+					// #1 - Team: Grays
 					System.out.println("Chose: Grays");
-					selectTeam(0);
+					selectedButtonIndex = 0;
+					selectTeam(TeamType.TEAM_GRAYS);
 				}
 			},
 			new MenuButton(new Texture("Astro/TeamSelect/teamMarines.png")) {
@@ -39,7 +154,8 @@ class TeamSelectSubView extends SubView {
 				public void click() {
 					// #2 - Team: Marines
 					System.out.println("Chose: Marines");
-					selectTeam(1);
+					selectedButtonIndex = 1;
+					selectTeam(TeamType.TEAM_MARINES);
 				}
 			},
 			new MenuButton(new Texture("Astro/TeamSelect/teamSectoids.png")) {
@@ -47,7 +163,8 @@ class TeamSelectSubView extends SubView {
 				public void click() {
 					// #3 - Team: Sectoids
 					System.out.println("Chose: Sectoids");
-					selectTeam(2);
+					selectedButtonIndex = 2;
+					selectTeam(TeamType.TEAM_SECTOIDS);
 				}
 			},
 			new MenuButton(new Texture("Astro/TeamSelect/buttonBack.png")) {
@@ -62,69 +179,39 @@ class TeamSelectSubView extends SubView {
 				@Override
 				public void click() {
 					// #5 - Confirm
-					if (selectedTeam > -1) {
+					if (selectedTeam != null) {
 						System.out.println("Chose: Confirm");
-						ViewStateManager.getInstance().setScreen(new GameView());
+						if (isLocalGame && localGameModel == null) {
+							// Player 1 have selected their team
+							LocalGameModel gameModel = new LocalGameModel();
+							gameModel.setPlayer1(selectedTeam);
+							menuView.setSubView(new TeamSelectSubView(bounds, menuView, gameModel));
+						} else if (isLocalGame) {
+							// Player 2 have selected their team
+							localGameModel.setPlayer2(selectedTeam);
+							ViewStateManager.getInstance().setScreen(new GameView(localGameModel));
+						} else {
+							// Placeholder for online
+							ViewStateManager.getInstance().setScreen(new GameView());
+						}
 					}
 				}
 			}
 		};
-
-		// Calculate positions for 3 rows
-		float rowHeight = bounds.height / 3;
-		float rowCenter = rowHeight / 2;
-		float xCenter = bounds.width / 2;
-
-		// Calculate columns for 3 team buttons
-		float colWidth = buttons[0].getTexture().getWidth() + 20;
-		float xCenterFirstTeam = xCenter - colWidth + 10;
-		float yCenter = bounds.height / 2;
-
-		// Position of title
-		titleTexture = new Texture("Astro/TeamSelect/titleTeamSelect.png");
-		titlePosition = new Rectangle(
-			xCenter - titleTexture.getWidth() / 2f,
-			bounds.height - rowCenter - titleTexture.getHeight() / 2f,
-			titleTexture.getWidth(), titleTexture.getHeight()
-		);
-
-		// Team button positions
-		for (int i = 0; i < 3; i++) {
-			buttons[i].setCenterPosition(
-				xCenterFirstTeam + i * colWidth,
-				yCenter
-			);
-		}
-
-		// Back button
-		buttons[3].setCenterPosition(
-			xCenterFirstTeam - (colWidth / 2f) + buttons[3].getTexture().getWidth() / 2f,
-			rowCenter
-		);
-
-		// Confirm button
-		confirmButton = buttons[4];
-		confirmButton.setCenterPosition(
-			xCenterFirstTeam + (2.5f * colWidth) - confirmButton.getTexture().getWidth() / 2f,
-			rowCenter
-		);
-		confirmButton.setDisabledTexture(new Texture("Astro/TeamSelect/buttonConfirmGray.png"));
-		confirmButton.setEnabled(false);
-
-		// Overlay texture for team selection
-		selectedTexture = new Texture("Astro/TeamSelect/frameSelected.png");
-		// Background texture for team selection
-		rosterBoxTexture = new Texture("Astro/TeamSelect/rosterBox.png");
 	}
 
-
-	private void selectTeam(int team) {
+	/**
+	 * Set the selected team
+	 * @param team The selected team
+	 */
+	private void selectTeam(TeamType team) {
 		this.selectedTeam = team;
 		this.confirmButton.setEnabled(true);
 	}
 
 	@Override
 	void handleInput(Vector3 cursor) {
+		// Confine to bounding box
 		float x = cursor.x - bounds.x;
 		float y = cursor.y - bounds.y;
 		// Check each button
@@ -137,15 +224,25 @@ class TeamSelectSubView extends SubView {
 
 	@Override
 	void render(SpriteBatch sb, float deltaTime) {
-
 		// Draw roster box
 		sb.draw(
 			rosterBoxTexture,
-			bounds.x + 300,
-			bounds.y + 30,
-			bounds.width - 600,
-			bounds.height - 50
+			bounds.x + rosterBoxPosition.x,
+			bounds.y + rosterBoxPosition.y,
+			rosterBoxPosition.width,
+			rosterBoxPosition.height
 		);
+
+		// Draw player number
+		if (playerNumberTexture != null) {
+			sb.draw(
+				playerNumberTexture,
+				bounds.x + playerNumberPosition.x,
+				bounds.y + playerNumberPosition.y,
+				playerNumberPosition.width,
+				playerNumberPosition.height
+			);
+		}
 
 		// Draw title
 		sb.draw(
@@ -170,13 +267,13 @@ class TeamSelectSubView extends SubView {
 		}
 
 		// Draw selection overlay
-		if (selectedTeam > -1) {
+		if (selectedTeam != null) {
 			sb.draw(
 				selectedTexture,
-				bounds.x + buttons[selectedTeam].getBounds().x,
-				bounds.y + buttons[selectedTeam].getBounds().y,
-				buttons[selectedTeam].getBounds().width,
-				buttons[selectedTeam].getBounds().height
+				bounds.x + buttons[selectedButtonIndex].getBounds().x,
+				bounds.y + buttons[selectedButtonIndex].getBounds().y,
+				buttons[selectedButtonIndex].getBounds().width,
+				buttons[selectedButtonIndex].getBounds().height
 			);
 		}
 	}
@@ -186,6 +283,8 @@ class TeamSelectSubView extends SubView {
 		titleTexture.dispose();
 		selectedTexture.dispose();
 		rosterBoxTexture.dispose();
+		if (playerNumberTexture != null) playerNumberTexture.dispose();
+
 		for (MenuButton button : buttons) {
 			button.dispose();
 		}

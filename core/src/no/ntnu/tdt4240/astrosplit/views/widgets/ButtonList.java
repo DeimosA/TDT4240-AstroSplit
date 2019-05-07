@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
-import no.ntnu.tdt4240.astrosplit.models.Configuration;
-
 
 public class ButtonList {
 
@@ -20,6 +18,11 @@ public class ButtonList {
 	private float xCenter;
 
 
+	/**
+	 * Create a vertical list of buttons that are automatically spaced in the available space
+	 * @param bounds	The bounding box
+	 * @param buttons	Array of buttons
+	 */
 	public ButtonList(Rectangle bounds, MenuButton[] buttons) {
 		this.bounds = bounds;
 		this.buttons = buttons;
@@ -38,7 +41,13 @@ public class ButtonList {
 		}
 	}
 
+	/**
+	 * Handle input for the button list
+	 * @param cursor
+	 * @return Button index
+	 */
 	public int handleInput(Vector3 cursor) {
+		// Confine cursor to bounding box
 		float x = cursor.x - bounds.x;
 		float y = cursor.y - bounds.y;
 		// Check each button
@@ -50,10 +59,16 @@ public class ButtonList {
 		return -1;
 	}
 
+	/**
+	 * Render the button list
+	 * @param sb
+	 * @param deltaTime
+	 */
 	public void render(SpriteBatch sb, float deltaTime) {
 		for (MenuButton button : buttons) {
-			Rectangle bb = button.getBounds(); // Button bounds
-
+			// Get button bounds
+			Rectangle bb = button.getBounds();
+			// Draw button
 			sb.draw(
 				button.getTexture(),
 				bounds.x + bb.x,
@@ -64,6 +79,9 @@ public class ButtonList {
 		}
 	}
 
+	/**
+	 * Dispose of button list contents
+	 */
 	public void dispose() {
 		for (MenuButton button : buttons) {
 			button.dispose();

@@ -9,16 +9,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import no.ntnu.tdt4240.astrosplit.game.World;
 import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
-import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
 import no.ntnu.tdt4240.astrosplit.game.Map;
+import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
 
 public class GameView implements Screen {
 
@@ -35,6 +33,13 @@ public class GameView implements Screen {
 
 
 	private Map map;
+
+	private LocalGameModel localGameModel;
+
+	GameView(LocalGameModel gameModel) {
+		this();
+		localGameModel = gameModel;
+	}
 
 	GameView()
 	{
