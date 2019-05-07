@@ -8,8 +8,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import no.ntnu.tdt4240.astrosplit.game.World;
 import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
@@ -24,6 +26,7 @@ public class GameView implements Screen {
 	private SpriteBatch spriteBatch;
 	private Vector3 cursorPos = new Vector3();
 	private Stage stage;
+	private Viewport viewport;
 
 
 
@@ -47,8 +50,8 @@ public class GameView implements Screen {
 		camera.position.y = map.getMapHeightInPixels()*0.5f;
 
 
-		stage = new Stage(new FitViewport(
-			map.getMapWidthInPixels(), map.getMapHeightInPixels()));
+		viewport = new ExtendViewport(map.getMapWidthInPixels(), map.getMapHeightInPixels());
+		stage = new Stage(viewport);
 		Gdx.input.setInputProcessor(stage);
 
 
@@ -142,7 +145,7 @@ public class GameView implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-
+		viewport.update(width, height, false);
 	}
 
 	@Override
