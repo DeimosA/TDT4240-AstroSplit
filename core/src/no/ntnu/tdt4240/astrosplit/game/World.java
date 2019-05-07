@@ -16,6 +16,11 @@ import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
+import no.ntnu.tdt4240.astrosplit.game.entities.AlienMeleeEntity;
+import no.ntnu.tdt4240.astrosplit.game.entities.MarineMedicEntity;
+import no.ntnu.tdt4240.astrosplit.game.entities.MarineMeleeEntity;
+import no.ntnu.tdt4240.astrosplit.game.entities.MarineRangeEntity;
+import no.ntnu.tdt4240.astrosplit.game.entities.SectoidMeleeEntity;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
 
@@ -40,6 +45,17 @@ public class World {
 	{
 		Entity firstEntity = createTestEntity(new Vector2(50,0));
 		Entity secondEntity = createTestEntity(new Vector2(-50,0));
+		MarineMeleeEntity marineMeleeEntity = new MarineMeleeEntity();
+		marineMeleeEntity.create(new Vector2(100,100));
+		MarineRangeEntity marineRangeEntity = new MarineRangeEntity();
+		marineRangeEntity.create(new Vector2(200,200));
+		MarineMedicEntity marineMedicEntity = new MarineMedicEntity();
+		marineMedicEntity.create(new Vector2(0,0));
+		AlienMeleeEntity alienMeleeEntity = new AlienMeleeEntity();
+		alienMeleeEntity.create(new Vector2(-50, -50));
+		SectoidMeleeEntity sectoidMeleeEntity = new SectoidMeleeEntity();
+		sectoidMeleeEntity.create(new Vector2(200, -100));
+
 
 		attack(firstEntity,secondEntity);
 
