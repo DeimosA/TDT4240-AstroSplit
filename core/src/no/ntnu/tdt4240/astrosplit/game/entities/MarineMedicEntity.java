@@ -17,23 +17,21 @@ import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
-
-public class MarineEntity {
-
+public class MarineMedicEntity {
 	private PooledEngine engine;
 
-	public MarineEntity(){engine = GameView.getGameEngine();}
+	public MarineMedicEntity(){engine = GameView.getGameEngine();}
 
 	public Entity create(Vector2 pos){
 
 		Entity entity = new Entity();
 
 
-		int damage = 50; //Damage of units attack
-		int range = 100; //Range of units attack
-		int health = 300; //Health of unit
+		int damage = 20; //Damage of units attack
+		int range = 250; //Range of units attack
+		int health = 100; //Health of unit
 		int movement = 3; //Number of tiles the unit can move
-		TextureRegion texture = new TextureRegion(new Texture("Units/marine_ranged.png")); // Texture of the unit
+		TextureRegion texture = new TextureRegion(new Texture("Units/marine_medic.png")); // Texture of the unit
 		String type = "unit"; //Type of unit
 
 		ActionComponent ac 			= engine.createComponent(ActionComponent.class);
@@ -52,7 +50,7 @@ public class MarineEntity {
 		mc.distance = movement;
 		pc.position = pos;
 		tc.region = texture;
-		tm.scale.set(0.1f,0.2f);
+		tm.scale.set(0.1f,0.1f);
 		tp.type = type;
 
 		entity.add(pc);
