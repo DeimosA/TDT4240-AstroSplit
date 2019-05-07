@@ -17,7 +17,7 @@ import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
-public class AlienMeleeEntity {
+public class AlienMeleeEntity extends Entity {
 
 	private PooledEngine engine;
 
@@ -28,9 +28,9 @@ public class AlienMeleeEntity {
 		Entity entity = new Entity();
 
 
-		int damage = 20; //Damage of units attack
-		int range = 250; //Range of units attack
-		int health = 100; //Health of unit
+		int damage = 75; //Damage of units attack
+		int range = 100; //Range of units attack
+		int health = 250; //Health of unit
 		int movement = 3; //Number of tiles the unit can move
 		TextureRegion texture = new TextureRegion(new Texture("Units/alien_melee.png")); // Texture of the unit
 		String type = "unit"; //Type of unit

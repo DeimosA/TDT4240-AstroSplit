@@ -17,17 +17,17 @@ import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
-public class MarineMedicEntity {
+public class MarineMedicEntity extends Entity {
 	private PooledEngine engine;
 
-	public MarineMedicEntity(){engine = GameView.getGameEngine();}
+	public MarineMedicEntity(){this.engine = GameView.getGameEngine();}
 
 	public Entity create(Vector2 pos){
 
 		Entity entity = new Entity();
 
 
-		int damage = 20; //Damage of units attack
+		int damage = -300; //Damage of units attack
 		int range = 250; //Range of units attack
 		int health = 100; //Health of unit
 		int movement = 3; //Number of tiles the unit can move

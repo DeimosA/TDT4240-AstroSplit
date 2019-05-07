@@ -3,10 +3,9 @@ package no.ntnu.tdt4240.astrosplit.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-
-
-
-
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.ActorComponent;
@@ -24,12 +23,6 @@ import no.ntnu.tdt4240.astrosplit.game.entities.SectoidMeleeEntity;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-
 public class World {
 
 	private PooledEngine engine;
@@ -46,9 +39,9 @@ public class World {
 		Entity firstEntity = createTestEntity(new Vector2(50,0));
 		Entity secondEntity = createTestEntity(new Vector2(-50,0));
 		MarineMeleeEntity marineMeleeEntity = new MarineMeleeEntity();
-		marineMeleeEntity.create(new Vector2(100,100));
+		marineMeleeEntity.create(new Vector2(250,100));
 		MarineRangeEntity marineRangeEntity = new MarineRangeEntity();
-		marineRangeEntity.create(new Vector2(200,200));
+		marineRangeEntity.create(new Vector2(300,-50));
 		MarineMedicEntity marineMedicEntity = new MarineMedicEntity();
 		marineMedicEntity.create(new Vector2(0,0));
 		AlienMeleeEntity alienMeleeEntity = new AlienMeleeEntity();
@@ -59,9 +52,11 @@ public class World {
 
 		attack(firstEntity,secondEntity);
 
+		//killUnit(firstEntity);
+
 		//firstEntity.remove(MovementComponent.class);
 
-		moveTo(firstEntity, new Vector2(50,100));
+		moveTo(secondEntity, new Vector2(300,-100));
 
 	}
 
