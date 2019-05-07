@@ -16,6 +16,7 @@ class TeamSelectSubView extends SubView {
 	private MenuButton[] buttons;
 	private MenuButton confirmButton;
 	private Texture selectedTexture;
+	private Texture rosterBoxTexture;
 
 	private int selectedTeam = -1;
 
@@ -112,6 +113,8 @@ class TeamSelectSubView extends SubView {
 
 		// Overlay texture for team selection
 		selectedTexture = new Texture("Astro/TeamSelect/frameSelected.png");
+		// Background texture for team selection
+		rosterBoxTexture = new Texture("Astro/TeamSelect/rosterBox.png");
 	}
 
 
@@ -134,6 +137,15 @@ class TeamSelectSubView extends SubView {
 
 	@Override
 	void render(SpriteBatch sb, float deltaTime) {
+
+		// Draw roster box
+		sb.draw(
+			rosterBoxTexture,
+			bounds.x + 300,
+			bounds.y + 30,
+			bounds.width - 600,
+			bounds.height - 50
+		);
 
 		// Draw title
 		sb.draw(
@@ -173,6 +185,7 @@ class TeamSelectSubView extends SubView {
 	void dispose() {
 		titleTexture.dispose();
 		selectedTexture.dispose();
+		rosterBoxTexture.dispose();
 		for (MenuButton button : buttons) {
 			button.dispose();
 		}
