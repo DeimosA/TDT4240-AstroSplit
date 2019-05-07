@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
 import no.ntnu.tdt4240.astrosplit.models.TeamType;
+import no.ntnu.tdt4240.astrosplit.models.TutorialGameModel;
 import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 
 
@@ -29,10 +30,12 @@ class TeamSelectSubView extends SubView {
 	private int selectedButtonIndex;
 	private boolean isLocalGame = false;
 	private LocalGameModel localGameModel;
+	private GameView.GameType gameType;
 
 
-	TeamSelectSubView(Rectangle bounds, MenuView menuView) {
+	TeamSelectSubView(Rectangle bounds, MenuView menuView, GameView.GameType gameType) {
 		this(bounds, menuView, false, null);
+		this.gameType = gameType;
 	}
 
 	TeamSelectSubView(Rectangle bounds, MenuView menuView, LocalGameModel gameModel) {
@@ -184,15 +187,24 @@ class TeamSelectSubView extends SubView {
 						if (isLocalGame && localGameModel == null) {
 							// Player 1 have selected their team
 							LocalGameModel gameModel = new LocalGameModel();
+							gameModel.startNewGame();
 							gameModel.setPlayer1(selectedTeam);
+							// So let player 2 select
 							menuView.setSubView(new TeamSelectSubView(bounds, menuView, gameModel));
 						} else if (isLocalGame) {
 							// Player 2 have selected their team
 							localGameModel.setPlayer2(selectedTeam);
-							ViewStateManager.getInstance().setScreen(new GameView(localGameModel));
+							// So start the game
+							ViewStateManager.getInstance().setScreen(
+								new GameView(GameView.GameType.LOCAL_GAME, localGameModel));
 						} else {
-							// Placeholder for online
-							ViewStateManager.getInstance().setScreen(new GameView());
+							// Other game types
+							if (gameType == GameView.GameType.TUTORIAL_GAME) {
+								TutorialGameModel gameModel = new TutorialGameModel();
+								gameModel.setPlayerTeam(selectedTeam);
+								ViewStateManager.getInstance().setScreen(new GameView(gameType, gameModel));
+
+							}
 						}
 					}
 				}

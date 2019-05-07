@@ -28,7 +28,7 @@ class GameModeSubView extends SubView {
 				// #1 - Continue
 				System.out.println("Clicked: Continue");
 				LocalGameModel gameModel = new LocalGameModel();
-				ViewStateManager.getInstance().setScreen(new GameView(gameModel));
+				ViewStateManager.getInstance().setScreen(new GameView(GameView.GameType.LOCAL_GAME, gameModel));
 			}
 		};
 		continueButton.setDisabledTexture(new Texture("Astro/GameModeSelection/buttonContinueGray.png"));
@@ -64,8 +64,7 @@ class GameModeSubView extends SubView {
 					public void click() {
 						// #4 - Tutorial
 						System.out.println("Chose: Tutorial");
-						// TODO tut
-//						menuView.setSubView(new TeamSelectSubView(bounds, menuView));
+						menuView.setSubView(new TeamSelectSubView(bounds, menuView, GameView.GameType.TUTORIAL_GAME));
 					}
 				},
 				// Empty space

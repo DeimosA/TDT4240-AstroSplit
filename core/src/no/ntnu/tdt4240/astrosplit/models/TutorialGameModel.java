@@ -1,16 +1,10 @@
 package no.ntnu.tdt4240.astrosplit.models;
 
-public class TutorialGameModel implements Model {
 
-	private TeamType playerTeam;
+/**
+ * Game model for the tutorial
+ */
+public class TutorialGameModel extends GameModel {
 
-	@Override
-	public void load() {
-		// Do nothing
-	}
 
-	@Override
-	public void save() {
-		// Do nothing
-	}
 }

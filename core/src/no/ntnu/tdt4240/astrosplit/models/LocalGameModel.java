@@ -3,7 +3,7 @@ package no.ntnu.tdt4240.astrosplit.models;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
-public class LocalGameModel implements Model {
+public class LocalGameModel extends GameModel {
 
 
 	private static final String saveGameName = "LocalGameState";
@@ -33,6 +33,14 @@ public class LocalGameModel implements Model {
 		this.player2 = team;
 	}
 
+	/**
+	 * Clear any existing game state and start a new local game
+	 */
+	public void startNewGame() {
+		prefStore.clear();
+		prefStore.putBoolean("ongoingGame", true);
+	}
+
 	@Override
 	public void load() {
 		// Loads an existing game state or creates a new
@@ -45,7 +53,7 @@ public class LocalGameModel implements Model {
 	}
 
 	/**
-	 * Check if a saved game exists
+	 * Static function to check if a saved game exists
 	 * @return
 	 */
 	public static boolean hasOngoingGame() {
