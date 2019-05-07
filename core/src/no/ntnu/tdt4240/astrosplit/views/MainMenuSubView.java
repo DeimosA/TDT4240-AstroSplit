@@ -2,9 +2,7 @@ package no.ntnu.tdt4240.astrosplit.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 
 import no.ntnu.tdt4240.astrosplit.views.widgets.ButtonList;
 import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
@@ -15,6 +13,11 @@ class MainMenuSubView extends SubView {
 //	private MenuPresenter menuPresenter;
 
 
+	/**
+	 * Subview for the main menu
+	 * @param bounds	The bounds of the subview
+	 * @param menuView	The parent view
+	 */
 	MainMenuSubView(final Rectangle bounds, final MenuView menuView) {
 		super(bounds, menuView);
 

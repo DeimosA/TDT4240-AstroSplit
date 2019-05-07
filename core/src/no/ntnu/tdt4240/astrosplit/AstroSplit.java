@@ -15,6 +15,7 @@ public class AstroSplit implements ApplicationListener {
 	public void create () {
 		vsm = ViewStateManager.getInstance();
 		Configuration.getInstance().load();
+		// TODO apply config
 	}
 
 	@Override

@@ -64,37 +64,21 @@ public class MenuView implements Screen {
 			renderWidth - 2 * padding, titlePosY - padding - paddingBottom
 		);
 		subView = new MainMenuSubView(subViewBounds, this);
-
-
-		/* Team selection */
-//		else if (menuType == 3) {
-//			/* Box/ background */
-//			rosterBox = new Texture("Astro/TeamSelect/rosterBox.png");
-//			boxPosY = renderHeight - (rosterBox.getHeight() + padding);
-//			boxPosX = renderWidth - rosterBox.getWidth();
-//
-//			boxHeight = rosterBox.getHeight() - (title.getHeight());
-//
-//
-//			Rectangle subViewBounds = new Rectangle(boxPosX / 2, boxPosY,
-//				renderWidth / 2, boxHeight
-//			);
-//
-//			subView = new MainMenuSubView(subViewBounds, 3);
-//		}
 	}
 
 	/* Private methods */
 
+	/**
+	 * Handle input for the menu
+	 */
 	private void handleInput() {
 
-		/* Texture pos touched */
 		if (Gdx.input.justTouched()) {
 			cursorPos.x = Gdx.input.getX();
 			cursorPos.y = Gdx.input.getY();
 			camera.unproject(cursorPos);
 
-			// Let's check if we're even in area
+			// Check if in area of sub view
 			if (subView.getBounds().contains(cursorPos.x, cursorPos.y)) {
 				subView.handleInput(cursorPos);
 			}
@@ -103,6 +87,10 @@ public class MenuView implements Screen {
 
 	/* Package private methods */
 
+	/**
+	 * Set the content below the game title/logo
+	 * @param subView
+	 */
 	void setSubView(SubView subView) {
 		this.subView.dispose();
 		this.subView = subView;

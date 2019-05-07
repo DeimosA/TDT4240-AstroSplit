@@ -9,18 +9,24 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import no.ntnu.tdt4240.astrosplit.game.World;
 import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
-import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
 import no.ntnu.tdt4240.astrosplit.game.Map;
+import no.ntnu.tdt4240.astrosplit.models.GameModel;
+import no.ntnu.tdt4240.astrosplit.models.TutorialGameModel;
+
 
 public class GameView implements Screen {
+
+	public enum GameType {
+		TUTORIAL_GAME,
+		LOCAL_GAME,
+//		ONLINE_GAME,
+	}
 
 	private OrthographicCamera camera;
 	private SpriteBatch spriteBatch;
@@ -36,9 +42,27 @@ public class GameView implements Screen {
 
 	private Map map;
 
-	GameView()
-	{
+	private GameType gameType;
+	private GameModel gameModel;
 
+
+	GameView(GameType gameType, GameModel gameModel) {
+		this();
+		this.gameType = gameType;
+		this.gameModel = gameModel;
+
+		switch (gameType) {
+			case TUTORIAL_GAME:
+				break;
+
+			case LOCAL_GAME:
+				gameModel.save();
+				break;
+		}
+	}
+
+	private GameView()
+	{
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 
 
