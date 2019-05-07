@@ -18,7 +18,7 @@ import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
 
-public class MarineMeleeEntity {
+public class MarineMeleeEntity extends Entity {
 
 	private PooledEngine engine;
 
