@@ -16,6 +16,7 @@ import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
+import no.ntnu.tdt4240.astrosplit.game.entities.MarineEntity;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
 
@@ -40,6 +41,9 @@ public class World {
 	{
 		Entity firstEntity = createTestEntity(new Vector2(50,0));
 		Entity secondEntity = createTestEntity(new Vector2(-50,0));
+		MarineEntity marineEntity = new MarineEntity();
+		marineEntity.create(new Vector2(100,100));
+
 
 		attack(firstEntity,secondEntity);
 
