@@ -101,7 +101,7 @@ public class GameView implements Screen {
 		OrthographicCamera stageCamera = new OrthographicCamera();
 		stageCamera.setToOrtho(false, map.getMapWidthInPixels(), map.getMapHeightInPixels());
 		map.setCamera(stageCamera);
-		Viewport stageViewport = new FitViewport(renderHeight, renderHeight, camera);
+		Viewport stageViewport = new FitViewport(map.getMapWidthInPixels(), map.getMapHeightInPixels(), stageCamera);
 		stage = new Stage(stageViewport);
 		Gdx.input.setInputProcessor(stage);
 
@@ -179,9 +179,8 @@ public class GameView implements Screen {
 		map.render();
 		engine.update(delta);	//Will update the RenderingSystem, displaying game characters
 
-		camera.update();
-		spriteBatch.setProjectionMatrix(camera.combined);
 		viewport.apply(false);
+		spriteBatch.setProjectionMatrix(camera.combined);
 		drawUI();	//Overlay
 
 	}
