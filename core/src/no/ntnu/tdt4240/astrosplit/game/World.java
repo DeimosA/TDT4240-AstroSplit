@@ -23,11 +23,15 @@ import no.ntnu.tdt4240.astrosplit.game.entities.SectoidMeleeEntity;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
 
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+
+
 public class World {
 
 	private PooledEngine engine;
-
-
 
 	public World() {
 		this.engine = GameView.getGameEngine();
@@ -38,6 +42,7 @@ public class World {
 	{
 		Entity firstEntity = createTestEntity(new Vector2(50,0));
 		Entity secondEntity = createTestEntity(new Vector2(-50,0));
+
 		MarineMeleeEntity marineMeleeEntity = new MarineMeleeEntity();
 		marineMeleeEntity.create(new Vector2(250,100));
 		MarineRangeEntity marineRangeEntity = new MarineRangeEntity();
@@ -50,6 +55,7 @@ public class World {
 		sectoidMeleeEntity.create(new Vector2(200, -100));
 
 
+
 		attack(firstEntity,secondEntity);
 
 		//killUnit(firstEntity);
@@ -59,8 +65,6 @@ public class World {
 		moveTo(secondEntity, new Vector2(300,-100));
 
 	}
-
-
 
 
 	public Entity createTestEntity(Vector2 pos)

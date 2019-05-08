@@ -11,10 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 
+import no.ntnu.tdt4240.astrosplit.game.UI;
+import no.ntnu.tdt4240.astrosplit.game.World;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
+import no.ntnu.tdt4240.astrosplit.presenters.InteractionPresenter;
 
 
 //Object has sprite and position,
@@ -27,15 +30,17 @@ public class UnitActor extends Actor {
 	TextureComponent textureComponent;
 	PositionComponent positionComponent;
 	MovementComponent movementComponent = null;
+	Entity entity = null;
 
 
-	public UnitActor(TextureComponent texture, TransformComponent transform, PositionComponent pos, Entity entity)
+	public UnitActor(TextureComponent texture, TransformComponent transform, PositionComponent pos, final Entity entity)
 	{
 
 		this.textureComponent = texture;
 		this.transformComponent = transform;
 		this.positionComponent = pos;
 		this.movementComponent = entity.getComponent(MovementComponent.class);
+		this.entity = entity;
 
 		this.sprite = new Sprite(textureComponent.region.getTexture());
 
@@ -48,7 +53,7 @@ public class UnitActor extends Actor {
 			 */
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				System.out.println("clicked");
+				UI.getInteractionPresenter().updateInteraction(entity, null, positionComponent.position);
 				/*
 					TODO
 					-Show some UI to choose action
@@ -60,13 +65,6 @@ public class UnitActor extends Actor {
 					-Set this unit as chosen unit
 						-Move logic to somewhere else
 				 */
-
-				if(movementComponent != null)
-				{
-					movementComponent.position = getPosition();
-					movementComponent.position.y += 10;
-
-				}
 				return true;
 			}
 		});
