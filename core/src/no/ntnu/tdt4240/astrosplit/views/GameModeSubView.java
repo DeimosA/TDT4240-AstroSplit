@@ -76,12 +76,18 @@ class GameModeSubView extends SubView {
 						// #6 - Back
 						System.out.println("Chose: Back");
 						// Main menu
-						menuView.setSubView(new MainMenuSubView(bounds, menuView));
+						goBack();
 					}
 				},
 			}
 		);
 
+	}
+
+	@Override
+	boolean goBack() {
+		menuView.setSubView(new MainMenuSubView(bounds, menuView));
+		return true;
 	}
 
 }

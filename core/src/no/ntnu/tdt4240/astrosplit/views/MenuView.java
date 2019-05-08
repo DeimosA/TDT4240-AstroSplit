@@ -1,14 +1,12 @@
 package no.ntnu.tdt4240.astrosplit.views;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -16,7 +14,7 @@ import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.presenters.MenuPresenter;
 
 
-public class MenuView implements Screen {
+public class MenuView implements View {
 
 	private OrthographicCamera camera;
 	private Viewport viewport;
@@ -150,5 +148,10 @@ public class MenuView implements Screen {
 		title.dispose();
 		subView.dispose();
 		System.out.println("Menu State Disposed");
+	}
+
+	@Override
+	public void goBack() {
+		subView.goBack();
 	}
 }

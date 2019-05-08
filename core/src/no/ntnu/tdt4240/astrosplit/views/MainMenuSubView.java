@@ -45,11 +45,18 @@ class MainMenuSubView extends SubView {
 					@Override
 					public void click() {
 						// Quit
-						Gdx.app.exit();
+						goBack();
 					}
 				}
 			}
 		);
+	}
+
+	@Override
+	boolean goBack() {
+		// At first menu, so quit
+		Gdx.app.exit();
+		return true;
 	}
 
 }

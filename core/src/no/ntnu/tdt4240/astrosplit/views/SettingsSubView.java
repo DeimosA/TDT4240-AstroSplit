@@ -85,12 +85,18 @@ class SettingsSubView extends SubView {
 						// #4 - Back
 						System.out.println("Chose: Back");
 						// Main menu
-						menuView.setSubView(new MainMenuSubView(bounds, menuView));
+						goBack();
 					}
 				},
 			}
 		);
 
+	}
+
+	@Override
+	boolean goBack() {
+		menuView.setSubView(new MainMenuSubView(bounds, menuView));
+		return true;
 	}
 
 }
