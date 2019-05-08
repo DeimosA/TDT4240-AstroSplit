@@ -29,13 +29,14 @@ public class Map {
 	private OrthogonalTiledMapRenderer mapRenderer;
 
 
-	/*
-		TODO
-		Make singleton?
-	 */
-	public Map()
-	{
-		this.map = new TmxMapLoader().load("map/map_01.tmx");
+	public Map() {
+		// Default map
+		this("map/map_01.tmx");
+	}
+
+	public Map(String mapFile) {
+
+		this.map = new TmxMapLoader().load(mapFile);
 		this.properties = map.getProperties();
 		this.layer = (TiledMapTileLayer) map.getLayers().get(0);
 

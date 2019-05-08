@@ -24,6 +24,17 @@ public class MenuButton {
 
 	/**
 	 * Creates a button
+	 * @param texture	Button texture
+	 * @param scale		Button scale
+	 */
+	public MenuButton(Texture texture, float scale) {
+		this(texture.getWidth() * scale / 2f, texture.getHeight() * scale / 2f, texture);
+		bounds.width *= scale;
+		bounds.height*= scale;
+	}
+
+	/**
+	 * Creates a button
 	 * @param xCenter X position of button center
 	 * @param yCenter Y position of button center
 	 * @param texture Button texture

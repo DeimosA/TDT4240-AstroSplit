@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -29,6 +30,8 @@ import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
 import no.ntnu.tdt4240.astrosplit.game.Map;
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
+import no.ntnu.tdt4240.astrosplit.views.widgets.ButtonList;
+import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 
 
 public class GameView implements Screen {
@@ -47,10 +50,16 @@ public class GameView implements Screen {
 	private ShapeRenderer shape;
 	private Stage stage;
 	private Map map;
-	private Texture playerNumberTexture;
+	private Texture playerNumberTex;
+	private Texture actionsBgTex;
+	private Texture unitBgTex;
 
+
+	// Some numbers
 	private int renderHeight;
 	private int renderWidth;
+	private float mapXleft;
+	private float mapXright;
 
 	private OrthographicCamera camera;
 	private Viewport viewport;
@@ -61,6 +70,8 @@ public class GameView implements Screen {
 
 	private static PooledEngine engine = null;
 	private World world;
+
+	private ButtonList actionButtons;
 
 	// Game type dependent stuff
 	private GameType gameType;
@@ -86,7 +97,6 @@ public class GameView implements Screen {
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		spriteBatch = new SpriteBatch();
-		playerNumberTexture = new Texture("Astro/TeamSelect/headingPlayer1.png");
 
 		/* UI viewport and camera */
 		renderHeight = Configuration.getInstance().viewPortRenderHeight;
@@ -98,18 +108,25 @@ public class GameView implements Screen {
 
 		/* Stage setup */
 		map = new Map();
+		// Map metrics in raw pixels
+		int mapWidth = map.getMapWidthInPixels();
+		int mapHeight = map.getMapHeightInPixels();
+		// Map metrics in render pixels
+		float mapAspectRatio = mapWidth / (float)mapHeight;
+		float mapRenderWidth = renderHeight * mapAspectRatio;
+		mapXleft = (renderWidth - mapRenderWidth) / 2f;
+		mapXright = mapXleft + mapRenderWidth;
+		// Cam and viewport for map and stage
 		OrthographicCamera stageCamera = new OrthographicCamera();
-		stageCamera.setToOrtho(false, map.getMapWidthInPixels(), map.getMapHeightInPixels());
+		stageCamera.setToOrtho(false, mapWidth, mapHeight);
 		map.setCamera(stageCamera);
-		Viewport stageViewport = new FitViewport(map.getMapWidthInPixels(), map.getMapHeightInPixels(), stageCamera);
+		Viewport stageViewport = new FitViewport(mapWidth, mapHeight, stageCamera);
 		stage = new Stage(stageViewport);
 		Gdx.input.setInputProcessor(stage);
 
 		/* Engine and stuff */
 		engine = new PooledEngine();
 		this.world = new World();
-		shape = new ShapeRenderer();
-		shape.setProjectionMatrix(camera.combined);
 
 		engine.addSystem(new UnitSystem(world));
 		engine.addSystem(new RenderingSystem(new SpriteBatch(), stage));
@@ -117,8 +134,34 @@ public class GameView implements Screen {
 
 		world.create();
 
+		/* In-game UI stuff */
+		shape = new ShapeRenderer();
+		shape.setProjectionMatrix(camera.combined);
 		UI.Start();
+		playerNumberTex = new Texture("Astro/TeamSelect/headingPlayer1.png");
+		actionsBgTex = new Texture("Hud/hudActions.png");
+		unitBgTex = new Texture("Hud/hudUnitInfo.png");
+		Rectangle actionBounds = new Rectangle(100, 300, 50, 200);
+		actionButtons = new ButtonList(actionBounds, createActionButtons());
+
 		uiTexture = new TextureRegion(new Texture("UI.png"));
+	}
+
+	private MenuButton[] createActionButtons() {
+		return new MenuButton[] {
+			new MenuButton(new Texture("Hud/buttonMove.png"), 2f) {
+				@Override
+				public void click() {
+					// TODO move click action
+				}
+			},
+			new MenuButton(new Texture("Hud/buttonSword.png"), 2f) {
+				@Override
+				public void click() {
+					// TODO attack
+				}
+			}
+		};
 	}
 
 	/*
@@ -181,22 +224,39 @@ public class GameView implements Screen {
 
 		viewport.apply(false);
 		spriteBatch.setProjectionMatrix(camera.combined);
-		drawUI();	//Overlay
+		drawUI(delta);	//Overlay
 
 	}
 
 	//Draws overlay UI
-	private void drawUI() {
+	private void drawUI(float delta) {
 		spriteBatch.begin();
+
+		// Backgrounds
 		spriteBatch.draw(
-			playerNumberTexture,
-			10, renderHeight - playerNumberTexture.getHeight() - 10,
-			playerNumberTexture.getWidth(), playerNumberTexture.getHeight()
+			actionsBgTex,
+			0, 0,
+			mapXleft, renderHeight
 		);
-		/*
-			Draw some UI
-		 */
+		spriteBatch.draw(
+			unitBgTex,
+			mapXright, 0,
+			renderWidth - mapXright, renderHeight
+		);
+
+		// Buttons
+		actionButtons.render(spriteBatch, delta);
+
+		if (playerNumberTex != null) {
+			spriteBatch.draw(
+				playerNumberTex,
+				mapXleft + 10, renderHeight - playerNumberTex.getHeight() - 10,
+				playerNumberTex.getWidth(), playerNumberTex.getHeight()
+			);
+		}
+
 		spriteBatch.draw(uiTexture, 0, 0);
+
 		spriteBatch.end();
 		//Todo: add "selected" indicator
 		if (rangeIndicator > 0 && selectedPosition != null) {
