@@ -56,7 +56,7 @@ class GameModeSubView extends SubView {
 					public void click() {
 						// #3 - Local
 						System.out.println("Chose: Local");
-						menuView.setSubView(new TeamSelectSubView(bounds, menuView, true));
+						menuView.setSubView(new TeamSelectSubView(bounds, menuView, GameView.GameType.LOCAL_GAME));
 					}
 				},
 				new MenuButton(new Texture("Astro/GameModeSelection/buttonTutorial.png")) {
@@ -69,6 +69,7 @@ class GameModeSubView extends SubView {
 				},
 				// Empty space
 //				new MenuButton(new Texture("Astro/GameModeSelection/buttonEmpty.png")),
+
 				new MenuButton(new Texture("Astro/GameModeSelection/buttonBack.png")) {
 					@Override
 					public void click() {

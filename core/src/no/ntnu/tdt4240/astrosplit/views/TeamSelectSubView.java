@@ -28,35 +28,33 @@ class TeamSelectSubView extends SubView {
 
 	private TeamType selectedTeam = null;
 	private int selectedButtonIndex;
-	private boolean isLocalGame = false;
-	private LocalGameModel localGameModel;
+//	private boolean isLocalGame = false;
 	private GameView.GameType gameType;
+	private LocalGameModel localGameModel;
 
 
 	TeamSelectSubView(Rectangle bounds, MenuView menuView, GameView.GameType gameType) {
-		this(bounds, menuView, false, null);
-		this.gameType = gameType;
+		this(bounds, menuView, gameType, null);
 	}
 
 	TeamSelectSubView(Rectangle bounds, MenuView menuView, LocalGameModel gameModel) {
-		this(bounds, menuView, true, gameModel);
-	}
-
-	TeamSelectSubView(Rectangle bounds, MenuView menuView, boolean isLocalGame) {
-		this(bounds, menuView, isLocalGame, null);
+		this(bounds, menuView, GameView.GameType.LOCAL_GAME, gameModel);
 	}
 
 	/**
 	 * Private constructor that should be used for all public
 	 * @param bounds			The bounds of the subview
 	 * @param menuView			The parent view
-	 * @param isLocalGame		Whether this is for a local multiplayer game
+	 * @param gameType			Type of game
 	 * @param localGameModel	The game model, if it has been created
 	 */
-	private TeamSelectSubView(Rectangle bounds, MenuView menuView, boolean isLocalGame, LocalGameModel localGameModel) {
+	private TeamSelectSubView(Rectangle bounds,
+							  MenuView menuView,
+							  GameView.GameType gameType,
+							  LocalGameModel localGameModel) {
 		super(bounds, menuView);
 
-		this.isLocalGame = isLocalGame;
+		this.gameType = gameType;
 		this.localGameModel = localGameModel;
 
 		this.buttons = createButtons();
@@ -93,7 +91,7 @@ class TeamSelectSubView extends SubView {
 		);
 
 		// Player number indicator
-		if (isLocalGame) {
+		if (gameType == GameView.GameType.LOCAL_GAME) {
 			if (localGameModel == null) {
 				// Local game and player 1 select
 				playerNumberTexture = new Texture("Astro/TeamSelect/headingPlayer1.png");
@@ -184,26 +182,27 @@ class TeamSelectSubView extends SubView {
 					// #5 - Confirm
 					if (selectedTeam != null) {
 						System.out.println("Chose: Confirm");
-						if (isLocalGame && localGameModel == null) {
+						if (gameType == GameView.GameType.LOCAL_GAME && localGameModel == null) {
 							// Player 1 have selected their team
 							LocalGameModel gameModel = new LocalGameModel();
 							gameModel.startNewGame();
 							gameModel.setPlayer1(selectedTeam);
 							// So let player 2 select
 							menuView.setSubView(new TeamSelectSubView(bounds, menuView, gameModel));
-						} else if (isLocalGame) {
+
+						} else if (gameType == GameView.GameType.LOCAL_GAME) {
 							// Player 2 have selected their team
 							localGameModel.setPlayer2(selectedTeam);
 							// So start the game
 							ViewStateManager.getInstance().setScreen(
 								new GameView(GameView.GameType.LOCAL_GAME, localGameModel));
+
 						} else {
 							// Other game types
 							if (gameType == GameView.GameType.TUTORIAL_GAME) {
 								TutorialGameModel gameModel = new TutorialGameModel();
 								gameModel.setPlayerTeam(selectedTeam);
 								ViewStateManager.getInstance().setScreen(new GameView(gameType, gameModel));
-
 							}
 						}
 					}

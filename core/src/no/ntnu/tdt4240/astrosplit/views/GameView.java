@@ -22,6 +22,9 @@ import no.ntnu.tdt4240.astrosplit.models.TutorialGameModel;
 
 public class GameView implements Screen {
 
+	/**
+	 * Valid types of game
+	 */
 	public enum GameType {
 		TUTORIAL_GAME,
 		LOCAL_GAME,
