@@ -8,10 +8,17 @@ public final class ViewStateManager {
 
 	private Screen currentScreen;
 
+	/**
+	 * Manages the current view
+	 */
 	private ViewStateManager() {
-		currentScreen = new MenuView(1);
+		currentScreen = new MenuView();
 	}
 
+	/**
+	 * Get the singular instance
+	 * @return VSM instance
+	 */
 	public static ViewStateManager getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new ViewStateManager();
@@ -19,13 +26,22 @@ public final class ViewStateManager {
 		return INSTANCE;
 	}
 
+	/**
+	 * Get the current view
+	 * @return
+	 */
 	public Screen get() {
 		return currentScreen;
 	}
 
+	/**
+	 * Set the current view
+	 * Package protected
+	 * @param newScreen
+	 */
 	void setScreen(Screen newScreen) {
 		currentScreen.dispose();
 		currentScreen = newScreen;
 	}
-}
 
+}

@@ -9,7 +9,6 @@ public class BasicAttack {
 
 	public static void attack(Entity attacker, Entity victim) {
 		ActionComponentAttack attackComponent = attacker.getComponent(ActionComponentAttack.class);
-		HealthComponent healthComponent = victim.getComponent(HealthComponent.class);
 
 		if (Attack.rangeCheck(attacker, victim, attackComponent.range)) {
 			HealthComponent health = victim.getComponent(HealthComponent.class);

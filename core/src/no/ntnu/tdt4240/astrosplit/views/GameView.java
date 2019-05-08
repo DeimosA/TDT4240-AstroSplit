@@ -12,7 +12,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
 
 import no.ntnu.tdt4240.astrosplit.game.UI;
 import no.ntnu.tdt4240.astrosplit.game.World;
@@ -23,8 +26,20 @@ import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
 import no.ntnu.tdt4240.astrosplit.game.Map;
+import no.ntnu.tdt4240.astrosplit.models.GameModel;
+import no.ntnu.tdt4240.astrosplit.models.TutorialGameModel;
+
 
 public class GameView implements Screen {
+
+	/**
+	 * Valid types of game
+	 */
+	public enum GameType {
+		TUTORIAL_GAME,
+		LOCAL_GAME,
+//		ONLINE_GAME,
+	}
 
 	private OrthographicCamera camera;
 	private SpriteBatch spriteBatch;
@@ -34,6 +49,7 @@ public class GameView implements Screen {
 	private static Vector2 selectedPosition = null;
 	private Vector3 cursorPos = new Vector3();
 	private Stage stage;
+	private Viewport viewport;
 
 
 	private static PooledEngine engine = null;
@@ -42,7 +58,29 @@ public class GameView implements Screen {
 
 	private Map map;
 
-	GameView() {
+
+	private GameType gameType;
+	private GameModel gameModel;
+
+
+	GameView(GameType gameType, GameModel gameModel) {
+		this();
+		this.gameType = gameType;
+		this.gameModel = gameModel;
+
+		switch (gameType) {
+			case TUTORIAL_GAME:
+				break;
+
+			case LOCAL_GAME:
+				gameModel.save();
+				break;
+		}
+	}
+
+	private GameView()
+	{
+
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 
 		this.map = new Map();
@@ -52,8 +90,11 @@ public class GameView implements Screen {
 		camera.position.x = map.getMapWidthInPixels()*0.5f;
 		camera.position.y = map.getMapHeightInPixels()*0.5f;
 
-		stage = new Stage(new FitViewport(
-			map.getMapWidthInPixels() , map.getMapHeightInPixels()));
+
+
+		viewport = new ExtendViewport(map.getMapWidthInPixels(), map.getMapHeightInPixels());
+		stage = new Stage(viewport);
+
 		Gdx.input.setInputProcessor(stage);
 
 		engine = new PooledEngine();
@@ -160,7 +201,7 @@ public class GameView implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-
+		viewport.update(width, height, false);
 	}
 
 	@Override
