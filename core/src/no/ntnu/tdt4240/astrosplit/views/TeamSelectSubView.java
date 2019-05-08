@@ -173,7 +173,7 @@ class TeamSelectSubView extends SubView {
 				public void click() {
 					// #4 - Back
 					System.out.println("Chose: Back");
-					menuView.setSubView(new GameModeSubView(bounds, menuView));
+					goBack();
 				}
 			},
 			new MenuButton(new Texture("Astro/TeamSelect/buttonConfirmGolden.png")) {
@@ -301,4 +301,9 @@ class TeamSelectSubView extends SubView {
 		}
 	}
 
+	@Override
+	boolean goBack() {
+		menuView.setSubView(new GameModeSubView(bounds, menuView));
+		return true;
+	}
 }

@@ -1,25 +1,23 @@
 package no.ntnu.tdt4240.astrosplit.views;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.presenters.MenuPresenter;
 
 
-public class MenuView implements Screen {
+public class MenuView implements View {
 
 	private OrthographicCamera camera;
 	private Viewport viewport;
-	private SpriteBatch spriteBatch;
 	private Vector3 cursorPos = new Vector3();
 	private MenuPresenter menuPresenter;
 
@@ -29,6 +27,7 @@ public class MenuView implements Screen {
 	private int titlePosY;
 
 	// Disposables
+	private SpriteBatch spriteBatch;
 	private Texture background;
 	private Texture title;
 	private SubView subView;
@@ -36,7 +35,7 @@ public class MenuView implements Screen {
 
 	MenuView() {
 
-		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
+		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1);
 		spriteBatch = new SpriteBatch();
 		camera = new OrthographicCamera();
 
@@ -45,7 +44,7 @@ public class MenuView implements Screen {
 		renderHeight = Configuration.getInstance().viewPortRenderHeight;
 		renderWidth = Configuration.getInstance().getViewPortRenderWidth();
 		camera.setToOrtho(false, renderWidth, renderHeight);
-		viewport = new ExtendViewport(renderWidth, renderHeight, camera);
+		viewport = new FitViewport(renderWidth, renderHeight, camera);
 
 		/* Menu background */
 		background = new Texture("Astro/backgroundAstro.png");
@@ -144,9 +143,15 @@ public class MenuView implements Screen {
 
 	@Override
 	public void dispose() {
+		spriteBatch.dispose();
 		background.dispose();
 		title.dispose();
 		subView.dispose();
 		System.out.println("Menu State Disposed");
+	}
+
+	@Override
+	public void goBack() {
+		subView.goBack();
 	}
 }

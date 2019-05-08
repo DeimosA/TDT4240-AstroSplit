@@ -15,14 +15,10 @@ import no.ntnu.tdt4240.astrosplit.game.components.ActorComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
-import no.ntnu.tdt4240.astrosplit.models.Configuration;
 
 public class RenderingSystem extends IteratingSystem{
 
-	static final float renderWidth = Configuration.getInstance().getViewPortRenderWidth();
-	static final float renderHeight = Configuration.getInstance().viewPortRenderHeight;
 	private final Stage stage;
-
 
 	//private OrthographicCamera camera;
 	private SpriteBatch batch;
@@ -74,6 +70,7 @@ public class RenderingSystem extends IteratingSystem{
 
 		renderQueue.sort(comparator);
 
+		batch.setProjectionMatrix(stage.getViewport().getCamera().combined);
 		batch.begin();
 
 		for(Entity entity : renderQueue)
@@ -100,10 +97,11 @@ public class RenderingSystem extends IteratingSystem{
 					actor.actor.updateActor(tex,t,p);
 				}
 			//stage.act
-			stage.draw();
 
 
 		}
+
+		stage.draw();
 
 		batch.end();
 		renderQueue.clear();

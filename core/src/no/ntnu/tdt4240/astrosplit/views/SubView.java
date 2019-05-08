@@ -49,4 +49,10 @@ abstract class SubView {
 	void dispose() {
 		buttonList.dispose();
 	}
+
+	/**
+	 * Go back one menu or action
+	 * @return Whether an action was taken or not
+	 */
+	abstract boolean goBack();
 }
