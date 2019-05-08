@@ -38,6 +38,7 @@ class MainMenuSubView extends SubView {
 					public void click() {
 						// Settings
 						System.out.println("Chose: Settings");
+						menuView.setSubView(new SettingsSubView(bounds, menuView));
 					}
 				},
 				new MenuButton(new Texture("Astro/buttonQuit.png")) {
