@@ -20,16 +20,12 @@ import no.ntnu.tdt4240.astrosplit.views.GameView;
 
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class World {
 
 	private PooledEngine engine;
-
-
 
 	public World() {
 		this.engine = GameView.getGameEngine();
@@ -40,7 +36,6 @@ public class World {
 	{
 		Entity firstEntity = createTestEntity(new Vector2(50,0));
 		Entity secondEntity = createTestEntity(new Vector2(-50,0));
-
 		attack(firstEntity,secondEntity);
 
 		//firstEntity.remove(MovementComponent.class);
@@ -48,8 +43,6 @@ public class World {
 		moveTo(firstEntity, new Vector2(50,100));
 
 	}
-
-
 
 
 	public Entity createTestEntity(Vector2 pos)

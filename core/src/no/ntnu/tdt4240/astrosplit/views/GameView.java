@@ -5,16 +5,22 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import no.ntnu.tdt4240.astrosplit.game.UI;
 import no.ntnu.tdt4240.astrosplit.game.World;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
+import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
-import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
 import no.ntnu.tdt4240.astrosplit.game.Map;
 
@@ -22,9 +28,12 @@ public class GameView implements Screen {
 
 	private OrthographicCamera camera;
 	private SpriteBatch spriteBatch;
+	private ShapeRenderer shape;
+	private TextureRegion uiTexture;
+	private static int rangeIndicator;
+	private static Vector2 selectedPosition = null;
 	private Vector3 cursorPos = new Vector3();
 	private Stage stage;
-
 
 
 	private static PooledEngine engine = null;
@@ -33,11 +42,8 @@ public class GameView implements Screen {
 
 	private Map map;
 
-	GameView()
-	{
-
+	GameView() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-
 
 		this.map = new Map();
 
@@ -46,16 +52,15 @@ public class GameView implements Screen {
 		camera.position.x = map.getMapWidthInPixels()*0.5f;
 		camera.position.y = map.getMapHeightInPixels()*0.5f;
 
-
 		stage = new Stage(new FitViewport(
-			map.getMapWidthInPixels(), map.getMapHeightInPixels()));
+			map.getMapWidthInPixels() , map.getMapHeightInPixels()));
 		Gdx.input.setInputProcessor(stage);
-
 
 		engine = new PooledEngine();
 		this.world = new World();
 		spriteBatch = new SpriteBatch();
-
+		shape = new ShapeRenderer();
+		shape.setProjectionMatrix(camera.combined);
 
 		engine.addSystem(new UnitSystem(world));
 		engine.addSystem(new RenderingSystem(spriteBatch,stage));
@@ -64,19 +69,15 @@ public class GameView implements Screen {
 		world.create();
 
 
-
-
-
 		this.map.setCamera(camera);
 		spriteBatch.setProjectionMatrix(camera.combined);
 
-
-
-
+		UI.Start();
+		uiTexture = new TextureRegion(new Texture("UI.png"));
 	}
 
 	/*
-		Pauses all systems connnected to engine
+		Pauses all systems connected to engine
 	 */
 	private void pauseSystems() {
 		for(EntitySystem system : getGameEngine().getSystems())
@@ -92,11 +93,6 @@ public class GameView implements Screen {
 		return engine;
 	}
 
-
-
-	/*
-		Dummy inputhandler, has no purpose yet
-	 */
 	private void handleInput() {
 
 		/* Texture pos touched */
@@ -104,8 +100,16 @@ public class GameView implements Screen {
 			cursorPos.x = Gdx.input.getX();
 			cursorPos.y = Gdx.input.getY();
 			camera.unproject(cursorPos);
-
-			/*Do something*/
+			//Hitboxes for the different intentions
+			if (cursorPos.x <= 106 && cursorPos.x >= 68) {
+				if (cursorPos.y <= 64 && cursorPos.y >= 0) {
+					UI.getInteractionPresenter().updateIntent(ActionComponent.class);
+				} else if (cursorPos.y <= 128 && cursorPos.y >= 64) {
+					UI.getInteractionPresenter().updateIntent(ActionComponentAttack.class);
+				} else if (cursorPos.y <= 192 && cursorPos.y >= 128) {
+					UI.getInteractionPresenter().updateIntent(MovementComponent.class);
+				}
+			}
 		}
 	}
 
@@ -122,7 +126,8 @@ public class GameView implements Screen {
 	 */
 	@Override
 	public void render(float delta) {
-		//handleInput();
+
+		handleInput();
 		camera.update();
 		map.render();
 		engine.update(delta);	//Will update the RenderingSystem, displaying game characters
@@ -137,7 +142,20 @@ public class GameView implements Screen {
 		/*
 			Draw some UI
 		 */
+		spriteBatch.draw(uiTexture, 0, 0);
 		spriteBatch.end();
+		//Todo: add "selected" indicator
+		if (rangeIndicator > 0 && selectedPosition != null) {
+			shape.setColor(0.1f,0.1f,0.1f,1);
+			shape.begin(ShapeRenderer.ShapeType.Line);
+			shape.circle(selectedPosition.x + map.getMapWidthInPixels() / 2f, selectedPosition.y + map.getMapHeightInPixels() / 2f, rangeIndicator);
+			shape.end();
+		}
+	}
+
+	public static void updateRange(int range, Vector2 pos) {
+		rangeIndicator = range;
+		selectedPosition = pos;
 	}
 
 	@Override
