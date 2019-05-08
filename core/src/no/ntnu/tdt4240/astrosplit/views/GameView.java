@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,7 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
@@ -26,8 +27,8 @@ import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
 import no.ntnu.tdt4240.astrosplit.game.Map;
+import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
-import no.ntnu.tdt4240.astrosplit.models.TutorialGameModel;
 
 
 public class GameView implements Screen {
@@ -41,24 +42,27 @@ public class GameView implements Screen {
 //		ONLINE_GAME,
 	}
 
-	private OrthographicCamera camera;
+	// Disposables
 	private SpriteBatch spriteBatch;
 	private ShapeRenderer shape;
+	private Stage stage;
+	private Map map;
+	private Texture playerNumberTexture;
+
+	private int renderHeight;
+	private int renderWidth;
+
+	private OrthographicCamera camera;
+	private Viewport viewport;
 	private TextureRegion uiTexture;
 	private static int rangeIndicator;
 	private static Vector2 selectedPosition = null;
 	private Vector3 cursorPos = new Vector3();
-	private Stage stage;
-	private Viewport viewport;
-
 
 	private static PooledEngine engine = null;
 	private World world;
 
-
-	private Map map;
-
-
+	// Game type dependent stuff
 	private GameType gameType;
 	private GameModel gameModel;
 
@@ -78,40 +82,40 @@ public class GameView implements Screen {
 		}
 	}
 
-	private GameView()
-	{
+	private GameView() {
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
+		spriteBatch = new SpriteBatch();
+		playerNumberTexture = new Texture("Astro/TeamSelect/headingPlayer1.png");
 
-		this.map = new Map();
-
+		/* UI viewport and camera */
+		renderHeight = Configuration.getInstance().viewPortRenderHeight;
+		renderWidth = Configuration.getInstance().getViewPortRenderWidth();
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false,map.getMapWidthInPixels(), map.getMapHeightInPixels());
-		camera.position.x = map.getMapWidthInPixels()*0.5f;
-		camera.position.y = map.getMapHeightInPixels()*0.5f;
+		camera.setToOrtho(false, renderWidth, renderHeight);
+		viewport = new FitViewport(renderWidth, renderHeight, camera);
+		viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-
-
-		viewport = new ExtendViewport(map.getMapWidthInPixels(), map.getMapHeightInPixels());
-		stage = new Stage(viewport);
-
+		/* Stage setup */
+		map = new Map();
+		OrthographicCamera stageCamera = new OrthographicCamera();
+		stageCamera.setToOrtho(false, map.getMapWidthInPixels(), map.getMapHeightInPixels());
+		map.setCamera(stageCamera);
+		Viewport stageViewport = new FitViewport(renderHeight, renderHeight, camera);
+		stage = new Stage(stageViewport);
 		Gdx.input.setInputProcessor(stage);
 
+		/* Engine and stuff */
 		engine = new PooledEngine();
 		this.world = new World();
-		spriteBatch = new SpriteBatch();
 		shape = new ShapeRenderer();
 		shape.setProjectionMatrix(camera.combined);
 
 		engine.addSystem(new UnitSystem(world));
-		engine.addSystem(new RenderingSystem(spriteBatch,stage));
+		engine.addSystem(new RenderingSystem(new SpriteBatch(), stage));
 		engine.addSystem(new MovementSystem());
 
 		world.create();
-
-
-		this.map.setCamera(camera);
-		spriteBatch.setProjectionMatrix(camera.combined);
 
 		UI.Start();
 		uiTexture = new TextureRegion(new Texture("UI.png"));
@@ -167,19 +171,29 @@ public class GameView implements Screen {
 	 */
 	@Override
 	public void render(float delta) {
-
 		handleInput();
-		camera.update();
+
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		stage.getViewport().apply();
 		map.render();
 		engine.update(delta);	//Will update the RenderingSystem, displaying game characters
-		drawUI();	//Overlay
 
+		camera.update();
+		spriteBatch.setProjectionMatrix(camera.combined);
+		viewport.apply(false);
+		drawUI();	//Overlay
 
 	}
 
 	//Draws overlay UI
 	private void drawUI() {
 		spriteBatch.begin();
+		spriteBatch.draw(
+			playerNumberTexture,
+			10, renderHeight - playerNumberTexture.getHeight() - 10,
+			playerNumberTexture.getWidth(), playerNumberTexture.getHeight()
+		);
 		/*
 			Draw some UI
 		 */
@@ -201,6 +215,8 @@ public class GameView implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
+		stage.getViewport().update(height, height, false);
+		stage.getViewport().setScreenPosition((width - stage.getViewport().getScreenWidth()) / 2, 0);
 		viewport.update(width, height, false);
 	}
 
@@ -221,6 +237,9 @@ public class GameView implements Screen {
 
 	@Override
 	public void dispose() {
-
+		spriteBatch.dispose();
+		shape.dispose();
+		stage.dispose();
+		map.dispose();
 	}
 }

@@ -44,26 +44,26 @@ public class Map {
 		this.TILE_HEIGHT_PX = (int) renderHeight/layer.getHeight();
 
 		this.mapRenderer = new OrthogonalTiledMapRenderer(map) {
-			@Override
-			public void setView(OrthographicCamera camera) {
-				super.setView(camera);
-			}
-
-			@Override
-			public void setView(Matrix4 projectionMatrix, float viewboundsX, float viewboundsY, float viewboundsWidth, float viewboundsHeight) {
-
-			}
-
-			@Override
-			public void render() {
-				super.render();
-				//super.renderTileLayer(layer);
-			}
-
-			@Override
-			public void render(int[] layers) {
-
-			}
+//			@Override
+//			public void setView(OrthographicCamera camera) {
+//				super.setView(camera);
+//			}
+//
+//			@Override
+//			public void setView(Matrix4 projectionMatrix, float viewboundsX, float viewboundsY, float viewboundsWidth, float viewboundsHeight) {
+//
+//			}
+//
+//			@Override
+//			public void render() {
+//				super.render();
+//				//super.renderTileLayer(layer);
+//			}
+//
+//			@Override
+//			public void render(int[] layers) {
+//
+//			}
 		};
 
 	}
