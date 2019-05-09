@@ -1,8 +1,6 @@
 package no.ntnu.tdt4240.astrosplit.game.actors;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -16,13 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import java.util.ArrayList;
 
 import no.ntnu.tdt4240.astrosplit.game.UI;
-import no.ntnu.tdt4240.astrosplit.game.World;
 import no.ntnu.tdt4240.astrosplit.game.abilities.Move;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
-import no.ntnu.tdt4240.astrosplit.presenters.InteractionPresenter;
 
 
 //Object has sprite and position,
@@ -65,8 +61,7 @@ public class UnitActor extends Actor {
 				UI.getInteractionPresenter().updateInteraction(entity, null, positionComponent.position);
 
 				//Toggle tiles
-				showHighlightedTiles = !showHighlightedTiles;
-
+				toggleTiles();
 
 
 				/*
@@ -99,9 +94,13 @@ public class UnitActor extends Actor {
 			sprite.getWidth()*transformComponent.scale.x,
 			sprite.getHeight()*transformComponent.scale.y);
 		sprite.setScale(transformComponent.scale.x, transformComponent.scale.y);
-
-
 	}
+
+
+	private void toggleTiles() {
+		this.showHighlightedTiles = !this.showHighlightedTiles;
+	}
+
 	/*
 		Update actor, calls to setPosition to apply these changes to view
 	 */
@@ -119,7 +118,7 @@ public class UnitActor extends Actor {
 		sprite.draw(batch);
 		if(showHighlightedTiles && tileList.size() < gridSize)
 		{
-			drawTiles(batch, this.getStage());
+			drawTiles();
 		}
 		else if(showHighlightedTiles == false)
 			{
@@ -135,7 +134,7 @@ public class UnitActor extends Actor {
 		super.act(delta);
 	}
 
-	public void drawTiles(Batch batch, Stage stage)
+	private void drawTiles()
 	{
 		for(int posx = -(int)movementComponent.distance*32; posx <= movementComponent.distance*32; posx +=32)
 		{
@@ -162,9 +161,14 @@ public class UnitActor extends Actor {
 					gridSize-=1;
 					continue;
 				}
+				if(Math.abs(posx)/32 + Math.abs(posy)/32 > movementComponent.distance)
+				{
+					gridSize-=1;
+					continue;
+				}
 
 				HighlightedTileActor tile = new HighlightedTileActor(this);
-				stage.addActor(tile);
+				this.getStage().addActor(tile);
 				tile.setPosition(posx+144+positionComponent.position.x,posy+144+positionComponent.position.y);
 				tileList.add(tile);
 			}
@@ -219,5 +223,9 @@ public class UnitActor extends Actor {
 		return true;
 	}
 
+	public void select(boolean bool)
+	{
+		this.showHighlightedTiles = bool;
+	}
 
 }
