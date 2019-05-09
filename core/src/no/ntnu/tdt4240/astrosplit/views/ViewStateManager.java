@@ -7,6 +7,7 @@ public final class ViewStateManager {
 	private static ViewStateManager INSTANCE = null;
 
 	private Screen currentScreen;
+	private Screen oldScreen = null; // Keep so we can dispose at end of renderloop
 
 	/**
 	 * Manages the current view
@@ -40,8 +41,14 @@ public final class ViewStateManager {
 	 * @param newScreen
 	 */
 	void setScreen(Screen newScreen) {
-		currentScreen.dispose();
+		oldScreen = currentScreen;
 		currentScreen = newScreen;
 	}
 
+	public void disposeOldScreen() {
+		if (oldScreen != null) {
+			oldScreen.dispose();
+			oldScreen = null;
+		}
+	}
 }
