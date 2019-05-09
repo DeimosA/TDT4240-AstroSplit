@@ -3,21 +3,21 @@ package no.ntnu.tdt4240.astrosplit.views;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
-import java.awt.Menu;
-
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.views.widgets.ButtonList;
 import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 
 
 class SettingsSubView extends SubView {
+	// Make buttons reachable inside of click()
 	private MenuButton btnFullscreen;
 	private MenuButton btnMusic;
 	private MenuButton btnSound;
 
+	// Texture-boxes checked or not
 	private boolean fullscreenOn = false;
-	private boolean musicOn;
-	private boolean soundOn;
+	private boolean musicOn; //false
+	private boolean soundOn; //false
 
 	/**
 	 * Sub view for selecting game mode
@@ -40,7 +40,8 @@ class SettingsSubView extends SubView {
 			soundOn = true;
 //		}
 
-		/* Fullscreen button (boolean, texture)  */
+
+		/* Fullscreen button (boolean boxChecked, texture)  */
 		final MenuButton fullscreenButton = new MenuButton(
 			fullscreenOn,
 			new Texture("Astro/Settings/buttonFullscreenOn.png")
@@ -55,14 +56,11 @@ class SettingsSubView extends SubView {
 		};
 		fullscreenButton.setDisabledTexture(new Texture("Astro/Settings/buttonFullscreenOff.png"));
 
-		/* Fullscreen button, set variable to make it accessible inside of click() */
+		/* Make fullscreenButton reachable inside of click() */
 		btnFullscreen = fullscreenButton;
 
-		// At load: If checked == true, change texture
-//		checked(fullscreenButton);
 
-
-		/* Music volume button, box texture unchecked if turned off */
+		/* Music volume button (boolean boxChecked, texture)*/
 		MenuButton musicButton = new MenuButton(
 			musicOn,
 			new Texture("Astro/Settings/buttonMusicOn.png")
@@ -76,10 +74,11 @@ class SettingsSubView extends SubView {
 		};
 		musicButton.setDisabledTexture(new Texture("Astro/Settings/buttonMusicOff.png"));
 
-		// Make musicButton reachable inside click()
+		// Make musicButton reachable inside of click()
 		btnMusic = musicButton;
 
-		/* Sound effects volume button, box texture unchecked if turned off */
+
+		/* Sound effects volume button (boolean boxChecked, texture) */
 		MenuButton soundButton = new MenuButton(
 			soundOn,
 			new Texture("Astro/Settings/buttonSoundOn.png")
@@ -95,10 +94,11 @@ class SettingsSubView extends SubView {
 		};
 		soundButton.setDisabledTexture(new Texture("Astro/Settings/buttonSoundOff.png"));
 
-		// Make soundbutton reachable inside click()
+		// Make soundbutton reachable inside of click()
 		btnSound = soundButton;
 
-		/* Settings */
+
+		/* Settings-buttons */
 		this.buttonList = new ButtonList(bounds,
 			new MenuButton[] {
 				fullscreenButton,
@@ -124,7 +124,8 @@ class SettingsSubView extends SubView {
 		return true;
 	}
 
-	void clicked(MenuButton button){
+	// If clicked, change box checked value and texture
+	private void clicked(MenuButton button){
 		if(button.getChecked()){
 			button.setChecked(false);
 		} else {
