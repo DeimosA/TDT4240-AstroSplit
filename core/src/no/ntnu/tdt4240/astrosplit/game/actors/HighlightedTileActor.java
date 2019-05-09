@@ -17,7 +17,10 @@ public class HighlightedTileActor extends Actor {
 
 	public HighlightedTileActor(final UnitActor actor)
 	{
-		sprite = new Sprite(new Texture("map/tile_01_top.png"));
+		Texture texture = new Texture("map/tile_green.png");
+
+		sprite = new Sprite(texture);
+		sprite.setAlpha(0.5f);
 		this.actor = actor;
 		setTouchable(Touchable.enabled);
 		addListener(new InputListener() {
@@ -55,7 +58,6 @@ public class HighlightedTileActor extends Actor {
 			sprite.getWidth(),
 			sprite.getHeight());
 
-		//tileSprite.setPosition(x,y);
 	}
 
 	private void move(Vector2 pos)

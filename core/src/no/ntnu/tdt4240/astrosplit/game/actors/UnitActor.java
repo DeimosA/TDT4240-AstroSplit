@@ -39,6 +39,7 @@ public class UnitActor extends Actor {
 	private Entity entity = null;
 	private boolean showHighlightedTiles = false;
 	private ArrayList<HighlightedTileActor> tileList = new ArrayList<HighlightedTileActor>();
+	private int gridSize;
 
 
 	public UnitActor(TextureComponent texture, TransformComponent transform, PositionComponent pos, final Entity entity)
@@ -49,7 +50,7 @@ public class UnitActor extends Actor {
 		this.positionComponent = entity.getComponent(PositionComponent.class);
 		this.movementComponent = entity.getComponent(MovementComponent.class);
 		this.entity = entity;
-
+		this.gridSize = (int) Math.pow(movementComponent.distance,2);
 		this.sprite = new Sprite(textureComponent.region.getTexture());
 
 		//Every UnitActor is constructed with an eventlistener, TouchDown method.
@@ -116,11 +117,11 @@ public class UnitActor extends Actor {
 	public void draw(Batch batch, float parentAlpha)
 	{
 		sprite.draw(batch);
-		if(showHighlightedTiles)
+		if(showHighlightedTiles && tileList.size() < gridSize)
 		{
 			drawTiles(batch, this.getStage());
 		}
-		else
+		else if(showHighlightedTiles == false)
 			{
 				destroyTiles();
 			}
@@ -142,11 +143,25 @@ public class UnitActor extends Actor {
 			for(int posy = -(int)movementComponent.distance*32; posy <= movementComponent.distance*32; posy +=32)
 			{
 				if(0 == posx && 0 == posy)
+				{
+					gridSize-=1;
 					continue;
+				}
 				if(posx+144+positionComponent.position.x > 256 || posx+144+positionComponent.position.x < 32)
+				{
+					gridSize-=1;
 					continue;
+				}
 				if(posy+144+positionComponent.position.y > 256 || posy+144+positionComponent.position.y < 32)
+				{
+					gridSize-=1;
 					continue;
+				}
+				if(!collisionCheck(new Vector2(posx+positionComponent.position.x,posy+positionComponent.position.y)))
+				{
+					gridSize-=1;
+					continue;
+				}
 
 				HighlightedTileActor tile = new HighlightedTileActor(this);
 				stage.addActor(tile);
@@ -160,7 +175,10 @@ public class UnitActor extends Actor {
 		for(HighlightedTileActor tileActor: tileList)
 		{
 			tileActor.remove();
+
 		}
+		tileList.clear();
+		gridSize = (int) Math.pow(movementComponent.distance,2);
 	}
 
 
@@ -182,9 +200,23 @@ public class UnitActor extends Actor {
 
 	public void move(Vector2 pos)
 	{
-		destroyTiles();
+		if(collisionCheck(pos))
+			Move.move(entity,pos);
+
 		showHighlightedTiles = false;
-		Move.move(entity,pos);
+		destroyTiles();
+	}
+
+	private boolean collisionCheck(Vector2 pos)
+	{
+		for(Actor actor : this.getStage().getActors()){
+			if(actor.getClass() == UnitActor.class)
+			{
+				if(pos.x+144 == actor.getX() && pos.y+144 == actor.getY())
+					return false;
+			}
+		}
+		return true;
 	}
 
 

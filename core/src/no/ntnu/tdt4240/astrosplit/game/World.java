@@ -27,6 +27,8 @@ public class World {
 
 		MarineMedicEntity marineMedicEntity = new MarineMedicEntity();
 		marineMedicEntity.create(new Vector2(16,16));
+		MarineMedicEntity marineMedicEntity2 = new MarineMedicEntity();
+		marineMedicEntity2.create(new Vector2(-48,16));
 
 	}
 
