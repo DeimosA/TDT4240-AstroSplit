@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.astrosplit.presenters;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 
 import no.ntnu.tdt4240.astrosplit.views.View;
 
@@ -10,10 +11,12 @@ import no.ntnu.tdt4240.astrosplit.views.View;
 public class MenuPresenter {
 
 	private View currentView;
+	private InputMultiplexer inputMultiplexer;
 
 	public MenuPresenter(View currentView) {
 		Gdx.input.setCatchBackKey(true);
-		Gdx.input.setInputProcessor(backInputProcessor);
+//		inputMultiplexer.addProcessor(backInputProcessor);
+//		Gdx.input.setInputProcessor(inputMultiplexer);
 
 		this.currentView = currentView;
 	}
@@ -38,6 +41,6 @@ public class MenuPresenter {
 
 	public void dispose() {
 		this.currentView = null;
-		Gdx.input.setInputProcessor(null);
+//		inputMultiplexer.removeProcessor(backInputProcessor);
 	}
 }
