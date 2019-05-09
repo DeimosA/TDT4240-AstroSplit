@@ -4,27 +4,29 @@ package no.ntnu.tdt4240.astrosplit.game;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.math.Vector2;
+
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.entities.AlienMeleeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineMedicEntity;
-
-import no.ntnu.tdt4240.astrosplit.views.GameView;
-
-
+import no.ntnu.tdt4240.astrosplit.game.entities.MarineMeleeEntity;
+import no.ntnu.tdt4240.astrosplit.game.entities.MarineRangeEntity;
+import no.ntnu.tdt4240.astrosplit.game.entities.SectoidMeleeEntity;
 
 
 public class World {
 
+
 	private PooledEngine engine;
 
-	public World() {
-		this.engine = GameView.getGameEngine();
+
+	public World(PooledEngine engine) {
+		this.engine = engine;
 	}
+
 
 	//this method should create all units to be shown
 	public void create()
 	{
-
 		MarineMedicEntity marineMedicEntity = new MarineMedicEntity();
 		marineMedicEntity.create(new Vector2(16,16));
 		MarineMedicEntity marineMedicEntity2 = new MarineMedicEntity();
@@ -44,6 +46,4 @@ public class World {
 	{
 		engine.removeEntity(entity);
 	}
-
-
 }

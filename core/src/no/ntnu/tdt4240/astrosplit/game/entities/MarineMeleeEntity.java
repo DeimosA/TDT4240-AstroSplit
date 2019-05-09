@@ -15,19 +15,20 @@ import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
-import no.ntnu.tdt4240.astrosplit.views.GameView;
 
 
 public class MarineMeleeEntity extends Entity {
 
+
 	private PooledEngine engine;
 
-	public MarineMeleeEntity(){engine = GameView.getGameEngine();}
+
+	public MarineMeleeEntity(PooledEngine engine){
+		this.engine = engine;
+	}
+
 
 	public Entity create(Vector2 pos){
-
-		Entity entity = new Entity();
-
 
 		int damage = 50; //Damage of units attack
 		int range = 100; //Range of units attack
@@ -55,18 +56,17 @@ public class MarineMeleeEntity extends Entity {
 		tm.scale.set(0.1f,0.1f);
 		tp.type = type;
 
-		entity.add(pc);
-		entity.add(tc);
-		entity.add(ac);
-		entity.add(tm);
-		entity.add(am);
-		entity.add(tp);
-		entity.add(hc);
-		entity.add(mc);
-		entity.add(aca);
-		engine.addEntity(entity);
+		this.add(pc);
+		this.add(tc);
+		this.add(ac);
+		this.add(tm);
+		this.add(am);
+		this.add(tp);
+		this.add(hc);
+		this.add(mc);
+		this.add(aca);
+		engine.addEntity(this);
 
-		return entity;
-
+		return this;
 	}
 }
