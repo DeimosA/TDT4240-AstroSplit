@@ -27,9 +27,9 @@ public class World {
 	//this method should create all units to be shown
 	public void create()
 	{
-		MarineMedicEntity marineMedicEntity = new MarineMedicEntity();
+		MarineMedicEntity marineMedicEntity = new MarineMedicEntity(engine);
 		marineMedicEntity.create(new Vector2(16,16));
-		MarineMedicEntity marineMedicEntity2 = new MarineMedicEntity();
+		MarineMedicEntity marineMedicEntity2 = new MarineMedicEntity(engine);
 		marineMedicEntity2.create(new Vector2(-48,16));
 
 	}
