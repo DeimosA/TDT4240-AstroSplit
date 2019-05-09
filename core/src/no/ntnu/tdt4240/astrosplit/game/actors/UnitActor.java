@@ -13,8 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 
+import java.util.ArrayList;
+
 import no.ntnu.tdt4240.astrosplit.game.UI;
 import no.ntnu.tdt4240.astrosplit.game.World;
+import no.ntnu.tdt4240.astrosplit.game.abilities.Move;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
@@ -25,6 +28,7 @@ import no.ntnu.tdt4240.astrosplit.presenters.InteractionPresenter;
 //Object has sprite and position,
 //Handles on click events
 
+
 public class UnitActor extends Actor {
 
 	private Sprite sprite;
@@ -33,6 +37,8 @@ public class UnitActor extends Actor {
 	private PositionComponent positionComponent;
 	private MovementComponent movementComponent = null;
 	private Entity entity = null;
+	private boolean showHighlightedTiles = false;
+	private ArrayList<HighlightedTileActor> tileList = new ArrayList<HighlightedTileActor>();
 
 
 	public UnitActor(TextureComponent texture, TransformComponent transform, PositionComponent pos, final Entity entity)
@@ -56,6 +62,10 @@ public class UnitActor extends Actor {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				UI.getInteractionPresenter().updateInteraction(entity, null, positionComponent.position);
+
+				//Toggle tiles
+				showHighlightedTiles = !showHighlightedTiles;
+
 
 
 				/*
@@ -106,7 +116,16 @@ public class UnitActor extends Actor {
 	public void draw(Batch batch, float parentAlpha)
 	{
 		sprite.draw(batch);
-		drawTiles(batch, this.getStage());
+		if(showHighlightedTiles)
+		{
+			drawTiles(batch, this.getStage());
+		}
+		else
+			{
+				destroyTiles();
+			}
+
+
 	}
 
 	@Override
@@ -129,12 +148,21 @@ public class UnitActor extends Actor {
 				if(posy+144+positionComponent.position.y > 256 || posy+144+positionComponent.position.y < 32)
 					continue;
 
-				HighlightedTileActor tile = new HighlightedTileActor();
+				HighlightedTileActor tile = new HighlightedTileActor(this);
 				stage.addActor(tile);
 				tile.setPosition(posx+144+positionComponent.position.x,posy+144+positionComponent.position.y);
+				tileList.add(tile);
 			}
 		}
 	}
+
+	private void destroyTiles() {
+		for(HighlightedTileActor tileActor: tileList)
+		{
+			tileActor.remove();
+		}
+	}
+
 
 
 	public void setTouchable(boolean touchable)
@@ -152,6 +180,12 @@ public class UnitActor extends Actor {
 		return positionComponent.position;
 	}
 
+	public void move(Vector2 pos)
+	{
+		destroyTiles();
+		showHighlightedTiles = false;
+		Move.move(entity,pos);
+	}
 
 
 }

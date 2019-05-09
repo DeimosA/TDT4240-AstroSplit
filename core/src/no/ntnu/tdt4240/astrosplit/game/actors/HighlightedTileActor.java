@@ -1,5 +1,6 @@
 package no.ntnu.tdt4240.astrosplit.game.actors;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -7,14 +8,17 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.math.Vector2;
 
 public class HighlightedTileActor extends Actor {
 
 	private Sprite sprite;
+	private UnitActor actor;
 
-	public HighlightedTileActor()
+	public HighlightedTileActor(final UnitActor actor)
 	{
 		sprite = new Sprite(new Texture("map/tile_01_top.png"));
+		this.actor = actor;
 		setTouchable(Touchable.enabled);
 		addListener(new InputListener() {
 
@@ -23,7 +27,7 @@ public class HighlightedTileActor extends Actor {
 			 */
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				System.out.println(String.format("x=%f\ty=%f",sprite.getX(),sprite.getY()));
+				move(new Vector2(sprite.getX(),sprite.getY()));
 				return true;
 			}
 		});
@@ -52,6 +56,12 @@ public class HighlightedTileActor extends Actor {
 			sprite.getHeight());
 
 		//tileSprite.setPosition(x,y);
+	}
+
+	private void move(Vector2 pos)
+	{
+		pos.set(new Vector2(pos.x-144,pos.y-144));
+		actor.move(pos);
 	}
 
 
