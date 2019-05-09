@@ -58,12 +58,11 @@ public class GameView implements Screen {
 	// Some numbers
 	private int renderHeight;
 	private int renderWidth;
-	private float mapXleft;
-	private float mapXright;
+	private Rectangle mapBounds; // Map bounds in relation to render resolution
 
 	private OrthographicCamera camera;
 	private Viewport viewport;
-	private TextureRegion uiTexture;
+//	private TextureRegion uiTexture;
 	private static int rangeIndicator;
 	private static Vector2 selectedPosition = null;
 	private Vector3 cursorPos = new Vector3();
@@ -113,9 +112,13 @@ public class GameView implements Screen {
 		int mapHeight = map.getMapHeightInPixels();
 		// Map metrics in render pixels
 		float mapAspectRatio = mapWidth / (float)mapHeight;
-		float mapRenderWidth = renderHeight * mapAspectRatio;
-		mapXleft = (renderWidth - mapRenderWidth) / 2f;
-		mapXright = mapXleft + mapRenderWidth;
+		mapBounds = new Rectangle();
+		mapBounds.width = renderHeight * mapAspectRatio;
+		mapBounds.x = (renderWidth - mapBounds.width) / 2f;
+		mapBounds.y = 0;
+		mapBounds.height = renderHeight;
+//		mapXleft = (renderWidth - mapBounds.width) / 2f;
+//		mapXright = mapXleft + mapBounds.width;
 		// Cam and viewport for map and stage
 		OrthographicCamera stageCamera = new OrthographicCamera();
 		stageCamera.setToOrtho(false, mapWidth, mapHeight);
@@ -138,13 +141,13 @@ public class GameView implements Screen {
 		shape = new ShapeRenderer();
 		shape.setProjectionMatrix(camera.combined);
 		UI.Start();
-		playerNumberTex = new Texture("Astro/TeamSelect/headingPlayer1.png");
+		playerNumberTex = new Texture("Hud/playerText/player1-red.png");
 		actionsBgTex = new Texture("Hud/hudActions.png");
 		unitBgTex = new Texture("Hud/hudUnitInfo.png");
 		Rectangle actionBounds = new Rectangle(100, 300, 50, 200);
 		actionButtons = new ButtonList(actionBounds, createActionButtons());
 
-		uiTexture = new TextureRegion(new Texture("UI.png"));
+//		uiTexture = new TextureRegion(new Texture("UI.png"));
 	}
 
 	private MenuButton[] createActionButtons() {
@@ -153,12 +156,14 @@ public class GameView implements Screen {
 				@Override
 				public void click() {
 					// TODO move click action
+					System.out.println("Move action!");
 				}
 			},
 			new MenuButton(new Texture("Hud/buttonSword.png"), 2f) {
 				@Override
 				public void click() {
 					// TODO attack
+					System.out.println("Attack action!");
 				}
 			}
 		};
@@ -189,15 +194,18 @@ public class GameView implements Screen {
 			cursorPos.y = Gdx.input.getY();
 			camera.unproject(cursorPos);
 			//Hitboxes for the different intentions
-			if (cursorPos.x <= 106 && cursorPos.x >= 68) {
-				if (cursorPos.y <= 64 && cursorPos.y >= 0) {
-					UI.getInteractionPresenter().updateIntent(ActionComponent.class);
-				} else if (cursorPos.y <= 128 && cursorPos.y >= 64) {
-					UI.getInteractionPresenter().updateIntent(ActionComponentAttack.class);
-				} else if (cursorPos.y <= 192 && cursorPos.y >= 128) {
-					UI.getInteractionPresenter().updateIntent(MovementComponent.class);
-				}
+			if (actionButtons.getBounds().contains(cursorPos.x, cursorPos.y)) {
+				actionButtons.handleInput(cursorPos);
 			}
+//			if (cursorPos.x <= 106 && cursorPos.x >= 68) {
+//				if (cursorPos.y <= 64 && cursorPos.y >= 0) {
+//					UI.getInteractionPresenter().updateIntent(ActionComponent.class);
+//				} else if (cursorPos.y <= 128 && cursorPos.y >= 64) {
+//					UI.getInteractionPresenter().updateIntent(ActionComponentAttack.class);
+//				} else if (cursorPos.y <= 192 && cursorPos.y >= 128) {
+//					UI.getInteractionPresenter().updateIntent(MovementComponent.class);
+//				}
+//			}
 		}
 	}
 
@@ -206,12 +214,6 @@ public class GameView implements Screen {
 
 	}
 
-
-	/*
-		Is called on every tick,
-			updates engine,
-			draws UI
-	 */
 	@Override
 	public void render(float delta) {
 		handleInput();
@@ -236,12 +238,12 @@ public class GameView implements Screen {
 		spriteBatch.draw(
 			actionsBgTex,
 			0, 0,
-			mapXleft, renderHeight
+			mapBounds.x, renderHeight
 		);
 		spriteBatch.draw(
 			unitBgTex,
-			mapXright, 0,
-			renderWidth - mapXright, renderHeight
+			mapBounds.x + mapBounds.width, 0,
+			renderWidth - (mapBounds.x + mapBounds.width), renderHeight
 		);
 
 		// Buttons
@@ -250,12 +252,12 @@ public class GameView implements Screen {
 		if (playerNumberTex != null) {
 			spriteBatch.draw(
 				playerNumberTex,
-				mapXleft + 10, renderHeight - playerNumberTex.getHeight() - 10,
+				mapBounds.x + 15, renderHeight - playerNumberTex.getHeight() - 15,
 				playerNumberTex.getWidth(), playerNumberTex.getHeight()
 			);
 		}
 
-		spriteBatch.draw(uiTexture, 0, 0);
+//		spriteBatch.draw(uiTexture, 0, 0);
 
 		spriteBatch.end();
 		//Todo: add "selected" indicator
@@ -274,8 +276,15 @@ public class GameView implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		stage.getViewport().update(height, height, false);
-		stage.getViewport().setScreenPosition((width - stage.getViewport().getScreenWidth()) / 2, 0);
+		float mapAspect = mapBounds.width / mapBounds.height;
+		int newMapHeight = Math.min((int)(width * renderHeight / (float)renderWidth), height);
+		int newMapWidth = Math.min((int)(width * mapBounds.width / renderWidth), (int)(newMapHeight * mapAspect));
+		int newMapX = (width - newMapWidth) / 2;
+		int newMapY = (height - newMapHeight) / 2;
+
+		stage.getViewport().update(newMapWidth, newMapHeight, false);
+		stage.getViewport().setScreenPosition(newMapX, newMapY);
+
 		viewport.update(width, height, false);
 	}
 

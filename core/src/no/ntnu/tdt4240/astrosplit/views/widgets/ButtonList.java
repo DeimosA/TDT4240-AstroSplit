@@ -41,6 +41,10 @@ public class ButtonList {
 		}
 	}
 
+	public Rectangle getBounds() {
+		return bounds;
+	}
+
 	/**
 	 * Handle input for the button list
 	 * @param cursor
