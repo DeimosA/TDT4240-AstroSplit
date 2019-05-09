@@ -26,6 +26,7 @@ public class AstroSplit implements ApplicationListener {
 	@Override
 	public void render () {
 		vsm.get().render(Gdx.graphics.getDeltaTime());
+		vsm.disposeOldScreen();
 	}
 
 	@Override
