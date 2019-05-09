@@ -25,20 +25,20 @@ import no.ntnu.tdt4240.astrosplit.presenters.InteractionPresenter;
 
 public class UnitActor extends Actor {
 
-	Sprite sprite;
-	TransformComponent transformComponent;
-	TextureComponent textureComponent;
-	PositionComponent positionComponent;
-	MovementComponent movementComponent = null;
+	private Sprite sprite;
+	private TransformComponent transformComponent;
+	private TextureComponent textureComponent;
+	private PositionComponent positionComponent;
+	private MovementComponent movementComponent = null;
 	Entity entity = null;
 
 
 	public UnitActor(TextureComponent texture, TransformComponent transform, PositionComponent pos, final Entity entity)
 	{
 
-		this.textureComponent = texture;
-		this.transformComponent = transform;
-		this.positionComponent = pos;
+		this.textureComponent = entity.getComponent(TextureComponent.class);
+		this.transformComponent = entity.getComponent(TransformComponent.class);
+		this.positionComponent = entity.getComponent(PositionComponent.class);
 		this.movementComponent = entity.getComponent(MovementComponent.class);
 		this.entity = entity;
 
@@ -84,7 +84,6 @@ public class UnitActor extends Actor {
 			sprite.getWidth()*transformComponent.scale.x,
 			sprite.getHeight()*transformComponent.scale.y);
 		sprite.setScale(transformComponent.scale.x, transformComponent.scale.y);
-
 	}
 	/*
 		Update actor, calls to setPosition to apply these changes to view

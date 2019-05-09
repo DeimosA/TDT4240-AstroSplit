@@ -40,30 +40,9 @@ public class World {
 	//this method should create all units to be shown
 	public void create()
 	{
-		Entity firstEntity = createTestEntity(new Vector2(50,0));
-		Entity secondEntity = createTestEntity(new Vector2(-50,0));
 
-		MarineMeleeEntity marineMeleeEntity = new MarineMeleeEntity();
-		marineMeleeEntity.create(new Vector2(250,100));
-		MarineRangeEntity marineRangeEntity = new MarineRangeEntity();
-		marineRangeEntity.create(new Vector2(300,-50));
 		MarineMedicEntity marineMedicEntity = new MarineMedicEntity();
-		marineMedicEntity.create(new Vector2(0,0));
-		AlienMeleeEntity alienMeleeEntity = new AlienMeleeEntity();
-		alienMeleeEntity.create(new Vector2(-50, -50));
-		SectoidMeleeEntity sectoidMeleeEntity = new SectoidMeleeEntity();
-		sectoidMeleeEntity.create(new Vector2(200, -100));
-
-
-
-		attack(firstEntity,secondEntity);
-
-		//killUnit(firstEntity);
-
-		//firstEntity.remove(MovementComponent.class);
-
-		moveTo(secondEntity, new Vector2(300,-100));
-
+		marineMedicEntity.create(new Vector2(16,16));
 	}
 
 
