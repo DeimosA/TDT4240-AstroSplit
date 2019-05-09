@@ -2,12 +2,14 @@ package no.ntnu.tdt4240.astrosplit.game.actors;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 
@@ -30,7 +32,7 @@ public class UnitActor extends Actor {
 	private TextureComponent textureComponent;
 	private PositionComponent positionComponent;
 	private MovementComponent movementComponent = null;
-	Entity entity = null;
+	private Entity entity = null;
 
 
 	public UnitActor(TextureComponent texture, TransformComponent transform, PositionComponent pos, final Entity entity)
@@ -54,6 +56,8 @@ public class UnitActor extends Actor {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				UI.getInteractionPresenter().updateInteraction(entity, null, positionComponent.position);
+
+
 				/*
 					TODO
 					-Show some UI to choose action
@@ -84,6 +88,8 @@ public class UnitActor extends Actor {
 			sprite.getWidth()*transformComponent.scale.x,
 			sprite.getHeight()*transformComponent.scale.y);
 		sprite.setScale(transformComponent.scale.x, transformComponent.scale.y);
+
+
 	}
 	/*
 		Update actor, calls to setPosition to apply these changes to view
@@ -100,6 +106,7 @@ public class UnitActor extends Actor {
 	public void draw(Batch batch, float parentAlpha)
 	{
 		sprite.draw(batch);
+		drawTiles(batch, this.getStage());
 	}
 
 	@Override
@@ -108,6 +115,26 @@ public class UnitActor extends Actor {
 		super.act(delta);
 	}
 
+	public void drawTiles(Batch batch, Stage stage)
+	{
+		for(int posx = -(int)movementComponent.distance*32; posx <= movementComponent.distance*32; posx +=32)
+		{
+
+			for(int posy = -(int)movementComponent.distance*32; posy <= movementComponent.distance*32; posy +=32)
+			{
+				if(0 == posx && 0 == posy)
+					continue;
+				if(posx+144+positionComponent.position.x > 256 || posx+144+positionComponent.position.x < 32)
+					continue;
+				if(posy+144+positionComponent.position.y > 256 || posy+144+positionComponent.position.y < 32)
+					continue;
+
+				HighlightedTileActor tile = new HighlightedTileActor();
+				stage.addActor(tile);
+				tile.setPosition(posx+144+positionComponent.position.x,posy+144+positionComponent.position.y);
+			}
+		}
+	}
 
 
 	public void setTouchable(boolean touchable)

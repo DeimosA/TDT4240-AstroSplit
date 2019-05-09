@@ -93,7 +93,7 @@ public class GameView implements Screen {
 		}
 	}
 
-	private GameView() {
+	public GameView() {
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		spriteBatch = new SpriteBatch();
