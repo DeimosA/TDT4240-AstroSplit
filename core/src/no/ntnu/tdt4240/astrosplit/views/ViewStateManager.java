@@ -13,8 +13,8 @@ public final class ViewStateManager {
 	 * Manages the current view
 	 */
 	private ViewStateManager() {
-		currentScreen = new MenuView();
-	}
+		currentScreen = new GameView();
+	} //should be MenuView
 
 	/**
 	 * Get the singular instance

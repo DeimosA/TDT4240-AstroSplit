@@ -10,8 +10,6 @@ import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import com.badlogic.gdx.math.Vector2;
 
-//import static no.ntnu.tdt4240.astrosplit.game.abilities.Attack.rangeCheck;
-
 public class MovementSystem extends IteratingSystem {
 
 	private static final Family family =
@@ -35,10 +33,11 @@ public class MovementSystem extends IteratingSystem {
 
 		Vector2 currentPosition 	= positionMapper.get(entity).position;
 		Vector2 newPosition 		= movementMapper.get(entity).position;
-		double range 				= movementMapper.get(entity).distance;
+		double range 				= movementMapper.get(entity).distance*32;
 
 		if(newPosition != null)
 		{
+
 			if(rangeCheck(currentPosition, newPosition,range))
 				currentPosition.set(newPosition);
 			newPosition = null;
@@ -47,7 +46,7 @@ public class MovementSystem extends IteratingSystem {
 
 	private boolean rangeCheck(Vector2 pos1, Vector2 pos2, double range)
 	{
-		if(pos1.dst(pos2) <= range)
+		if(pos1.dst(pos2) <= range*Math.sqrt(2))
 		{
 			return true;
 		}
