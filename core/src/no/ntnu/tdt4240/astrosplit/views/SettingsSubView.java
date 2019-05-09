@@ -33,14 +33,17 @@ class SettingsSubView extends SubView {
 		if (menuPresenter.isOnDesktopPlatform()) {
 			combinedButtons.addAll(createDesktopButtons());
 		}
-
+		// Common configs
 		combinedButtons.addAll(createCommonButtons());
-
-		/* Settings */
+		// Button list
 		this.buttonList = new ButtonList(bounds, combinedButtons.shrink());
 	}
 
 
+	/**
+	 * Settings that are only available on desktop
+	 * @return
+	 */
 	private MenuButton[] createDesktopButtons() {
 		return new MenuButton[] {
 			// Fullscreen button
