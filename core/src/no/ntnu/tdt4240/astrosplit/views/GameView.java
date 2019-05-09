@@ -170,7 +170,10 @@ public class GameView implements Screen {
 	 */
 	private MenuButton[] createActionButtons(float scale) {
 		return new MenuButton[] {
-			new MenuButton(new Texture("Hud/buttonMove.png"), scale) {
+			new MenuButton( // Move action
+				new Texture("Hud/buttonMove.png"),
+				new Texture("Hud/buttonMoveDisabled.png"),
+				scale) {
 				@Override
 				public void click() {
 					System.out.println("Move action!");
@@ -178,7 +181,10 @@ public class GameView implements Screen {
 					UI.getInteractionPresenter().updateIntent(MovementComponent.class);
 				}
 			},
-			new MenuButton(new Texture("Hud/buttonSword.png"), scale) {
+			new MenuButton( // Attack action
+				new Texture("Hud/buttonSword.png"),
+				new Texture("Hud/buttonSwordDisabled.png"),
+				scale) {
 				@Override
 				public void click() {
 					System.out.println("Attack action!");
@@ -228,10 +234,11 @@ public class GameView implements Screen {
 			cursorPos.x = Gdx.input.getX();
 			cursorPos.y = Gdx.input.getY();
 			camera.unproject(cursorPos);
-			//Hitboxes for the different intentions
+			// Check if any buttons are pushed
 			if (actionButtons.getBounds().contains(cursorPos.x, cursorPos.y)) {
 				actionButtons.handleInput(cursorPos);
 			}
+			//Hitboxes for the different intentions
 //			if (cursorPos.x <= 106 && cursorPos.x >= 68) {
 //				if (cursorPos.y <= 64 && cursorPos.y >= 0) {
 //					UI.getInteractionPresenter().updateIntent(ActionComponent.class);

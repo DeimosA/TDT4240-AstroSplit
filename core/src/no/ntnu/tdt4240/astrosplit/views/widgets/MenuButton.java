@@ -35,6 +35,17 @@ public class MenuButton {
 
 	/**
 	 * Creates a button
+	 * @param texture	Button texture
+	 * @param disabledTexture Texture when disabled
+	 * @param scale		Button scale
+	 */
+	public MenuButton(Texture texture, Texture disabledTexture, float scale) {
+		this(texture, scale);
+		this.disabledTexture = disabledTexture;
+	}
+
+	/**
+	 * Creates a button
 	 * @param xCenter X position of button center
 	 * @param yCenter Y position of button center
 	 * @param texture Button texture
