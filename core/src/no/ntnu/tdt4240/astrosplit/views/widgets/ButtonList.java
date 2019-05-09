@@ -41,8 +41,29 @@ public class ButtonList {
 		}
 	}
 
+	/**
+	 * Get bounding box for this item
+	 * @return
+	 */
 	public Rectangle getBounds() {
 		return bounds;
+	}
+
+	/**
+	 * Get the number of buttons
+	 * @return
+	 */
+	public int getButtonCount() {
+		return buttons.length;
+	}
+
+	/**
+	 * Get a button from the list based on index
+	 * @param index
+	 * @return
+	 */
+	public MenuButton getButton(int index) {
+		return buttons[index];
 	}
 
 	/**

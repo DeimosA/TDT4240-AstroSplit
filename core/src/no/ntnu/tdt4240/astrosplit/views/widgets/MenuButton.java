@@ -6,11 +6,11 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class MenuButton {
 
+  
 	private Rectangle bounds;
 	private Texture texture;
 	private Texture disabledTexture;
 	private boolean enabled = true;
-
 	private boolean checked = true;
 
 
@@ -39,7 +39,19 @@ public class MenuButton {
 
 	/**
 	 * Creates a button
-	 *
+   *
+	 * @param texture	Button texture
+	 * @param disabledTexture Texture when disabled
+	 * @param scale		Button scale
+	 */
+	public MenuButton(Texture texture, Texture disabledTexture, float scale) {
+		this(texture, scale);
+		this.disabledTexture = disabledTexture;
+	}
+
+	/**
+	 * Creates a button
+   *
 	 * @param xCenter X position of button center
 	 * @param yCenter Y position of button center
 	 * @param texture Button texture
@@ -81,8 +93,8 @@ public class MenuButton {
 	 * @param y position in y direction
 	 */
 	public void setCenterPosition(float x, float y) {
-		bounds.x = x - texture.getWidth() / 2f;
-		bounds.y = y - texture.getHeight() / 2f;
+		bounds.x = x - bounds.width / 2f;
+		bounds.y = y - bounds.height / 2f;
 	}
 
 	/**
@@ -120,11 +132,7 @@ public class MenuButton {
 	 * @return
 	 */
 	public Texture getTexture() {
-//		if (enabled) {
-//			return texture;
-//		}systey
 		if (enabled && checked) {
-//			System.out.println("enabledTex");
 			return texture;
 		} else {
 			return disabledTexture;

@@ -1,6 +1,7 @@
 package no.ntnu.tdt4240.astrosplit.views;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -81,6 +82,10 @@ public class MenuView implements View {
 			if (subView.getBounds().contains(cursorPos.x, cursorPos.y)) {
 				subView.handleInput(cursorPos);
 			}
+		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
+			// Back action
+			this.goBack();
 		}
 	}
 
