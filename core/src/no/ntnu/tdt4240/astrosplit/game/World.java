@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.ActorComponent;
@@ -20,22 +21,17 @@ import no.ntnu.tdt4240.astrosplit.game.entities.MarineMedicEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineMeleeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineRangeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.SectoidMeleeEntity;
-import no.ntnu.tdt4240.astrosplit.views.GameView;
-
-
-
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 
 
 public class World {
 
+
 	private PooledEngine engine;
 
-	public World() {
-		this.engine = GameView.getGameEngine();
+	public World(PooledEngine engine) {
+		this.engine = engine;
 	}
+
 
 	//this method should create all units to be shown
 	public void create()
@@ -43,15 +39,15 @@ public class World {
 		Entity firstEntity = createTestEntity(new Vector2(50,0));
 		Entity secondEntity = createTestEntity(new Vector2(-50,0));
 
-		MarineMeleeEntity marineMeleeEntity = new MarineMeleeEntity();
+		MarineMeleeEntity marineMeleeEntity = new MarineMeleeEntity(engine);
 		marineMeleeEntity.create(new Vector2(250,100));
-		MarineRangeEntity marineRangeEntity = new MarineRangeEntity();
+		MarineRangeEntity marineRangeEntity = new MarineRangeEntity(engine);
 		marineRangeEntity.create(new Vector2(300,-50));
-		MarineMedicEntity marineMedicEntity = new MarineMedicEntity();
+		MarineMedicEntity marineMedicEntity = new MarineMedicEntity(engine);
 		marineMedicEntity.create(new Vector2(0,0));
-		AlienMeleeEntity alienMeleeEntity = new AlienMeleeEntity();
+		AlienMeleeEntity alienMeleeEntity = new AlienMeleeEntity(engine);
 		alienMeleeEntity.create(new Vector2(-50, -50));
-		SectoidMeleeEntity sectoidMeleeEntity = new SectoidMeleeEntity();
+		SectoidMeleeEntity sectoidMeleeEntity = new SectoidMeleeEntity(engine);
 		sectoidMeleeEntity.create(new Vector2(200, -100));
 
 
@@ -136,7 +132,5 @@ public class World {
 		engine.addEntity(entity);
 
 		return entity;
-
 	}
-
 }

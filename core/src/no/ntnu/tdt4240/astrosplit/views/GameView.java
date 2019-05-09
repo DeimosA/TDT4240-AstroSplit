@@ -66,7 +66,7 @@ public class GameView implements Screen {
 	private static Vector2 selectedPosition = null;
 	private Vector3 cursorPos = new Vector3();
 
-	private static PooledEngine engine = null;
+	private PooledEngine engine;
 	private World world;
 
 	private ButtonList actionButtons;
@@ -126,7 +126,7 @@ public class GameView implements Screen {
 
 		/* Engine and stuff */
 		engine = new PooledEngine();
-		this.world = new World();
+		this.world = new World(engine);
 
 		engine.addSystem(new UnitSystem(world));
 		engine.addSystem(new RenderingSystem(new SpriteBatch(), stage));
@@ -193,15 +193,18 @@ public class GameView implements Screen {
 	 * Pauses all systems connected to engine
 	 */
 	private void pauseSystems() {
-		for(EntitySystem system : getGameEngine().getSystems())
+		for(EntitySystem system : engine.getSystems())
 		{
 			system.setProcessing(false);
 		}
 	}
 
-	public static PooledEngine getGameEngine(){
-		if (engine == null){
-			engine = new PooledEngine();
+//	public static PooledEngine getGameEngine(){
+//		if (engine == null){
+//			engine = new PooledEngine();
+//		}
+//		return engine;
+//	}
 
 	/**
 	 * Set position of the action select rectangle to a button
@@ -214,7 +217,6 @@ public class GameView implements Screen {
 		} else {
 			actionSelectBounds.y = -100;
 		}
-		return engine;
 	}
 
 	/**
