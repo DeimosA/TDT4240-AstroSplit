@@ -69,8 +69,8 @@ public class MenuButton {
 	 * @param y position in y direction
 	 */
 	public void setCenterPosition(float x, float y) {
-		bounds.x = x - texture.getWidth() / 2f;
-		bounds.y = y - texture.getHeight() / 2f;
+		bounds.x = x - bounds.width / 2f;
+		bounds.y = y - bounds.height / 2f;
 	}
 
 	/**

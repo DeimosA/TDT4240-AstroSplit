@@ -6,8 +6,13 @@ import com.badlogic.gdx.math.Vector2;
 import no.ntnu.tdt4240.astrosplit.models.InteractionModel;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
+
 public class InteractionPresenter {
+
+
 	private InteractionModel interaction;
+
+
 	public InteractionPresenter(InteractionModel interaction) {
 		this.interaction = interaction;
 	}
@@ -24,6 +29,6 @@ public class InteractionPresenter {
 	//Used for changing the intent
 	public void updateIntent(Class intent) {
 		interaction.setIntent(intent);
-		GameView.updateRange(interaction.getRange(intent), interaction.getSelectedPosition());
+//		GameView.updateRange(interaction.getRange(intent), interaction.getSelectedPosition());
 	}
 }
