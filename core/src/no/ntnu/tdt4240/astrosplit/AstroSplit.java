@@ -13,6 +13,7 @@ public class AstroSplit implements ApplicationListener {
 
 	@Override
 	public void create () {
+		Gdx.input.setCatchBackKey(true);
 		vsm = ViewStateManager.getInstance();
 		Configuration.getInstance().load();
 		// TODO apply config

@@ -63,7 +63,7 @@ public class MenuView implements View {
 		Rectangle subViewBounds = new Rectangle(padding, paddingBottom,
 			renderWidth - 2 * padding, titlePosY - padding - paddingBottom
 		);
-		subView = new MainMenuSubView(subViewBounds, this);
+		subView = new MainMenuSubView(subViewBounds, this, menuPresenter);
 	}
 
 	/* Private methods */
