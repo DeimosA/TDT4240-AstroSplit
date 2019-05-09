@@ -78,8 +78,16 @@ public class MenuButton {
 		this.texture = texture;
 	}
 
-	public MenuButton(Boolean checked, Texture texture) {
+	/**
+	 * Creates a button
+	 *
+	 * @param texture Button texture
+	 * @param disabledTexture Texture when disabled
+	 * @param checked Whether the option is checked
+	 */
+	public MenuButton(Texture texture, Texture disabledTexture, Boolean checked) {
 		this(texture.getWidth() / 2f, texture.getHeight() / 2f, texture);
+		this.disabledTexture = disabledTexture;
 		this.checked = checked;
 	}
 
@@ -159,12 +167,15 @@ public class MenuButton {
 		}
 	}
 
+	/**
+	 * Check or uncheck the option
+	 * @param checked
+	 */
 	public void setChecked(boolean checked) {
 		if (disabledTexture != null) { // If there is no disabled texture we don't want to change this
 			this.checked = checked;
 		}
 	}
-
 	public boolean getChecked(){
 		return checked;
 	}

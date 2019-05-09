@@ -8,10 +8,14 @@ import com.badlogic.gdx.math.Vector3;
 import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
 import no.ntnu.tdt4240.astrosplit.models.TeamType;
 import no.ntnu.tdt4240.astrosplit.models.TutorialGameModel;
+import no.ntnu.tdt4240.astrosplit.presenters.MenuPresenter;
 import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 
 
 class TeamSelectSubView extends SubView {
+
+
+	private MenuPresenter menuPresenter;
 
 	// Element positions
 	private Rectangle rosterBoxPosition;
@@ -28,17 +32,16 @@ class TeamSelectSubView extends SubView {
 
 	private TeamType selectedTeam = null;
 	private int selectedButtonIndex;
-//	private boolean isLocalGame = false;
 	private GameView.GameType gameType;
 	private LocalGameModel localGameModel;
 
 
-	TeamSelectSubView(Rectangle bounds, MenuView menuView, GameView.GameType gameType) {
-		this(bounds, menuView, gameType, null);
+	TeamSelectSubView(Rectangle bounds, MenuView menuView, MenuPresenter menuPresenter, GameView.GameType gameType) {
+		this(bounds, menuView, menuPresenter, gameType, null);
 	}
 
-	TeamSelectSubView(Rectangle bounds, MenuView menuView, LocalGameModel gameModel) {
-		this(bounds, menuView, GameView.GameType.LOCAL_GAME, gameModel);
+	TeamSelectSubView(Rectangle bounds, MenuView menuView, MenuPresenter menuPresenter, LocalGameModel gameModel) {
+		this(bounds, menuView, menuPresenter, GameView.GameType.LOCAL_GAME, gameModel);
 	}
 
 	/**
@@ -50,6 +53,7 @@ class TeamSelectSubView extends SubView {
 	 */
 	private TeamSelectSubView(Rectangle bounds,
 							  MenuView menuView,
+							  MenuPresenter menuPresenter,
 							  GameView.GameType gameType,
 							  LocalGameModel localGameModel) {
 		super(bounds, menuView);
@@ -188,7 +192,7 @@ class TeamSelectSubView extends SubView {
 							gameModel.startNewGame();
 							gameModel.setPlayer1(selectedTeam);
 							// So let player 2 select
-							menuView.setSubView(new TeamSelectSubView(bounds, menuView, gameModel));
+							menuView.setSubView(new TeamSelectSubView(bounds, menuView, menuPresenter, gameModel));
 
 						} else if (gameType == GameView.GameType.LOCAL_GAME) {
 							// Player 2 have selected their team
@@ -303,7 +307,7 @@ class TeamSelectSubView extends SubView {
 
 	@Override
 	boolean goBack() {
-		menuView.setSubView(new GameModeSubView(bounds, menuView));
+		menuView.setSubView(new GameModeSubView(bounds, menuView, menuPresenter));
 		return true;
 	}
 }

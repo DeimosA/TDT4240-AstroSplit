@@ -3,11 +3,13 @@ package no.ntnu.tdt4240.astrosplit.models;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
+
 /**
  * Configuration class contains config settings that are stored locally on the users device.
  * Singleton because we only want one of this
  */
 public class Configuration implements Model {
+
 
     private static final Configuration INSTANCE = new Configuration();
     private Preferences prefStore;
@@ -15,6 +17,11 @@ public class Configuration implements Model {
     public final String gameName = "Astro Split";
     public final int viewPortRenderHeight = 720;
     public float defaultAspect = 16f/9;
+
+    /* Allowed settings */
+	private String fullscreen = "fullscreen";
+	private String soundEffectsOn = "soundEffectsOn";
+	private String musicOn = "musicOn";
 
 
 	/**
@@ -25,42 +32,55 @@ public class Configuration implements Model {
         return INSTANCE;
     }
 
-    private Configuration() {
-    }
+	/**
+	 * Private so that singleton works
+	 */
+	private Configuration() {}
+
 
 	/**
 	 * Set the game to use fullscreen mode if available
-//	 * @param fullscreen
+	 * @param on
 	 */
+	public void setFullScreen(Boolean on) {
 
-	public void setFullScreen() {
+		if (on) {
+			// Set FULLSCREEN
+			prefStore.putBoolean(fullscreen, true);
+			fullscreenMode();
 
-		// Set WINDOWED if fullscreen
-		if (isFullScreen()) {
-			Gdx.graphics.setWindowedMode(getViewPortRenderWidth(), viewPortRenderHeight);
-			prefStore.putBoolean("fullscreen", false);
-
-			// Set FULLSCREEN if windowed
 		} else {
-			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-			prefStore.putBoolean("fullscreen", true);
+			// Set WINDOWED
+			prefStore.putBoolean(fullscreen, false);
+			windowedMode();
 		}
 
-		System.out.println("Fullcreen = " + prefStore.getBoolean("fullscreen"));
+		System.out.println("Fullcreen = " + prefStore.getBoolean(fullscreen));
+	}
+	public boolean isFullscreen() {
+		return prefStore.getBoolean(fullscreen, false);
 	}
 
-	public boolean isFullScreen() {
-		return Gdx.graphics.isFullscreen();
+	/**
+	 * Enable or disable sound effects
+	 * @param on
+	 */
+	public void setSoundEffects(Boolean on) {
+		prefStore.putBoolean(soundEffectsOn, on);
+	}
+	public boolean isSoundEffectsOn() {
+		return prefStore.getBoolean(soundEffectsOn, true);
 	}
 
-    @Override
-    public void load() {
-    	prefStore = Gdx.app.getPreferences("LocalConfig");
+	/**
+	 * Enable or disable music
+	 * @param on
+	 */
+	public void setMusic(Boolean on) {
+		prefStore.putBoolean(musicOn, on);
 	}
-
-	@Override
-	public void save() {
-		prefStore.flush();
+	public boolean isMusicOn() {
+		return prefStore.getBoolean(musicOn, true);
 	}
 
 	/**
@@ -69,5 +89,36 @@ public class Configuration implements Model {
 	 */
 	public int getViewPortRenderWidth() {
 		return (int) (viewPortRenderHeight * defaultAspect);
+	}
+
+	@Override
+	public void load() {
+		prefStore = Gdx.app.getPreferences("LocalConfig");
+		// Apply config
+		if (Gdx.graphics.supportsDisplayModeChange()) {
+			if (prefStore.getBoolean(fullscreen)) {
+				fullscreenMode();
+			} else {
+				windowedMode();
+			}
+		}
+	}
+
+	@Override
+	public void save() {
+		prefStore.flush();
+	}
+
+	/**
+	 * Set application to fullscreen mode
+	 */
+	private void fullscreenMode() {
+		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+	}
+	/**
+	 * Set application to windowed mode
+	 */
+	private void windowedMode() {
+		Gdx.graphics.setWindowedMode(getViewPortRenderWidth(), viewPortRenderHeight);
 	}
 }

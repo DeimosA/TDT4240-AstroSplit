@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
 import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
+import no.ntnu.tdt4240.astrosplit.presenters.MenuPresenter;
 import no.ntnu.tdt4240.astrosplit.views.widgets.ButtonList;
 import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 
@@ -11,18 +12,24 @@ import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 class GameModeSubView extends SubView {
 
 
+	private MenuPresenter menuPresenter;
+
+
 	/**
 	 * Sub view for selecting game mode
 	 * @param bounds
 	 * @param menuView
 	 */
-	GameModeSubView(final Rectangle bounds, final MenuView menuView) {
+	GameModeSubView(final Rectangle bounds, final MenuView menuView, final MenuPresenter menuPresenter) {
 		super(bounds, menuView);
+
+		this.menuPresenter = menuPresenter;
 
 		/* Continue button, white texture if save exists */
 		MenuButton continueButton = new MenuButton(
-			new Texture("Astro/GameModeSelection/buttonContinueWhite.png")
-		) {
+			new Texture("Astro/GameModeSelection/buttonContinueWhite.png"),
+			new Texture("Astro/GameModeSelection/buttonContinueGray.png"),
+			1f) {
 			@Override
 			public void click() {
 				// #1 - Continue
@@ -31,7 +38,6 @@ class GameModeSubView extends SubView {
 				ViewStateManager.getInstance().setScreen(new GameView(GameView.GameType.LOCAL_GAME, gameModel));
 			}
 		};
-		continueButton.setDisabledTexture(new Texture("Astro/GameModeSelection/buttonContinueGray.png"));
 		// Enable continue button if ongoing game exists
 		if (LocalGameModel.hasOngoingGame()) {
 			continueButton.setEnabled(true);
@@ -42,7 +48,9 @@ class GameModeSubView extends SubView {
 		/* Game mode selection */
 		this.buttonList = new ButtonList(bounds,
 			new MenuButton[] {
+				// Continue saved game
 				continueButton,
+				// Online game
 //					new MenuButton(new Texture("Astro/GameModeSelection/buttonOnline.png")) {
 //						@Override
 //						public void click() {
@@ -51,25 +59,27 @@ class GameModeSubView extends SubView {
 //							menuView.setSubView(new TeamSelectSubView(bounds, menuView));
 //						}
 //					},
+				// Local vs game
 				new MenuButton(new Texture("Astro/GameModeSelection/buttonLocal.png")) {
 					@Override
 					public void click() {
 						// #3 - Local
 						System.out.println("Chose: Local");
-						menuView.setSubView(new TeamSelectSubView(bounds, menuView, GameView.GameType.LOCAL_GAME));
+						menuView.setSubView(new TeamSelectSubView(bounds, menuView, menuPresenter, GameView.GameType.LOCAL_GAME));
 					}
 				},
+				// Tutorial game
 				new MenuButton(new Texture("Astro/GameModeSelection/buttonTutorial.png")) {
 					@Override
 					public void click() {
 						// #4 - Tutorial
 						System.out.println("Chose: Tutorial");
-						menuView.setSubView(new TeamSelectSubView(bounds, menuView, GameView.GameType.TUTORIAL_GAME));
+						menuView.setSubView(new TeamSelectSubView(bounds, menuView, menuPresenter, GameView.GameType.TUTORIAL_GAME));
 					}
 				},
 				// Empty space
 //				new MenuButton(new Texture("Astro/GameModeSelection/buttonEmpty.png")),
-
+				// Go back
 				new MenuButton(new Texture("Astro/GameModeSelection/buttonBack.png")) {
 					@Override
 					public void click() {
@@ -81,13 +91,11 @@ class GameModeSubView extends SubView {
 				},
 			}
 		);
-
 	}
 
 	@Override
 	boolean goBack() {
-		menuView.setSubView(new MainMenuSubView(bounds, menuView));
+		menuView.setSubView(new MainMenuSubView(bounds, menuView, menuPresenter));
 		return true;
 	}
-
 }
