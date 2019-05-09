@@ -30,10 +30,27 @@ public class Configuration implements Model {
 
 	/**
 	 * Set the game to use fullscreen mode if available
-	 * @param fullscreen
+//	 * @param fullscreen
 	 */
-	public void setFullScreen(boolean fullscreen) {
-    	// TODO something
+
+	public void setFullScreen() {
+
+		// Set WINDOWED if fullscreen
+		if (isFullScreen()) {
+			Gdx.graphics.setWindowedMode(getViewPortRenderWidth(), viewPortRenderHeight);
+			prefStore.putBoolean("fullscreen", false);
+
+			// Set FULLSCREEN if windowed
+		} else {
+			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+			prefStore.putBoolean("fullscreen", true);
+		}
+
+		System.out.println("Fullcreen = " + prefStore.getBoolean("fullscreen"));
+	}
+
+	public boolean isFullScreen() {
+		return Gdx.graphics.isFullscreen();
 	}
 
     @Override
