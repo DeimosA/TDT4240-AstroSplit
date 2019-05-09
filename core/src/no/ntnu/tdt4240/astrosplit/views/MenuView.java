@@ -147,6 +147,7 @@ public class MenuView implements View {
 		background.dispose();
 		title.dispose();
 		subView.dispose();
+		menuPresenter.dispose();
 		System.out.println("Menu State Disposed");
 	}
 

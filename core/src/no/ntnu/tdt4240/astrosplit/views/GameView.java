@@ -63,7 +63,7 @@ public class GameView implements Screen {
 
 	private OrthographicCamera camera;
 	private Viewport viewport;
-	private TextureRegion uiTexture;
+//	private TextureRegion uiTexture;
 	private static int rangeIndicator;
 	private static Vector2 selectedPosition = null;
 	private Vector3 cursorPos = new Vector3();
@@ -138,13 +138,13 @@ public class GameView implements Screen {
 		shape = new ShapeRenderer();
 		shape.setProjectionMatrix(camera.combined);
 		UI.Start();
-		playerNumberTex = new Texture("Astro/TeamSelect/headingPlayer1.png");
+		playerNumberTex = new Texture("Hud/playerText/player1-red.png");
 		actionsBgTex = new Texture("Hud/hudActions.png");
 		unitBgTex = new Texture("Hud/hudUnitInfo.png");
 		Rectangle actionBounds = new Rectangle(100, 300, 50, 200);
 		actionButtons = new ButtonList(actionBounds, createActionButtons());
 
-		uiTexture = new TextureRegion(new Texture("UI.png"));
+//		uiTexture = new TextureRegion(new Texture("UI.png"));
 	}
 
 	private MenuButton[] createActionButtons() {
@@ -153,12 +153,14 @@ public class GameView implements Screen {
 				@Override
 				public void click() {
 					// TODO move click action
+					System.out.println("Move action!");
 				}
 			},
 			new MenuButton(new Texture("Hud/buttonSword.png"), 2f) {
 				@Override
 				public void click() {
 					// TODO attack
+					System.out.println("Sword attack!");
 				}
 			}
 		};
@@ -189,15 +191,18 @@ public class GameView implements Screen {
 			cursorPos.y = Gdx.input.getY();
 			camera.unproject(cursorPos);
 			//Hitboxes for the different intentions
-			if (cursorPos.x <= 106 && cursorPos.x >= 68) {
-				if (cursorPos.y <= 64 && cursorPos.y >= 0) {
-					UI.getInteractionPresenter().updateIntent(ActionComponent.class);
-				} else if (cursorPos.y <= 128 && cursorPos.y >= 64) {
-					UI.getInteractionPresenter().updateIntent(ActionComponentAttack.class);
-				} else if (cursorPos.y <= 192 && cursorPos.y >= 128) {
-					UI.getInteractionPresenter().updateIntent(MovementComponent.class);
-				}
+			if (actionButtons.getBounds().contains(cursorPos.x, cursorPos.y)) {
+				actionButtons.handleInput(cursorPos);
 			}
+//			if (cursorPos.x <= 106 && cursorPos.x >= 68) {
+//				if (cursorPos.y <= 64 && cursorPos.y >= 0) {
+//					UI.getInteractionPresenter().updateIntent(ActionComponent.class);
+//				} else if (cursorPos.y <= 128 && cursorPos.y >= 64) {
+//					UI.getInteractionPresenter().updateIntent(ActionComponentAttack.class);
+//				} else if (cursorPos.y <= 192 && cursorPos.y >= 128) {
+//					UI.getInteractionPresenter().updateIntent(MovementComponent.class);
+//				}
+//			}
 		}
 	}
 
@@ -255,7 +260,7 @@ public class GameView implements Screen {
 			);
 		}
 
-		spriteBatch.draw(uiTexture, 0, 0);
+//		spriteBatch.draw(uiTexture, 0, 0);
 
 		spriteBatch.end();
 		//Todo: add "selected" indicator
