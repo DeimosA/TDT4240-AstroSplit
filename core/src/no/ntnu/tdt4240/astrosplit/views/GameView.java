@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,6 +27,7 @@ import no.ntnu.tdt4240.astrosplit.game.Map;
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
 import no.ntnu.tdt4240.astrosplit.presenters.InteractionPresenter;
+import no.ntnu.tdt4240.astrosplit.utils.Assets;
 import no.ntnu.tdt4240.astrosplit.views.widgets.ButtonList;
 import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 
@@ -42,6 +44,8 @@ public class GameView implements Screen {
 	private Texture unitBgTex;
 	private Texture actionSelectTex;
 	private ButtonList actionButtons;
+	private MenuButton endTurnButton;
+	private AssetManager assetManager;
 
 	// Some metrics
 	private int renderHeight;
@@ -70,10 +74,21 @@ public class GameView implements Screen {
 	 * @param gameModel
 	 */
 	GameView(GameModel gameModel) {
+		this(gameModel, new AssetManager());
+	}
+
+	/**
+	 * Constructs a view of a game
+	 * @param gameModel
+	 * @param assetManager
+	 */
+	GameView(GameModel gameModel, AssetManager assetManager) {
 		this.gameModel = gameModel;
+		this.assetManager = assetManager;
 		this.interactionPresenter = InteractionPresenter.getInstance();
 		interactionPresenter.setGameModel(gameModel);
 		interactionPresenter.setGameWiew(this);
+
 		// Maybe do som game type specific stuff
 		switch (gameModel.getGameType()) {
 			case TUTORIAL_GAME:
@@ -86,6 +101,10 @@ public class GameView implements Screen {
 		// Setup rendering
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		spriteBatch = new SpriteBatch();
+
+		/* Load assets */
+		Assets.loadHudAssets(assetManager);
+		assetManager.finishLoading();
 
 		/* UI viewport and camera */
 		renderHeight = Configuration.getInstance().viewPortRenderHeight;
@@ -129,9 +148,9 @@ public class GameView implements Screen {
 //		shape = new ShapeRenderer();
 //		shape.setProjectionMatrix(camera.combined);
 //		UI.Start();
-		playerNumberTex = new Texture("Hud/playerText/player1-red.png");
-		actionsBgTex = new Texture("Hud/hudActions.png");
-		unitBgTex = new Texture("Hud/hudUnitInfo.png");
+//		playerNumberTex = assetManager.get(Assets.hud_Player1_red, Texture.class);
+		actionsBgTex = assetManager.get(Assets.hud_bg_actions, Texture.class);
+		unitBgTex = assetManager.get(Assets.hud_bg_unitInfo, Texture.class);
 		float actionButtonsScale = 3f;
 		float actionButtonsWidth = 50f * actionButtonsScale;
 		Rectangle actionBounds = new Rectangle(
@@ -143,7 +162,7 @@ public class GameView implements Screen {
 		MenuButton[] actionButtonList = createActionButtons(actionButtonsScale);
 		actionButtons = new ButtonList(actionBounds, actionButtonList);
 		// Action selection visualization
-		actionSelectTex = new Texture("Hud/frameSelected.png");
+		actionSelectTex = assetManager.get(Assets.hud_selectionBox, Texture.class);
 		actionSelectBounds = new Rectangle(
 			0,
 			-100,
@@ -151,6 +170,12 @@ public class GameView implements Screen {
 			actionSelectTex.getHeight() * actionButtonsScale
 		);
 		actionSelectBounds.x = actionBounds.x + actionBounds.width / 2f - actionSelectBounds.width / 2f;
+		// End turn button
+		endTurnButton = createEndTurnButton();
+		endTurnButton.setCenterPosition(
+			mapBounds.x + mapBounds.width + (renderWidth - mapBounds.width - mapBounds.x) / 2f,
+			75
+		);
 	}
 
 
@@ -180,6 +205,16 @@ public class GameView implements Screen {
 
 	/* --- Private methods --- */
 
+	private MenuButton createEndTurnButton() {
+		return new MenuButton(new Texture("Astro/buttonStart.png")) {
+			@Override
+			public void click() {
+				System.out.println("End Turn!");
+				// TODO end turn
+			}
+		};
+	}
+
 	/**
 	 * Create buttons for available actions
 	 * @param scale Scale of button icons
@@ -188,8 +223,8 @@ public class GameView implements Screen {
 	private MenuButton[] createActionButtons(float scale) {
 		return new MenuButton[] {
 			new MenuButton( // Move action
-				new Texture("Hud/buttonMove.png"),
-				new Texture("Hud/buttonMoveDisabled.png"),
+				assetManager.get(Assets.hud_button_move, Texture.class),
+				assetManager.get(Assets.hud_button_move_disabled, Texture.class),
 				scale) {
 				@Override
 				public void click() {
@@ -199,8 +234,8 @@ public class GameView implements Screen {
 				}
 			},
 			new MenuButton( // Attack action
-				new Texture("Hud/buttonSword.png"),
-				new Texture("Hud/buttonSwordDisabled.png"),
+				assetManager.get(Assets.hud_button_sword, Texture.class),
+				assetManager.get(Assets.hud_button_sword_disabled, Texture.class),
 				scale) {
 				@Override
 				public void click() {
@@ -239,7 +274,7 @@ public class GameView implements Screen {
 	 * Handle input
 	 */
 	private void handleInput() {
-		/* Texture pos touched */
+		/* Check pos touched */
 		if (Gdx.input.justTouched()) {
 			cursorPos.x = Gdx.input.getX();
 			cursorPos.y = Gdx.input.getY();
@@ -248,6 +283,7 @@ public class GameView implements Screen {
 			if (actionButtons.getBounds().contains(cursorPos.x, cursorPos.y)) {
 				actionButtons.handleInput(cursorPos);
 			}
+			endTurnButton.handleInput(cursorPos.x, cursorPos.y);
 			//Hitboxes for the different intentions
 //			if (cursorPos.x <= 106 && cursorPos.x >= 68) {
 //				if (cursorPos.y <= 64 && cursorPos.y >= 0) {
@@ -312,6 +348,11 @@ public class GameView implements Screen {
 			actionSelectBounds.x, actionSelectBounds.y,
 			actionSelectBounds.width, actionSelectBounds.height
 		);
+		spriteBatch.draw(
+			endTurnButton.getTexture(),
+			endTurnButton.getBounds().x, endTurnButton.getBounds().y,
+			endTurnButton.getBounds().width, endTurnButton.getBounds().height
+		);
 
 		if (playerNumberTex != null) {
 			spriteBatch.draw(
@@ -367,10 +408,11 @@ public class GameView implements Screen {
 //		shape.dispose();
 		stage.dispose();
 		map.dispose();
-		playerNumberTex.dispose();
+		if (playerNumberTex != null) playerNumberTex.dispose();
 		actionsBgTex.dispose();
 		unitBgTex.dispose();
 		actionSelectTex.dispose();
 		actionButtons.dispose();
+		assetManager.dispose();
 	}
 }
