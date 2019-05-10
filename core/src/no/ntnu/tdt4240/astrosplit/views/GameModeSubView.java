@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.astrosplit.views;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
+import no.ntnu.tdt4240.astrosplit.models.GameModel;
 import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
 import no.ntnu.tdt4240.astrosplit.presenters.MenuPresenter;
 import no.ntnu.tdt4240.astrosplit.views.widgets.ButtonList;
@@ -35,7 +36,7 @@ class GameModeSubView extends SubView {
 				// #1 - Continue
 				System.out.println("Clicked: Continue");
 				LocalGameModel gameModel = new LocalGameModel();
-				ViewStateManager.getInstance().setScreen(new GameView(GameView.GameType.LOCAL_GAME, gameModel));
+				ViewStateManager.getInstance().setScreen(new GameView(gameModel));
 			}
 		};
 		// Enable continue button if ongoing game exists
@@ -65,7 +66,8 @@ class GameModeSubView extends SubView {
 					public void click() {
 						// #3 - Local
 						System.out.println("Chose: Local");
-						menuView.setSubView(new TeamSelectSubView(bounds, menuView, menuPresenter, GameView.GameType.LOCAL_GAME));
+						menuView.setSubView(new TeamSelectSubView(
+							bounds, menuView, menuPresenter, GameModel.GameType.LOCAL_GAME));
 					}
 				},
 				// Tutorial game
@@ -74,7 +76,8 @@ class GameModeSubView extends SubView {
 					public void click() {
 						// #4 - Tutorial
 						System.out.println("Chose: Tutorial");
-						menuView.setSubView(new TeamSelectSubView(bounds, menuView, menuPresenter, GameView.GameType.TUTORIAL_GAME));
+						menuView.setSubView(new TeamSelectSubView(
+							bounds, menuView, menuPresenter, GameModel.GameType.TUTORIAL_GAME));
 					}
 				},
 				// Empty space

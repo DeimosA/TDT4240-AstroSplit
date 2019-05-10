@@ -1,6 +1,6 @@
 package no.ntnu.tdt4240.astrosplit.views;
 
-import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -8,9 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -18,7 +16,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
-import no.ntnu.tdt4240.astrosplit.game.UI;
 import no.ntnu.tdt4240.astrosplit.game.World;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
@@ -28,60 +25,57 @@ import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
 import no.ntnu.tdt4240.astrosplit.game.Map;
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
+import no.ntnu.tdt4240.astrosplit.presenters.InteractionPresenter;
 import no.ntnu.tdt4240.astrosplit.views.widgets.ButtonList;
 import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 
 
 public class GameView implements Screen {
 
-	/**
-	 * Valid types of game
-	 */
-	public enum GameType {
-		TUTORIAL_GAME,
-		LOCAL_GAME,
-//		ONLINE_GAME,
-	}
-
 	// Disposables
 	private SpriteBatch spriteBatch;
-	private ShapeRenderer shape;
+//	private ShapeRenderer shape;
 	private Stage stage;
 	private Map map;
 	private Texture playerNumberTex;
 	private Texture actionsBgTex;
 	private Texture unitBgTex;
 	private Texture actionSelectTex;
+	private ButtonList actionButtons;
 
-
-	// Some numbers
+	// Some metrics
 	private int renderHeight;
 	private int renderWidth;
 	private Rectangle mapBounds; // Map bounds in relation to render resolution
 	private Rectangle actionSelectBounds;
 
+	// Rendering
 	private OrthographicCamera camera;
 	private Viewport viewport;
-	private static int rangeIndicator;
-	private static Vector2 selectedPosition = null;
 	private Vector3 cursorPos = new Vector3();
 
+//	private static int rangeIndicator;
+//	private static Vector2 selectedPosition = null;
+
+	// Game engine and related
 	private PooledEngine engine;
-	private World world;
-
-	private ButtonList actionButtons;
-
-	// Game type dependent stuff
-	private GameType gameType;
+	private InteractionPresenter interactionPresenter;
+//	private World world;
 	private GameModel gameModel;
+	private Entity selectedEntity = null;
 
 
-	GameView(GameType gameType, GameModel gameModel) {
-		this();
-		this.gameType = gameType;
+	/**
+	 * Constructs a view of a game
+	 * @param gameModel
+	 */
+	GameView(GameModel gameModel) {
 		this.gameModel = gameModel;
-
-		switch (gameType) {
+		this.interactionPresenter = InteractionPresenter.getInstance();
+		interactionPresenter.setGameModel(gameModel);
+		interactionPresenter.setGameWiew(this);
+		// Maybe do som game type specific stuff
+		switch (gameModel.getGameType()) {
 			case TUTORIAL_GAME:
 				break;
 
@@ -89,10 +83,7 @@ public class GameView implements Screen {
 				gameModel.save();
 				break;
 		}
-	}
-
-	private GameView() {
-
+		// Setup rendering
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		spriteBatch = new SpriteBatch();
 
@@ -126,7 +117,7 @@ public class GameView implements Screen {
 
 		/* Engine and stuff */
 		engine = new PooledEngine();
-		this.world = new World(engine);
+		World world = new World(engine);
 
 		engine.addSystem(new UnitSystem(world));
 		engine.addSystem(new RenderingSystem(new SpriteBatch(), stage));
@@ -135,9 +126,9 @@ public class GameView implements Screen {
 		world.create();
 
 		/* In-game UI */
-		shape = new ShapeRenderer();
-		shape.setProjectionMatrix(camera.combined);
-		UI.Start();
+//		shape = new ShapeRenderer();
+//		shape.setProjectionMatrix(camera.combined);
+//		UI.Start();
 		playerNumberTex = new Texture("Hud/playerText/player1-red.png");
 		actionsBgTex = new Texture("Hud/hudActions.png");
 		unitBgTex = new Texture("Hud/hudUnitInfo.png");
@@ -163,6 +154,32 @@ public class GameView implements Screen {
 	}
 
 
+	/* --- Public methods --- */
+
+	/**
+	 * To notify view of selection change
+	 * @param selected
+	 */
+	public void unitSelectionChanged(Entity selected) {
+		selectedEntity = selected;
+		if (selected != null) {
+			// TODO set allowed actions
+			// TODO auto select first available action
+			actionButtons.getButton(0).click();
+		}
+	}
+
+	public void unitIntentChanged(Class actionIntent) {
+		setActionSelectPos(null);
+	}
+
+//		public static void updateRange(int range, Vector2 pos) {
+//		rangeIndicator = range;
+//		selectedPosition = pos;
+//	}
+
+	/* --- Private methods --- */
+
 	/**
 	 * Create buttons for available actions
 	 * @param scale Scale of button icons
@@ -178,7 +195,7 @@ public class GameView implements Screen {
 				public void click() {
 					System.out.println("Move action!");
 					setActionSelectPos(this);
-					UI.getInteractionPresenter().updateIntent(MovementComponent.class);
+					interactionPresenter.updateIntent(MovementComponent.class);
 				}
 			},
 			new MenuButton( // Attack action
@@ -189,7 +206,7 @@ public class GameView implements Screen {
 				public void click() {
 					System.out.println("Attack action!");
 					setActionSelectPos(this);
-					UI.getInteractionPresenter().updateIntent(ActionComponentAttack.class);
+					interactionPresenter.updateIntent(ActionComponentAttack.class);
 				}
 			}
 		};
@@ -198,18 +215,11 @@ public class GameView implements Screen {
 	/**
 	 * Pauses all systems connected to engine
 	 */
-	private void pauseSystems() {
-		for(EntitySystem system : engine.getSystems())
-		{
-			system.setProcessing(false);
-		}
-	}
-
-//	public static PooledEngine getGameEngine(){
-//		if (engine == null){
-//			engine = new PooledEngine();
+//	private void pauseSystems() {
+//		for(EntitySystem system : engine.getSystems())
+//		{
+//			system.setProcessing(false);
 //		}
-//		return engine;
 //	}
 
 	/**
@@ -250,6 +260,8 @@ public class GameView implements Screen {
 //			}
 		}
 	}
+
+	/* --- Overridden methods --- */
 
 	@Override
 	public void show() {
@@ -292,7 +304,9 @@ public class GameView implements Screen {
 		);
 
 		// Buttons
-		actionButtons.render(spriteBatch, delta); // TODO if unit is selected
+		if (selectedEntity != null) {
+			actionButtons.render(spriteBatch, delta);
+		}
 		if (actionSelectBounds.y > 0) spriteBatch.draw(
 			actionSelectTex,
 			actionSelectBounds.x, actionSelectBounds.y,
@@ -309,17 +323,12 @@ public class GameView implements Screen {
 
 		spriteBatch.end();
 		//Todo: add "selected" indicator
-		if (rangeIndicator > 0 && selectedPosition != null) {
-			shape.setColor(0.1f,0.1f,0.1f,1);
-			shape.begin(ShapeRenderer.ShapeType.Line);
-			shape.circle(selectedPosition.x + map.getMapWidthInPixels() / 2f, selectedPosition.y + map.getMapHeightInPixels() / 2f, rangeIndicator);
-			shape.end();
-		}
-	}
-
-	public static void updateRange(int range, Vector2 pos) {
-		rangeIndicator = range;
-		selectedPosition = pos;
+//		if (rangeIndicator > 0 && selectedPosition != null) {
+//			shape.setColor(0.1f,0.1f,0.1f,1);
+//			shape.begin(ShapeRenderer.ShapeType.Line);
+//			shape.circle(selectedPosition.x + map.getMapWidthInPixels() / 2f, selectedPosition.y + map.getMapHeightInPixels() / 2f, rangeIndicator);
+//			shape.end();
+//		}
 	}
 
 	@Override
@@ -355,8 +364,13 @@ public class GameView implements Screen {
 	@Override
 	public void dispose() {
 		spriteBatch.dispose();
-		shape.dispose();
+//		shape.dispose();
 		stage.dispose();
 		map.dispose();
+		playerNumberTex.dispose();
+		actionsBgTex.dispose();
+		unitBgTex.dispose();
+		actionSelectTex.dispose();
+		actionButtons.dispose();
 	}
 }

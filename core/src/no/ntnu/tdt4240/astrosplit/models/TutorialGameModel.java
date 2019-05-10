@@ -7,4 +7,10 @@ package no.ntnu.tdt4240.astrosplit.models;
 public class TutorialGameModel extends GameModel {
 
 
+
+	public TutorialGameModel() {
+		super(GameType.TUTORIAL_GAME);
+	}
+
+
 }
