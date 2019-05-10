@@ -2,7 +2,6 @@ package no.ntnu.tdt4240.astrosplit.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
+import no.ntnu.tdt4240.astrosplit.models.AudioManager;
 import no.ntnu.tdt4240.astrosplit.presenters.MenuPresenter;
 
 
@@ -34,6 +34,8 @@ public class MenuView implements View {
 	private Texture background;
 	private Texture title;
 	private SubView subView;
+
+	private Sound sound;
 
 
 	MenuView() {
@@ -85,6 +87,7 @@ public class MenuView implements View {
 			// Check if in area of sub view
 			if (subView.getBounds().contains(cursorPos.x, cursorPos.y)) {
 				subView.handleInput(cursorPos);
+				AudioManager.getInstance().playSoundButton();
 			}
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {

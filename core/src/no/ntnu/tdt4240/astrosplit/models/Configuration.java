@@ -21,6 +21,7 @@ public class Configuration implements Model {
     public float defaultAspect = 16f/9;
 
     /* Audio */
+	private AudioManager smg;
 	private Music music;
 	private Sound sound;
 
@@ -85,10 +86,12 @@ public class Configuration implements Model {
 	public void setMusic(Boolean on) {
 		if(on) {
 			prefStore.putBoolean(musicOn, true);
-			musicEnabled();
+//			musicEnabled();
+			smg.getInstance().PlayMusicMenu();
 		} else {
 			prefStore.putBoolean(musicOn, false);
-			musicDisabled();
+//			musicDisabled();
+			smg.getInstance().stopMusicMenu();
 		}
 	}
 	public boolean isMusicOn() {
@@ -106,7 +109,8 @@ public class Configuration implements Model {
 	@Override
 	public void load() {
 		prefStore = Gdx.app.getPreferences("LocalConfig");
-		// Apply config
+
+		// Apply fullscreen / windowed
 		if (Gdx.graphics.supportsDisplayModeChange()) {
 			if (prefStore.getBoolean(fullscreen)) {
 				fullscreenMode();
@@ -115,10 +119,9 @@ public class Configuration implements Model {
 			}
 		}
 
+		// Apply music if preferred
 		if(prefStore.getBoolean(musicOn)){
-			musicEnabled();
-		} else {
-			musicDisabled();
+			setMusic(true);
 		}
 	}
 
@@ -138,36 +141,5 @@ public class Configuration implements Model {
 	 */
 	private void windowedMode() {
 		Gdx.graphics.setWindowedMode(getViewPortRenderWidth(), viewPortRenderHeight);
-	}
-
-	/**
-	 * Enable music
-	 */
-	private void musicEnabled() {
-		/* Music & sound effects */
-		music = Gdx.audio.newMusic(Gdx.files.internal("Audio/musicPlaceholder.mp3"));
-		music.setLooping(false); //For now
-		music.setVolume(1f); //100%
-		music.play();
-	}
-
-	/**
-	 * Disable music
-	 */
-	private void musicDisabled() {
-		if(music != null && !isMusicOn()){
-			music.stop();
-		}
-	}
-
-	/**
-	 * Enable sound effects
-	 */
-	private void soundDisabled() {
-	}
-	/**
-	 * Disable sound effects
-	 */
-	private void soundEnabled() {
 	}
 }
