@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -42,6 +43,7 @@ public class GameView implements Screen {
 	private Texture unitBgTex;
 	private Texture actionSelectTex;
 	private ButtonList actionButtons;
+	private AssetManager assetManager;
 
 	// Some metrics
 	private int renderHeight;
@@ -74,6 +76,8 @@ public class GameView implements Screen {
 		this.interactionPresenter = InteractionPresenter.getInstance();
 		interactionPresenter.setGameModel(gameModel);
 		interactionPresenter.setGameWiew(this);
+		assetManager = new AssetManager();
+
 		// Maybe do som game type specific stuff
 		switch (gameModel.getGameType()) {
 			case TUTORIAL_GAME:
