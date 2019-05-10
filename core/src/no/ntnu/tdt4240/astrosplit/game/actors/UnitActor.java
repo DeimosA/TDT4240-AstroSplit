@@ -10,8 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
 
+
+import no.ntnu.tdt4240.astrosplit.game.abilities.Attack;
 import no.ntnu.tdt4240.astrosplit.game.abilities.Move;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
+import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PlayerComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
@@ -126,6 +129,7 @@ public class UnitActor extends Actor {
 		this.textureComponent = tex;
 		this.transformComponent = trans;
 		this.positionComponent = pos;
+
 		setPosition(positionComponent.position.x, positionComponent.position.y);
 	}
 
@@ -144,6 +148,7 @@ public class UnitActor extends Actor {
 		return positionComponent.position;
 	}
 
+	/* --- Protected methods --- */
 	public void move(Vector2 pos)
 	{
 		if(collisionCheck(pos))
@@ -154,6 +159,24 @@ public class UnitActor extends Actor {
 		InteractionPresenter.getInstance().disableIntent(MovementComponent.class);
 	}
 
+
+	public void attack(Vector2 pos) {
+		for(Actor actor : this.getStage().getActors())
+		{
+			if(actor.getClass() == UnitActor.class)
+			{
+				if(pos.equals(((UnitActor) actor).getPosition()))
+					Attack.attack(entity, ((UnitActor) actor).getEntity());
+			}
+		}
+		destroyAttackTiles();
+
+	}
+
+	public Entity getEntity()
+	{
+		return this.entity;
+	}
 	public int getPlayer()
 	{
 		return playerComponent.id;
@@ -205,9 +228,9 @@ public class UnitActor extends Actor {
 	private void drawAttackTiles()
 	{
 
-		for(int posx = -(int)attackComponent.range*32; posx <= attackComponent.range*32; posx +=32)
+		for(int posx = -attackComponent.range*32; posx <= attackComponent.range*32; posx +=32)
 		{
-			for(int posy = -(int)attackComponent.range*32; posy <= attackComponent.range*32; posy +=32)
+			for(int posy = -attackComponent.range*32; posy <= attackComponent.range*32; posy +=32)
 			{
 				if(0 == posx && 0 == posy)
 				{
@@ -266,15 +289,6 @@ public class UnitActor extends Actor {
 		gridSizeAttack = (int) Math.pow(attackComponent.range,2);
 	}
 
-	private void destroyTiles()
-	{
-		for(HighlightedTileActor tileActor : tileList)
-		{
-			tileActor.remove();
-		}
-		tileList.clear();
-	}
-
 	private boolean collisionCheck(Vector2 pos)
 	{
 		for(Actor actor : this.getStage().getActors()){
@@ -323,4 +337,5 @@ public class UnitActor extends Actor {
 	{
 		super.act(delta);
 	}
+
 }

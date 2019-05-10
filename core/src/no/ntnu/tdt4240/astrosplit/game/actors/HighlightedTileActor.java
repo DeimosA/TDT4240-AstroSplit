@@ -50,7 +50,7 @@ public class HighlightedTileActor extends Actor {
 		 */
 		@Override
 		public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-			//attack
+			attack(new Vector2(sprite.getX(),sprite.getY()));
 			return true;
 		}
 	};
@@ -83,6 +83,12 @@ public class HighlightedTileActor extends Actor {
 	{
 		pos.set(new Vector2(pos.x-144,pos.y-144));
 		actor.move(pos);
+	}
+
+	private void attack(Vector2 pos)
+	{
+		pos.set(new Vector2(pos.x-144,pos.y-144));
+		actor.attack(pos);
 	}
 
 

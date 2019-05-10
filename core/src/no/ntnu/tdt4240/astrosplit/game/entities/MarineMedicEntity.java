@@ -31,7 +31,7 @@ public class MarineMedicEntity extends Entity {
 
 	public Entity create(Vector2 pos, int player){
 
-		int damage = -300; //Damage of units attack
+		int damage = 50; //Damage of units attack
 		int range = 2; //Range of units attack
 		int health = 100; //Health of unit
 		int movement = 3; //Number of tiles the unit can move

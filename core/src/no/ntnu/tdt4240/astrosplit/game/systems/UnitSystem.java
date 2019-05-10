@@ -69,6 +69,9 @@ public class UnitSystem extends IteratingSystem {
 		MovementComponent movement 		= mm.get(entity);
 		PositionComponent position 		= pm.get(entity);
 
+		if(health.health <= 0)
+			killUnit(entity);
+		/*
 		if(entity.getComponent(ActionComponentAttack.class) != null)
 		{
 			for(Entity attackedEntity : action.attackList)
@@ -80,6 +83,7 @@ public class UnitSystem extends IteratingSystem {
 			}
 			action.attackList.clear();
 		}
+		*/
 
 	}
 
@@ -90,7 +94,7 @@ public class UnitSystem extends IteratingSystem {
 		if(!family.matches(offender) || !family.matches(victim)) return;
 
 
-		Attack.attack(offender,victim, tm.get(offender));
+		Attack.attack(offender,victim);
 
 		HealthComponent health = hm.get(victim);
 		if (health.health <= 0) world.killUnit(victim);

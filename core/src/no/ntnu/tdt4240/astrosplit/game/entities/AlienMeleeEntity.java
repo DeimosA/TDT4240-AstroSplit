@@ -31,7 +31,7 @@ public class AlienMeleeEntity extends Entity {
 	public Entity create(Vector2 pos){
 
 		int damage = 75; //Damage of units attack
-		int range = 100; //Range of units attack
+		int range = 1; //Range of units attack
 		int health = 250; //Health of unit
 		int movement = 3; //Number of tiles the unit can move
 		TextureRegion texture = new TextureRegion(new Texture("Units/alien_melee.png")); // Texture of the unit

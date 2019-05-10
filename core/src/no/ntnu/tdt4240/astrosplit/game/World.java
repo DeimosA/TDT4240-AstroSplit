@@ -11,6 +11,8 @@ import no.ntnu.tdt4240.astrosplit.game.entities.MarineMedicEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineMeleeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineRangeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.SectoidMeleeEntity;
+import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
+import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
 
 
 public class World {
@@ -33,7 +35,6 @@ public class World {
 		marineMedicEntity2.create(new Vector2(-16,-16),2);
 		MarineMedicEntity marineMedicEntity3 = new MarineMedicEntity(engine);
 		marineMedicEntity3.create(new Vector2(-48,16),1);
-
 	}
 
 
@@ -46,6 +47,7 @@ public class World {
 
 	public void killUnit(Entity entity)
 	{
+		engine.getSystem(RenderingSystem.class).removeActor(entity);
 		engine.removeEntity(entity);
 	}
 }

@@ -60,6 +60,12 @@ public class RenderingSystem extends IteratingSystem{
 		this.stage = stage;
 	}
 
+	public void removeActor(Entity entity)
+	{
+		ActorComponent actor = actorMapper.get(entity);
+		actor.actor.remove();
+	}
+
 	/*
 		Called on every tick
 	 */

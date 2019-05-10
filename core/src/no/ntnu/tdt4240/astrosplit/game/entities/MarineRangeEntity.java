@@ -32,7 +32,7 @@ public class MarineRangeEntity extends Entity {
 	public Entity create(Vector2 pos){
 
 		int damage = 20; //Damage of units attack
-		int range = 250; //Range of units attack
+		int range = 3; //Range of units attack
 		int health = 100; //Health of unit
 		int movement = 3; //Number of tiles the unit can move
 		TextureRegion texture = new TextureRegion(new Texture("Units/marine_ranged.png")); // Texture of the unit
