@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
+import no.ntnu.tdt4240.astrosplit.game.components.ActorComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 
 /**
@@ -14,26 +15,41 @@ import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
  * Tracks the position of the selected entity
  * */
 public class InteractionModel {
+
+
 	private Entity selected;
 	private Class intent;
 	private Vector2 selectedPosition = null;
+
 
 	public InteractionModel() {
 		selected = null;
 		intent = null;
 	}
 
+
 	public void setSelected(Entity selected) {
+		if (this.selected == selected) return;
+
+		if (this.selected != null) {
+			// Unselect old selected
+			this.selected.getComponent(ActorComponent.class).actor.select(false);
+		}
 		this.selected = selected;
 	}
 
 	public void setIntent(Class intent) {
-		if (intent != null && selected != null) {
+		if (selected != null) {
 			this.intent = intent;
+			selected.getComponent(ActorComponent.class).actor.setActionIntent(intent);
 			System.out.println("Intent: " + intent + " Set");
 		} else {
 			this.intent = null;
 		}
+	}
+
+	public Class getIntent() {
+		return intent;
 	}
 
 	public void setSelectedPosition(Vector2 selectedPosition) {

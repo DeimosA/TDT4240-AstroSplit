@@ -9,10 +9,14 @@ public class LocalGameModel extends GameModel {
 	private static final String saveGameName = "LocalGameState";
 	private Preferences prefStore;
 
+	// Game state to be saved in pref store
+	private static final String ongoingGame = "ongoingGame";
+
 	private TeamType player1;
 	private TeamType player2;
 
 	public LocalGameModel() {
+		super(GameType.LOCAL_GAME);
 		// Make sure saved gamestate is loaded if it exists
 		load();
 	}
@@ -38,7 +42,10 @@ public class LocalGameModel extends GameModel {
 	 */
 	public void startNewGame() {
 		prefStore.clear();
-		prefStore.putBoolean("ongoingGame", true);
+		prefStore.putBoolean(ongoingGame, true);
+	}
+	public void endGame() {
+		prefStore.clear();
 	}
 
 	@Override
@@ -58,6 +65,6 @@ public class LocalGameModel extends GameModel {
 	 */
 	public static boolean hasOngoingGame() {
 		Preferences prefs = Gdx.app.getPreferences(saveGameName);
-		return prefs.contains("ongoingGame");
+		return prefs.contains(ongoingGame);
 	}
 }

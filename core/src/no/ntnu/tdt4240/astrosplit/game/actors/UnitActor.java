@@ -7,40 +7,39 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.utils.Array;
 
-
-import java.util.ArrayList;
-
-import no.ntnu.tdt4240.astrosplit.game.UI;
 import no.ntnu.tdt4240.astrosplit.game.abilities.Move;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
+import no.ntnu.tdt4240.astrosplit.presenters.InteractionPresenter;
 
 
 //Object has sprite and position,
 //Handles on click events
-
-
 public class UnitActor extends Actor {
 
+
 	private Sprite sprite;
+	private Entity entity;
 	private TransformComponent transformComponent;
 	private TextureComponent textureComponent;
 	private PositionComponent positionComponent;
 	private MovementComponent movementComponent = null;
-	private Entity entity = null;
-	private boolean showHighlightedTiles = false;
-	private ArrayList<HighlightedTileActor> tileList = new ArrayList<HighlightedTileActor>();
+
+	private boolean isSelected = false;
+	private Class actionIntent;
+	private boolean showMovementRange = false;
+	private Array<HighlightedTileActor> tileList = new Array<HighlightedTileActor>();
 	private int gridSize;
 
 
 	public UnitActor(TextureComponent texture, TransformComponent transform, PositionComponent pos, final Entity entity)
 	{
-
 		this.textureComponent = entity.getComponent(TextureComponent.class);
 		this.transformComponent = entity.getComponent(TransformComponent.class);
 		this.positionComponent = entity.getComponent(PositionComponent.class);
@@ -51,39 +50,53 @@ public class UnitActor extends Actor {
 
 		//Every UnitActor is constructed with an eventlistener, TouchDown method.
 		setTouchable(Touchable.enabled);
-		addListener(new InputListener() {
-
-			/*
-				Does at the moment move the actor 10px up at click
-			 */
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				UI.getInteractionPresenter().updateInteraction(entity, null, positionComponent.position);
-
-				//Toggle tiles
-				toggleTiles();
-
-
-				/*
-					TODO
-					-Show some UI to choose action
-					-Choose action
-					-Move to specific tile on grid
-					-Get next input after touched actor
-
-					Alternatively:
-					-Set this unit as chosen unit
-						-Move logic to somewhere else
-				 */
-				return true;
-			}
-		});
-
-
+		addListener(inputListener);
 	}
 
-	/*
-		Updates position of Sprite and bound
+	private InputListener inputListener = new InputListener() {
+		@Override
+		public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+			select(true);
+			return true;
+		}
+	};
+
+	/* --- Public methods --- */
+
+	/**
+	 * Set whether this unit is selected or not
+	 * @param select
+	 */
+	public void select(boolean select)
+	{
+		isSelected = select;
+		if (select) {
+			// On select
+			InteractionPresenter.getInstance().updateInteraction(entity, actionIntent, positionComponent.position);
+		} else {
+			// On unselect
+			destroyMovementTiles();
+		}
+	}
+
+	/**
+	 * Set the intended action for this actor/entity
+	 * @param intent Component class
+	 */
+	public void setActionIntent(Class intent) {
+		this.actionIntent = intent;
+		// Remove all intent visualisations first
+		destroyMovementTiles();
+
+		if (intent == MovementComponent.class) {
+			showMovementRange = true;
+		} else if (intent == ActionComponentAttack.class) {
+			// TODO something attack related
+		}
+	}
+
+	/**
+	 * Updates position of Sprite and bound
 	 */
 	public void setPosition(float x, float y)
 	{
@@ -96,13 +109,8 @@ public class UnitActor extends Actor {
 		sprite.setScale(transformComponent.scale.x, transformComponent.scale.y);
 	}
 
-
-	private void toggleTiles() {
-		this.showHighlightedTiles = !this.showHighlightedTiles;
-	}
-
-	/*
-		Update actor, calls to setPosition to apply these changes to view
+	/**
+	 * Update actor, calls to setPosition to apply these changes to view
 	 */
 	public void updateActor(TextureComponent tex, TransformComponent trans, PositionComponent pos)
 	{
@@ -112,33 +120,37 @@ public class UnitActor extends Actor {
 		setPosition(positionComponent.position.x, positionComponent.position.y);
 	}
 
-	@Override
-	public void draw(Batch batch, float parentAlpha)
+	public void setTouchable(boolean touchable)
 	{
-		sprite.draw(batch);
-		if(showHighlightedTiles && tileList.size() < gridSize)
+		if(touchable)
+			setTouchable(Touchable.enabled);
+		else
 		{
-			drawTiles();
+			setTouchable(Touchable.disabled);
 		}
-		else if(showHighlightedTiles == false)
-			{
-				destroyTiles();
-			}
-
-
 	}
 
-	@Override
-	public void act(float delta)
+	public Vector2 getPosition()
 	{
-		super.act(delta);
+		return positionComponent.position;
 	}
 
-	private void drawTiles()
+	public void move(Vector2 pos)
+	{
+		if(collisionCheck(pos))
+			Move.move(entity,pos); // TODO use entity-component
+
+		destroyMovementTiles();
+		// TODO temporary thing
+		InteractionPresenter.getInstance().disableIntent(MovementComponent.class);
+	}
+
+	/* --- Private methods --- */
+
+	private void drawMovementTiles()
 	{
 		for(int posx = -(int)movementComponent.distance*32; posx <= movementComponent.distance*32; posx +=32)
 		{
-
 			for(int posy = -(int)movementComponent.distance*32; posy <= movementComponent.distance*32; posy +=32)
 			{
 				if(0 == posx && 0 == posy)
@@ -166,7 +178,6 @@ public class UnitActor extends Actor {
 					gridSize-=1;
 					continue;
 				}
-
 				HighlightedTileActor tile = new HighlightedTileActor(this);
 				this.getStage().addActor(tile);
 				tile.setPosition(posx+144+positionComponent.position.x,posy+144+positionComponent.position.y);
@@ -175,7 +186,8 @@ public class UnitActor extends Actor {
 		}
 	}
 
-	private void destroyTiles() {
+	private void destroyMovementTiles() {
+		showMovementRange = false;
 		for(HighlightedTileActor tileActor: tileList)
 		{
 			tileActor.remove();
@@ -183,32 +195,6 @@ public class UnitActor extends Actor {
 		}
 		tileList.clear();
 		gridSize = (int) Math.pow(movementComponent.distance,2);
-	}
-
-
-
-	public void setTouchable(boolean touchable)
-	{
-		if(touchable)
-			setTouchable(Touchable.enabled);
-		else
-			{
-				setTouchable(Touchable.disabled);
-			}
-	}
-
-	public Vector2 getPosition()
-	{
-		return positionComponent.position;
-	}
-
-	public void move(Vector2 pos)
-	{
-		if(collisionCheck(pos))
-			Move.move(entity,pos);
-
-		showHighlightedTiles = false;
-		destroyTiles();
 	}
 
 	private boolean collisionCheck(Vector2 pos)
@@ -223,9 +209,23 @@ public class UnitActor extends Actor {
 		return true;
 	}
 
-	public void select(boolean bool)
+	/* --- Overridden methods --- */
+
+	@Override
+	public void draw(Batch batch, float parentAlpha)
 	{
-		this.showHighlightedTiles = bool;
+		sprite.draw(batch);
+		// Draw intent if selected
+		if (isSelected) {
+			if(showMovementRange && tileList.size < gridSize) {
+				drawMovementTiles();
+			}
+		}
 	}
 
+	@Override
+	public void act(float delta)
+	{
+		super.act(delta);
+	}
 }

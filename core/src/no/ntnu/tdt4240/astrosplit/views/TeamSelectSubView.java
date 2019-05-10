@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import no.ntnu.tdt4240.astrosplit.models.GameModel;
 import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
 import no.ntnu.tdt4240.astrosplit.models.TeamType;
 import no.ntnu.tdt4240.astrosplit.models.TutorialGameModel;
@@ -32,16 +33,16 @@ class TeamSelectSubView extends SubView {
 
 	private TeamType selectedTeam = null;
 	private int selectedButtonIndex;
-	private GameView.GameType gameType;
+	private GameModel.GameType gameType;
 	private LocalGameModel localGameModel;
 
 
-	TeamSelectSubView(Rectangle bounds, MenuView menuView, MenuPresenter menuPresenter, GameView.GameType gameType) {
+	TeamSelectSubView(Rectangle bounds, MenuView menuView, MenuPresenter menuPresenter, GameModel.GameType gameType) {
 		this(bounds, menuView, menuPresenter, gameType, null);
 	}
 
 	TeamSelectSubView(Rectangle bounds, MenuView menuView, MenuPresenter menuPresenter, LocalGameModel gameModel) {
-		this(bounds, menuView, menuPresenter, GameView.GameType.LOCAL_GAME, gameModel);
+		this(bounds, menuView, menuPresenter, GameModel.GameType.LOCAL_GAME, gameModel);
 	}
 
 	/**
@@ -54,7 +55,7 @@ class TeamSelectSubView extends SubView {
 	private TeamSelectSubView(Rectangle bounds,
 							  MenuView menuView,
 							  MenuPresenter menuPresenter,
-							  GameView.GameType gameType,
+							  GameModel.GameType gameType,
 							  LocalGameModel localGameModel) {
 		super(bounds, menuView);
 
@@ -95,7 +96,7 @@ class TeamSelectSubView extends SubView {
 		);
 
 		// Player number indicator
-		if (gameType == GameView.GameType.LOCAL_GAME) {
+		if (gameType == GameModel.GameType.LOCAL_GAME) {
 			if (localGameModel == null) {
 				// Local game and player 1 select
 				playerNumberTexture = new Texture("Astro/TeamSelect/headingPlayer1.png");
@@ -186,7 +187,7 @@ class TeamSelectSubView extends SubView {
 					// #5 - Confirm
 					if (selectedTeam != null) {
 						System.out.println("Chose: Confirm");
-						if (gameType == GameView.GameType.LOCAL_GAME && localGameModel == null) {
+						if (gameType == GameModel.GameType.LOCAL_GAME && localGameModel == null) {
 							// Player 1 have selected their team
 							LocalGameModel gameModel = new LocalGameModel();
 							gameModel.startNewGame();
@@ -194,7 +195,7 @@ class TeamSelectSubView extends SubView {
 							// So let player 2 select
 							menuView.setSubView(new TeamSelectSubView(bounds, menuView, menuPresenter, gameModel));
 
-						} else if (gameType == GameView.GameType.LOCAL_GAME) {
+						} else if (gameType == GameModel.GameType.LOCAL_GAME) {
 							// Player 2 have selected their team
 							localGameModel.setPlayer2(selectedTeam);
 							// So start the game
@@ -203,10 +204,10 @@ class TeamSelectSubView extends SubView {
 
 						} else {
 							// Other game types
-							if (gameType == GameView.GameType.TUTORIAL_GAME) {
+							if (gameType == GameModel.GameType.TUTORIAL_GAME) {
 								TutorialGameModel gameModel = new TutorialGameModel();
 								gameModel.setPlayerTeam(selectedTeam);
-								ViewStateManager.getInstance().setScreen(new GameView(gameType, gameModel));
+								ViewStateManager.getInstance().setScreen(new GameView(gameModel));
 							}
 						}
 					}
