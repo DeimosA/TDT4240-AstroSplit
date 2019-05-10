@@ -21,6 +21,7 @@ public class Assets {
 	public static final String hud_button_move_disabled = "Hud/buttonMoveDisabled.png";
 	public static final String hud_button_sword = "Hud/buttonSword.png";
 	public static final String hud_button_sword_disabled = "Hud/buttonSwordDisabled.png";
+	public static final String hud_button_endTurn = "Hud/buttonEndTurn.png";
 	// Active player indicators
 	private static boolean playerIndicatorsLoaded = false;
 	public static final String hud_Player1_red = "Hud/playerText/player1-red.png";
@@ -40,6 +41,10 @@ public class Assets {
 //	public static final String aaa = "";
 
 
+	/**
+	 * Load assets for in-game UI
+	 * @param asm
+	 */
 	public static void loadHudAssets(AssetManager asm) {
 		if (hudLoaded) return;
 
@@ -50,10 +55,15 @@ public class Assets {
 		asm.load(hud_button_move_disabled, Texture.class);
 		asm.load(hud_button_sword, Texture.class);
 		asm.load(hud_button_sword_disabled, Texture.class);
+		asm.load(hud_button_endTurn, Texture.class);
 
 		hudLoaded = true;
 	}
 
+	/**
+	 * This is only needed for local multiplayer
+	 * @param asm
+	 */
 	public static void loadHudPlayerIndicators(AssetManager asm) {
 		if (playerIndicatorsLoaded) return;
 

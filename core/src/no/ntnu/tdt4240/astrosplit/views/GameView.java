@@ -205,8 +205,12 @@ public class GameView implements Screen {
 
 	/* --- Private methods --- */
 
+	/**
+	 * Creates button for ending turn
+	 * @return
+	 */
 	private MenuButton createEndTurnButton() {
-		return new MenuButton(new Texture("Astro/buttonStart.png")) {
+		return new MenuButton(assetManager.get(Assets.hud_button_endTurn, Texture.class)) {
 			@Override
 			public void click() {
 				System.out.println("End Turn!");
