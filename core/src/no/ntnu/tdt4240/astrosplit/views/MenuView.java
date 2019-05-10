@@ -2,6 +2,8 @@ package no.ntnu.tdt4240.astrosplit.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -39,6 +41,8 @@ public class MenuView implements View {
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1);
 		spriteBatch = new SpriteBatch();
 		camera = new OrthographicCamera();
+
+
 
 		menuPresenter = new MenuPresenter(this);
 
