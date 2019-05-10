@@ -15,9 +15,7 @@ public final class ViewStateManager {
 	 * Manages the current view
 	 */
 	private ViewStateManager() {
-		TutorialGameModel gameModel = new TutorialGameModel();
-		currentScreen = new GameView(gameModel);
-		//currentScreen = new MenuView();
+		currentScreen = new MenuView();
 	}
 
 	/**
