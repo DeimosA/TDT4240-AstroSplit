@@ -89,7 +89,7 @@ public class RenderingSystem extends IteratingSystem{
 			ActorComponent actor = actorMapper.get(entity);
 			if(actor.actor == null)
 			{
-				actor.actor = new UnitActor(tex,t,p, entity);
+				actor.actor = new UnitActor(entity);
 				stage.addActor(actor.actor);
 			}
 			else

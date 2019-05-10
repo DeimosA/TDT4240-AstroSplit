@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array;
 import no.ntnu.tdt4240.astrosplit.game.abilities.Move;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.PlayerComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
@@ -30,22 +31,27 @@ public class UnitActor extends Actor {
 	private TextureComponent textureComponent;
 	private PositionComponent positionComponent;
 	private MovementComponent movementComponent = null;
+	private ActionComponentAttack attackComponent;
+	private PlayerComponent playerComponent;
 
 	private boolean isSelected = false;
 	private Class actionIntent;
 	private boolean showMovementRange = false;
+	private boolean showAttackRange = false;
 	private Array<HighlightedTileActor> tileList = new Array<HighlightedTileActor>();
-	private int gridSize;
+	private int gridSizeAttack;
+	private int gridSizeMovement;
 
 
-	public UnitActor(TextureComponent texture, TransformComponent transform, PositionComponent pos, final Entity entity)
+	public UnitActor(final Entity entity)
 	{
 		this.textureComponent = entity.getComponent(TextureComponent.class);
 		this.transformComponent = entity.getComponent(TransformComponent.class);
 		this.positionComponent = entity.getComponent(PositionComponent.class);
 		this.movementComponent = entity.getComponent(MovementComponent.class);
+		this.attackComponent = entity.getComponent(ActionComponentAttack.class);
+		this.playerComponent = entity.getComponent(PlayerComponent.class);
 		this.entity = entity;
-		this.gridSize = (int) Math.pow(movementComponent.distance,2);
 		this.sprite = new Sprite(textureComponent.region.getTexture());
 
 		//Every UnitActor is constructed with an eventlistener, TouchDown method.
@@ -86,11 +92,14 @@ public class UnitActor extends Actor {
 	public void setActionIntent(Class intent) {
 		this.actionIntent = intent;
 		// Remove all intent visualisations first
+		//destroyTiles();
 		destroyMovementTiles();
+		destroyAttackTiles();
 
 		if (intent == MovementComponent.class) {
 			showMovementRange = true;
 		} else if (intent == ActionComponentAttack.class) {
+			showAttackRange = true;
 			// TODO something attack related
 		}
 	}
@@ -145,46 +154,94 @@ public class UnitActor extends Actor {
 		InteractionPresenter.getInstance().disableIntent(MovementComponent.class);
 	}
 
+	public int getPlayer()
+	{
+		return playerComponent.id;
+	}
+
 	/* --- Private methods --- */
+
 
 	private void drawMovementTiles()
 	{
+		this.gridSizeMovement = (int) Math.pow(movementComponent.distance,2);
+
 		for(int posx = -(int)movementComponent.distance*32; posx <= movementComponent.distance*32; posx +=32)
 		{
 			for(int posy = -(int)movementComponent.distance*32; posy <= movementComponent.distance*32; posy +=32)
 			{
 				if(0 == posx && 0 == posy)
 				{
-					gridSize-=1;
+					gridSizeMovement-=1;
 					continue;
 				}
 				if(posx+144+positionComponent.position.x > 256 || posx+144+positionComponent.position.x < 32)
 				{
-					gridSize-=1;
+					gridSizeMovement-=1;
 					continue;
 				}
 				if(posy+144+positionComponent.position.y > 256 || posy+144+positionComponent.position.y < 32)
 				{
-					gridSize-=1;
+					gridSizeMovement-=1;
 					continue;
 				}
 				if(!collisionCheck(new Vector2(posx+positionComponent.position.x,posy+positionComponent.position.y)))
 				{
-					gridSize-=1;
+					gridSizeMovement-=1;
 					continue;
 				}
-				if(Math.abs(posx)/32 + Math.abs(posy)/32 > movementComponent.distance)
+				if(Math.abs(posx)+ Math.abs(posy)> movementComponent.distance*32)
 				{
-					gridSize-=1;
+					gridSizeMovement-=1;
 					continue;
 				}
-				HighlightedTileActor tile = new HighlightedTileActor(this);
+				HighlightedTileActor tile = new HighlightedTileActor(this,'M');
 				this.getStage().addActor(tile);
 				tile.setPosition(posx+144+positionComponent.position.x,posy+144+positionComponent.position.y);
 				tileList.add(tile);
 			}
 		}
 	}
+	private void drawAttackTiles()
+	{
+
+		for(int posx = -(int)attackComponent.range*32; posx <= attackComponent.range*32; posx +=32)
+		{
+			for(int posy = -(int)attackComponent.range*32; posy <= attackComponent.range*32; posy +=32)
+			{
+				if(0 == posx && 0 == posy)
+				{
+					gridSizeAttack-=1;
+					continue;
+				}
+				if(posx+144+positionComponent.position.x > 256 || posx+144+positionComponent.position.x < 32)
+				{
+					gridSizeAttack-=1;
+					continue;
+				}
+				if(posy+144+positionComponent.position.y > 256 || posy+144+positionComponent.position.y < 32)
+				{
+					gridSizeAttack-=1;
+					continue;
+				}
+				if(!friendCheck(new Vector2(posx+positionComponent.position.x,posy+positionComponent.position.y)))
+				{
+					gridSizeAttack-=1;
+					continue;
+				}
+				if(Math.abs(posx)+ Math.abs(posy)> attackComponent.range*32)
+				{
+					gridSizeAttack-=1;
+					continue;
+				}
+				HighlightedTileActor tile = new HighlightedTileActor(this,'A');
+				this.getStage().addActor(tile);
+				tile.setPosition(posx+144+positionComponent.position.x,posy+144+positionComponent.position.y);
+				tileList.add(tile);
+			}
+		}
+	}
+
 
 	private void destroyMovementTiles() {
 		showMovementRange = false;
@@ -194,7 +251,28 @@ public class UnitActor extends Actor {
 
 		}
 		tileList.clear();
-		gridSize = (int) Math.pow(movementComponent.distance,2);
+		gridSizeMovement = (int) Math.pow(movementComponent.distance,2);
+
+	}
+
+	private void destroyAttackTiles()
+	{
+		showAttackRange = false;
+		for(HighlightedTileActor tileActor: tileList)
+		{
+			tileActor.remove();
+		}
+		tileList.clear();
+		gridSizeAttack = (int) Math.pow(attackComponent.range,2);
+	}
+
+	private void destroyTiles()
+	{
+		for(HighlightedTileActor tileActor : tileList)
+		{
+			tileActor.remove();
+		}
+		tileList.clear();
 	}
 
 	private boolean collisionCheck(Vector2 pos)
@@ -209,6 +287,19 @@ public class UnitActor extends Actor {
 		return true;
 	}
 
+	private boolean friendCheck(Vector2 pos)
+	{
+		for(Actor actor : this.getStage().getActors()){
+			if(actor.getClass() == UnitActor.class)
+			{
+				int i = ((UnitActor) actor).getPlayer();
+				if(i == this.getPlayer() && pos.x+144 == actor.getX() && pos.y+144 == actor.getY())
+					return false;
+			}
+		}
+		return true;
+	}
+
 	/* --- Overridden methods --- */
 
 	@Override
@@ -217,8 +308,12 @@ public class UnitActor extends Actor {
 		sprite.draw(batch);
 		// Draw intent if selected
 		if (isSelected) {
-			if(showMovementRange && tileList.size < gridSize) {
+			if(showMovementRange && tileList.size < gridSizeMovement) {
 				drawMovementTiles();
+			}
+			else if(showAttackRange && tileList.size < gridSizeAttack)
+			{
+				drawAttackTiles();
 			}
 		}
 	}

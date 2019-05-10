@@ -15,7 +15,7 @@ public class HighlightedTileActor extends Actor {
 	private Sprite sprite;
 	private UnitActor actor;
 
-	public HighlightedTileActor(final UnitActor actor)
+	public HighlightedTileActor(final UnitActor actor, char type)
 	{
 		Texture texture = new Texture("map/tile_green.png");
 
@@ -23,19 +23,38 @@ public class HighlightedTileActor extends Actor {
 		sprite.setAlpha(0.5f);
 		this.actor = actor;
 		setTouchable(Touchable.enabled);
-		addListener(new InputListener() {
 
-			/*
-				When clicked, move to tile
-			 */
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				move(new Vector2(sprite.getX(),sprite.getY()));
-				return true;
-			}
-		});
+		if(type == 'M')
+			addListener(moveListener);
+		if(type == 'A')
+			addListener(attackListener);
 
 	}
+
+	private InputListener moveListener = new InputListener(){
+
+		/*
+            When clicked, move to tile
+         */
+		@Override
+		public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+			move(new Vector2(sprite.getX(),sprite.getY()));
+			return true;
+		}
+	};
+
+	private InputListener attackListener = new InputListener(){
+
+		/*
+			When clicked, attack unit at tile
+		 */
+		@Override
+		public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+			//attack
+			return true;
+		}
+	};
+
 
 	@Override
 	public void draw(Batch batch, float parentAlpha)

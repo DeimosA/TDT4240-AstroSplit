@@ -2,6 +2,8 @@ package no.ntnu.tdt4240.astrosplit.views;
 
 import com.badlogic.gdx.Screen;
 
+import no.ntnu.tdt4240.astrosplit.models.TutorialGameModel;
+
 public final class ViewStateManager {
 
 	private static ViewStateManager INSTANCE = null;
@@ -13,7 +15,9 @@ public final class ViewStateManager {
 	 * Manages the current view
 	 */
 	private ViewStateManager() {
-		currentScreen = new MenuView();
+		TutorialGameModel gameModel = new TutorialGameModel();
+		currentScreen = new GameView(gameModel);
+		//currentScreen = new MenuView();
 	}
 
 	/**

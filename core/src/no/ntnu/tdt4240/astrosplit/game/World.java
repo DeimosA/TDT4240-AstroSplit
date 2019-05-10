@@ -28,9 +28,11 @@ public class World {
 	public void create()
 	{
 		MarineMedicEntity marineMedicEntity = new MarineMedicEntity(engine);
-		marineMedicEntity.create(new Vector2(16,16));
+		marineMedicEntity.create(new Vector2(16,16),1);
 		MarineMedicEntity marineMedicEntity2 = new MarineMedicEntity(engine);
-		marineMedicEntity2.create(new Vector2(-48,16));
+		marineMedicEntity2.create(new Vector2(-16,-16),2);
+		MarineMedicEntity marineMedicEntity3 = new MarineMedicEntity(engine);
+		marineMedicEntity3.create(new Vector2(-48,16),1);
 
 	}
 
