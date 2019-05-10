@@ -13,7 +13,10 @@ public class Attack {
 		System.out.println("Attacker " + attacker);
 		System.out.println("Victim " + victim);
 		System.out.println("Pre-attack HP: " + victim.getComponent(HealthComponent.class).health);
-		BasicAttack.attack(attacker, victim);
+
+		if(attacker.getComponent(TypeComponent.class).type == "unit")
+			BasicAttack.attack(attacker, victim);
+		
 		System.out.println("Post-attack HP: " + victim.getComponent(HealthComponent.class).health);
 	}
 
