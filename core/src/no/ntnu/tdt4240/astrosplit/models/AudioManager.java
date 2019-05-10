@@ -72,7 +72,7 @@ public final class AudioManager implements Model {
 		musicMenu = Gdx.audio.newMusic(Gdx.files.internal("Audio/musicPlaceholder.mp3"));
 		musicArray.add(musicMenu);
 
-		soundButton = Gdx.audio.newSound(Gdx.files.internal("Audio/soundButton.mp3"));
+		soundButton = Gdx.audio.newSound(Gdx.files.internal("Audio/soundButton.wav"));
 		soundArray.add(soundButton);
 	}
 
@@ -86,7 +86,7 @@ public final class AudioManager implements Model {
 	public void PlayMusicMenu() {
 		/* Main menu  */
 		musicMenu.setLooping(false); //For now
-		musicMenu.setVolume(0.1f); //10%
+		musicMenu.setVolume(0.5f); //10%
 		musicMenu.play();
 	}
 
