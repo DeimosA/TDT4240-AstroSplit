@@ -147,9 +147,10 @@ public class Configuration implements Model {
 		/* Music & sound effects */
 		music = Gdx.audio.newMusic(Gdx.files.internal("Audio/musicPlaceholder.mp3"));
 		music.setLooping(false); //For now
-		music.setVolume(1f); //10%
+		music.setVolume(1f); //100%
 		music.play();
 	}
+
 	/**
 	 * Disable music
 	 */
@@ -163,7 +164,6 @@ public class Configuration implements Model {
 	 * Enable sound effects
 	 */
 	private void soundDisabled() {
-
 	}
 	/**
 	 * Disable sound effects
