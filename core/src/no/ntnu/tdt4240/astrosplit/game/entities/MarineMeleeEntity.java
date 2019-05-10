@@ -11,6 +11,7 @@ import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.ActorComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.PlayerComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
@@ -28,7 +29,7 @@ public class MarineMeleeEntity extends Entity {
 	}
 
 
-	public Entity create(Vector2 pos){
+	public Entity create(Vector2 pos, int player){
 
 		int damage = 50; //Damage of units attack
 		int range = 1; //Range of units attack
@@ -37,15 +38,16 @@ public class MarineMeleeEntity extends Entity {
 		TextureRegion texture = new TextureRegion(new Texture("Units/marine_melee.png")); // Texture of the unit
 		String type = "unit"; //Type of unit
 
-		ActionComponent ac 			= engine.createComponent(ActionComponent.class);
-		ActionComponentAttack aca 	= engine.createComponent(ActionComponentAttack.class);
-		ActorComponent am 			= engine.createComponent(ActorComponent.class);
-		HealthComponent hc 			= engine.createComponent(HealthComponent.class);
-		MovementComponent mc 		= engine.createComponent(MovementComponent.class);
-		PositionComponent pc 		= engine.createComponent(PositionComponent.class);
-		TextureComponent tc 		= engine.createComponent(TextureComponent.class);
-		TransformComponent tm 		= engine.createComponent(TransformComponent.class);
-		TypeComponent tp			= engine.createComponent(TypeComponent.class);
+		ActionComponent ac 					= engine.createComponent(ActionComponent.class);
+		ActionComponentAttack aca 			= engine.createComponent(ActionComponentAttack.class);
+		ActorComponent am 					= engine.createComponent(ActorComponent.class);
+		HealthComponent hc 					= engine.createComponent(HealthComponent.class);
+		MovementComponent mc 				= engine.createComponent(MovementComponent.class);
+		PositionComponent pc 				= engine.createComponent(PositionComponent.class);
+		TextureComponent tc 				= engine.createComponent(TextureComponent.class);
+		TransformComponent tm 				= engine.createComponent(TransformComponent.class);
+		TypeComponent tp					= engine.createComponent(TypeComponent.class);
+		PlayerComponent playerComponent 	= engine.createComponent(PlayerComponent.class);
 
 		aca.damage = damage;
 		aca.range = range;
@@ -55,6 +57,7 @@ public class MarineMeleeEntity extends Entity {
 		tc.region = texture;
 		tm.scale.set(0.1f,0.1f);
 		tp.type = type;
+		playerComponent.id = player;
 
 		this.add(pc);
 		this.add(tc);
@@ -65,6 +68,7 @@ public class MarineMeleeEntity extends Entity {
 		this.add(hc);
 		this.add(mc);
 		this.add(aca);
+		this.add(playerComponent);
 		engine.addEntity(this);
 
 		return this;
