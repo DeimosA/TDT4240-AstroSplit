@@ -62,6 +62,7 @@ public class GameWorld {
 
 		UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_GRAYS, ClassType.RANGE, new Vector2(-16,80),2);
 
+
 		//new TargetDummyEntity().create(engine, assetManager, new Vector2(-48, -16), 2);
 	}
 }

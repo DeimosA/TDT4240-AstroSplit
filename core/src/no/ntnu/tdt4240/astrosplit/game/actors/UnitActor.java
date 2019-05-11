@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 
 
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentHeal;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentTarget;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PlayerComponent;
@@ -33,6 +34,7 @@ public class UnitActor extends Actor {
 	private PositionComponent positionComponent;
 	private MovementComponent movementComponent = null;
 	private ActionComponentAttack attackComponent;
+	private ActionComponentHeal healComponent;
 	private PlayerComponent playerComponent;
 	private ActionComponentTarget targetComponent;
 
@@ -40,8 +42,10 @@ public class UnitActor extends Actor {
 	private Class actionIntent;
 	private boolean showMovementRange = false;
 	private boolean showAttackRange = false;
+	private boolean showHealRange = false;
 	private Array<HighlightedTileActor> tileList = new Array<HighlightedTileActor>();
 	private int gridSizeAttack;
+	private int gridSizeHeal;
 	private int gridSizeMovement;
 
 
@@ -52,6 +56,7 @@ public class UnitActor extends Actor {
 		this.positionComponent = entity.getComponent(PositionComponent.class);
 		this.movementComponent = entity.getComponent(MovementComponent.class);
 		this.attackComponent = entity.getComponent(ActionComponentAttack.class);
+		this.healComponent = entity.getComponent(ActionComponentHeal.class);
 		this.playerComponent = entity.getComponent(PlayerComponent.class);
 		this.entity = entity;
 		this.sprite = new Sprite(textureComponent.region.getTexture());
@@ -189,7 +194,7 @@ public class UnitActor extends Actor {
 
 			}
 		}
-		destroyAttackTiles();
+		destroyHealTiles();
 
 	}
 
@@ -285,6 +290,46 @@ public class UnitActor extends Actor {
 		}
 	}
 
+	private void drawHealTiles()
+	{
+
+		for(int posx = -healComponent.range*32; posx <= healComponent.range*32; posx +=32)
+		{
+			for(int posy = -healComponent.range*32; posy <= healComponent.range*32; posy +=32)
+			{
+				if(0 == posx && 0 == posy)
+				{
+					gridSizeHeal-=1;
+					continue;
+				}
+				if(posx+144+positionComponent.position.x > 256 || posx+144+positionComponent.position.x < 32)
+				{
+					gridSizeHeal-=1;
+					continue;
+				}
+				if(posy+144+positionComponent.position.y > 256 || posy+144+positionComponent.position.y < 32)
+				{
+					gridSizeHeal-=1;
+					continue;
+				}
+				if(!friendCheck(new Vector2(posx+positionComponent.position.x,posy+positionComponent.position.y)))
+				{
+					gridSizeHeal-=1;
+					continue;
+				}
+				if(Math.abs(posx)+ Math.abs(posy)> healComponent.range*32)
+				{
+					gridSizeHeal-=1;
+					continue;
+				}
+				HighlightedTileActor tile = new HighlightedTileActor(this,'A');
+				this.getStage().addActor(tile);
+				tile.setPosition(posx+144+positionComponent.position.x,posy+144+positionComponent.position.y);
+				tileList.add(tile);
+			}
+		}
+	}
+
 
 	private void destroyMovementTiles() {
 		showMovementRange = false;
@@ -300,13 +345,30 @@ public class UnitActor extends Actor {
 
 	private void destroyAttackTiles()
 	{
-		showAttackRange = false;
-		for(HighlightedTileActor tileActor: tileList)
-		{
-			tileActor.remove();
+		if(attackComponent != null){
+			showAttackRange = false;
+			for(HighlightedTileActor tileActor: tileList)
+			{
+				tileActor.remove();
+			}
+			tileList.clear();
+			gridSizeAttack = (int) Math.pow(attackComponent.range,2);
 		}
-		tileList.clear();
-		gridSizeAttack = (int) Math.pow(attackComponent.range,2);
+
+	}
+
+	private void destroyHealTiles()
+	{
+		if(healComponent != null){
+			showHealRange = false;
+			for(HighlightedTileActor tileActor: tileList)
+			{
+				tileActor.remove();
+			}
+			tileList.clear();
+			gridSizeAttack = (int) Math.pow(healComponent.range,2);
+		}
+
 	}
 
 	private boolean collisionCheck(Vector2 pos)
@@ -348,6 +410,10 @@ public class UnitActor extends Actor {
 			else if(showAttackRange && tileList.size < gridSizeAttack)
 			{
 				drawAttackTiles();
+			}
+			else if(showHealRange && tileList.size < gridSizeAttack)
+			{
+				drawHealTiles();
 			}
 		}
 	}
