@@ -7,19 +7,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
-import no.ntnu.tdt4240.astrosplit.game.entities.AlienMeleeEntity;
-import no.ntnu.tdt4240.astrosplit.game.entities.MarineMedicEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineMeleeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineRangeEntity;
-import no.ntnu.tdt4240.astrosplit.game.entities.SectoidMeleeEntity;
-import no.ntnu.tdt4240.astrosplit.game.systems.AbilitySystem;
 import no.ntnu.tdt4240.astrosplit.game.entities.TargetDummyEntity;
+import no.ntnu.tdt4240.astrosplit.game.factories.UnitFactory;
 import no.ntnu.tdt4240.astrosplit.game.systems.AbilitySystem;
-import no.ntnu.tdt4240.astrosplit.game.entities.TargetDummyEntity;
 import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
+import no.ntnu.tdt4240.astrosplit.models.ClassType;
+import no.ntnu.tdt4240.astrosplit.models.TeamType;
 import no.ntnu.tdt4240.astrosplit.utils.Assets;
 
 
@@ -41,28 +38,32 @@ public class GameWorld {
 		engine.addSystem(new RenderingSystem(new SpriteBatch(), stage));
 		engine.addSystem(new MovementSystem());
 		engine.addSystem(new AbilitySystem());
+		//Todo: Make sure to only load what is used
+		Assets.loadMarineUnitAssets(assetManager);
+		Assets.loadGrayUnitAssets(assetManager);
+		Assets.loadSectoidUnitAssets(assetManager);
+		Assets.loadTutorialAssets(assetManager);
+		assetManager.finishLoading();
 
-		Assets.loadMarineUnitAssets(assetManager);
-		Assets.loadTutorialAssets(assetManager);
-		assetManager.finishLoading();
-		engine.addSystem(new AbilitySystem());
-		Assets.loadMarineUnitAssets(assetManager);
-		Assets.loadTutorialAssets(assetManager);
-		assetManager.finishLoading();
 	}
 
 
 	//this method should create all units to be shown
-	public void create()
+	public void create() //TODO: Use save or selected teams to create the units
 	{
-		new MarineRangeEntity().create(engine, assetManager, new Vector2(16,16),1);
+		UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_MARINES, ClassType.MEDIC, new Vector2(16,16),1);
 
-		new MarineRangeEntity().create(engine, assetManager, new Vector2(-48,16),1);
+		UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_MARINES, ClassType.MELEE, new Vector2(-48,16),1);
 
-		new MarineMedicEntity().create(engine, assetManager, new Vector2(-16, 48), 1);
+		UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_MARINES, ClassType.RANGE, new Vector2(-16,-16),1);
 
-		new MarineMeleeEntity().create(engine, assetManager, new Vector2(-16,-16),2);
+		UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_SECTOIDS, ClassType.MEDIC, new Vector2(16,48),2);
 
-		new TargetDummyEntity().create(engine, assetManager, new Vector2(-16, 16), 2);
+		UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_SECTOIDS, ClassType.MELEE, new Vector2(-48,48),2);
+
+		UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_SECTOIDS, ClassType.RANGE, new Vector2(-16,80),2);
+
+
+		//new TargetDummyEntity().create(engine, assetManager, new Vector2(-48, -16), 2);
 	}
 }

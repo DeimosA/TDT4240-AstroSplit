@@ -77,7 +77,9 @@ public class InteractionPresenter {
 	}
 
 	public void endTurn() {
+		gameModel.endTurn();
 		// TODO end turn stuff
+		gameView.turnEnded(gameModel.getPlayerTurn());
 	}
 
 	public void disableIntent(Class intent) {

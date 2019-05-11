@@ -41,6 +41,22 @@ public abstract class GameModel implements Model {
 		return gameType;
 	}
 
+	/**
+	 * Get the player number for the current turn
+	 * @return
+	 */
+	public abstract int getPlayerTurn();
+
+	/**
+	 * End the current turn
+	 */
+	public abstract void endTurn();
+
+	/**
+	 * End the current game
+	 */
+	public abstract void endGame();
+
 	@Override
 	public void load() {
 		// Do nothing by default

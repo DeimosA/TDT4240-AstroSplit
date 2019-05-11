@@ -21,10 +21,10 @@ import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
 import no.ntnu.tdt4240.astrosplit.utils.Assets;
 
 
-public class SectoidMeleeEntity extends UnitEntity {
+public class SectoidRangeEntity extends UnitEntity {
 
 
-	public SectoidMeleeEntity(){
+	public SectoidRangeEntity(){
 
 	}
 
@@ -32,10 +32,10 @@ public class SectoidMeleeEntity extends UnitEntity {
 	@Override
 	public Entity create(PooledEngine engine, AssetManager assetManager, Vector2 position, int playerNumber) {
 
-		int damage = 100; //Damage of units attack
-		int range = 1; //Range of units attack
-		int health = 200; //Health of unit
-		int movement = 3; //Number of tiles the unit can move
+		int damage = 35; //Damage of units attack
+		int range = 5; //Range of units attack
+		int health = 100; //Health of unit
+		int movement = 2; //Number of tiles the unit can move
 		String type = "unit"; //Type of unit
 
 		ActionComponent ac 					= engine.createComponent(ActionComponent.class);
@@ -56,7 +56,7 @@ public class SectoidMeleeEntity extends UnitEntity {
 		hc.maxHealth = health;
 		mc.distance = movement;
 		pc.position = position;
-		tc.region = new TextureRegion(assetManager.get(Assets.unit_sectoid_melee, Texture.class));
+		tc.region = new TextureRegion(assetManager.get(Assets.unit_sectoid_ranged, Texture.class));
 		tm.scale.set(0.1f,0.1f);
 		tp.type = type;
 		playerComponent.id = playerNumber;
