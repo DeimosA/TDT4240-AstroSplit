@@ -19,8 +19,10 @@ public class AbilitySystem extends IteratingSystem {
 	private static final Family family =
 		Family.all(
 			ActionComponent.class,
-			ActionComponentAttack.class,
 			PositionComponent.class
+		).one(
+			ActionComponentAttack.class,
+			ActionComponentHeal.class
 		).get();
 
 	private ComponentMapper<ActionComponent> actionMapper;
