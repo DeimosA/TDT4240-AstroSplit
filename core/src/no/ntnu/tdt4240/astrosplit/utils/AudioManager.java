@@ -17,8 +17,6 @@ import no.ntnu.tdt4240.astrosplit.models.Model;
 public final class AudioManager implements Model {
 
 	private static AudioManager INSTANCE = null;
-
-	//		private Preferences prefStore;
 	private Configuration config;
 
 	/* Music */
@@ -56,7 +54,6 @@ public final class AudioManager implements Model {
 	 * Get music preference (on/off)
 	 *
 	 */
-
 	private boolean isMusicOn() {
 		return config.isMusicOn();
 	}
@@ -75,7 +72,7 @@ public final class AudioManager implements Model {
 		musicMenu = Gdx.audio.newMusic(Gdx.files.internal("Audio/musicPlaceholder.mp3"));
 		musicArray.add(musicMenu);
 
-		soundButton = Gdx.audio.newSound(Gdx.files.internal("Audio/soundButton.wav"));
+		soundButton = Gdx.audio.newSound(Gdx.files.internal("Audio/soundButton.mp3"));
 		soundArray.add(soundButton);
 	}
 
@@ -89,7 +86,7 @@ public final class AudioManager implements Model {
 	public void PlayMusicMenu() {
 		/* Main menu  */
 		musicMenu.setLooping(false); //For now
-		musicMenu.setVolume(0.5f); //10%
+		musicMenu.setVolume(0.5f); //50%
 		musicMenu.play();
 	}
 
@@ -97,7 +94,7 @@ public final class AudioManager implements Model {
 	 * Stop music
 	 */
 	public void stopMusicMenu() {
-		if (!config.isMusicOn()) {
+		if (!isMusicOn()) {
 			musicMenu.stop();
 		}
 	}
@@ -107,7 +104,7 @@ public final class AudioManager implements Model {
 	 */
 	/* Menu button sound (Menuview.handleInput() */
 	public void playSoundButton() {
-		if(config.isSoundEffectsOn()) {
+		if(isSoundEffectsOn()) {
 			soundButton.play();
 		}
 	}
