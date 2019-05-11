@@ -13,12 +13,13 @@ public class MenuButton {
 	private boolean enabled = true;
 	private boolean checked = true;
 
+	public Class actionIntent;
+
 
 	/* Constructors */
 
 	/**
 	 * Creates a button
-	 *
 	 * @param texture Button texture
 	 */
 	public MenuButton(Texture texture) {
@@ -27,7 +28,6 @@ public class MenuButton {
 
 	/**
 	 * Creates a button
-	 *
 	 * @param texture Button texture
 	 * @param scale   Button scale
 	 */
@@ -39,7 +39,18 @@ public class MenuButton {
 
 	/**
 	 * Creates a button
-   *
+	 * @param texture Button texture
+	 * @param disabledTexture Texture when disabled
+	 * @param scale Button scale
+	 * @param actionIntent Intended action component for this button
+	 */
+	public MenuButton(Texture texture, Texture disabledTexture, float scale, Class actionIntent) {
+		this(texture, disabledTexture, scale);
+		this.actionIntent = actionIntent;
+	}
+
+	/**
+	 * Creates a button
 	 * @param texture	Button texture
 	 * @param disabledTexture Texture when disabled
 	 * @param scale		Button scale
@@ -51,7 +62,6 @@ public class MenuButton {
 
 	/**
 	 * Creates a button
-   *
 	 * @param xCenter X position of button center
 	 * @param yCenter Y position of button center
 	 * @param texture Button texture
@@ -69,7 +79,6 @@ public class MenuButton {
 
 	/**
 	 * Creates a button
-	 *
 	 * @param bounds  Button draw box
 	 * @param texture Button texture
 	 */
@@ -80,7 +89,6 @@ public class MenuButton {
 
 	/**
 	 * Creates a button
-	 *
 	 * @param texture Button texture
 	 * @param disabledTexture Texture when disabled
 	 * @param checked Whether the option is checked
@@ -166,6 +174,9 @@ public class MenuButton {
 			this.enabled = enabled;
 		}
 	}
+	public boolean isEnabled() {
+		return enabled;
+	}
 
 	/**
 	 * Check or uncheck the option
@@ -176,7 +187,7 @@ public class MenuButton {
 			this.checked = checked;
 		}
 	}
-	public boolean getChecked(){
+	public boolean isChecked(){
 		return checked;
 	}
 

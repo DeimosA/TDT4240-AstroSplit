@@ -55,7 +55,7 @@ class SettingsSubView extends SubView {
 				public void click() {
 					// #1 - Fullscreen
 					System.out.println("Clicked: Fullscreen");
-					config.setFullScreen( ! this.getChecked());
+					config.setFullScreen( ! this.isChecked());
 					this.setChecked(config.isFullscreen());
 				}
 			},
@@ -77,7 +77,7 @@ class SettingsSubView extends SubView {
 				public void click() {
 					// #3 - Sound effects
 					System.out.println("Clicked: Sound");
-					config.setSoundEffects( ! this.getChecked());
+					config.setSoundEffects( ! this.isChecked());
 					this.setChecked(config.isSoundEffectsOn());
 				}
 			},
@@ -90,7 +90,7 @@ class SettingsSubView extends SubView {
 				public void click() {
 					// #2 - Music
 					System.out.println("Clicked: Music");
-					config.setMusic( ! this.getChecked());
+					config.setMusic( ! this.isChecked());
 					this.setChecked(config.isMusicOn());
 				}
 			},

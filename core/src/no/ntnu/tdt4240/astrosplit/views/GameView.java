@@ -17,8 +17,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
+import java.awt.Menu;
+
 import no.ntnu.tdt4240.astrosplit.game.GameWorld;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentHeal;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
@@ -151,7 +154,7 @@ public class GameView implements Screen {
 		Rectangle actionBounds = new Rectangle(
 			(mapBounds.x - actionButtonsWidth) / 2f,
 			renderHeight * 0.4515625f,
-			actionButtonsWidth, actionButtonsScale * 38 * 2
+			actionButtonsWidth, actionButtonsScale * 38 * 3
 		);
 		actionBounds.y = renderHeight * 0.4515625f - actionBounds.height / 2f;
 		MenuButton[] actionButtonList = createActionButtons(actionButtonsScale);
@@ -178,14 +181,27 @@ public class GameView implements Screen {
 
 	/**
 	 * To notify view of selection change
-	 * @param selected
+	 * @param selectedUnit
 	 */
-	public void unitSelectionChanged(Entity selected) {
-		selectedEntity = selected;
-		if (selected != null) {
-			// TODO set allowed actions
-			// TODO auto select first available action
-			actionButtons.getButton(0).click();
+	public void unitSelectionChanged(Entity selectedUnit) {
+		selectedEntity = selectedUnit;
+		if (selectedUnit != null) {
+			int firstEnabledButton = -1;
+			for (int i = 0; i < actionButtons.getButtonCount(); i++) {
+				MenuButton button = actionButtons.getButton(i);
+
+				// TODO also check if remaining actions!
+				button.setEnabled(selectedUnit.getComponent(button.actionIntent) != null);
+				if (firstEnabledButton < 0 && button.isEnabled()) {
+					firstEnabledButton = i;
+				}
+			}
+
+			if (firstEnabledButton > 0) {
+				actionButtons.getButton(firstEnabledButton).click();
+			} else {
+				setActionSelectPos(null);
+			}
 		}
 	}
 
@@ -225,37 +241,38 @@ public class GameView implements Screen {
 			new MenuButton( // Move action
 				assetManager.get(Assets.hud_button_move, Texture.class),
 				assetManager.get(Assets.hud_button_move_disabled, Texture.class),
-				scale) {
+				scale, MovementComponent.class) {
 				@Override
 				public void click() {
 					System.out.println("Move action!");
 					setActionSelectPos(this);
-					interactionPresenter.updateIntent(MovementComponent.class);
+					interactionPresenter.updateIntent(this.actionIntent);
 				}
 			},
 			new MenuButton( // Attack action
 				assetManager.get(Assets.hud_button_sword, Texture.class),
 				assetManager.get(Assets.hud_button_sword_disabled, Texture.class),
-				scale) {
+				scale, ActionComponentAttack.class) {
 				@Override
 				public void click() {
 					System.out.println("Attack action!");
 					setActionSelectPos(this);
-					interactionPresenter.updateIntent(ActionComponentAttack.class);
+					interactionPresenter.updateIntent(this.actionIntent);
+				}
+			},
+			new MenuButton( // Heal action
+				assetManager.get(Assets.hud_button_heal, Texture.class),
+				assetManager.get(Assets.hud_button_heal_disabled, Texture.class),
+				scale, ActionComponentHeal.class) {
+				@Override
+				public void click() {
+					System.out.println("Heal action!");
+					setActionSelectPos(this);
+					interactionPresenter.updateIntent(this.actionIntent);
 				}
 			}
 		};
 	}
-
-	/**
-	 * Pauses all systems connected to engine
-	 */
-//	private void pauseSystems() {
-//		for(EntitySystem system : engine.getSystems())
-//		{
-//			system.setProcessing(false);
-//		}
-//	}
 
 	/**
 	 * Set position of the action select rectangle to a button
