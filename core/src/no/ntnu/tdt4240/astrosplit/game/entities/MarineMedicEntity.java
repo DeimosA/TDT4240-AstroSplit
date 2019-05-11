@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentHeal;
 import no.ntnu.tdt4240.astrosplit.game.components.ActorComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
@@ -40,6 +41,7 @@ public class MarineMedicEntity extends Entity {
 
 		ActionComponent actionComponent					= engine.createComponent(ActionComponent.class);
 		ActionComponentAttack actionComponentAttack 	= engine.createComponent(ActionComponentAttack.class);
+		ActionComponentHeal actionComponentHeal 		= engine.createComponent(ActionComponentHeal.class);
 		ActorComponent actorComponent 					= engine.createComponent(ActorComponent.class);
 		HealthComponent healthComponent 				= engine.createComponent(HealthComponent.class);
 		MovementComponent movementComponent 			= engine.createComponent(MovementComponent.class);
@@ -68,6 +70,7 @@ public class MarineMedicEntity extends Entity {
 		this.add(healthComponent);
 		this.add(movementComponent);
 		this.add(actionComponentAttack);
+		this.add(actionComponentHeal);
 		this.add(playerComponent);
 		engine.addEntity(this);
 

@@ -12,6 +12,7 @@ import no.ntnu.tdt4240.astrosplit.game.entities.MarineMedicEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineMeleeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineRangeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.SectoidMeleeEntity;
+import no.ntnu.tdt4240.astrosplit.game.systems.AbilitySystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
@@ -29,6 +30,7 @@ public class GameWorld {
 		engine.addSystem(new UnitSystem());
 		engine.addSystem(new RenderingSystem(new SpriteBatch(), stage));
 		engine.addSystem(new MovementSystem());
+		engine.addSystem(new AbilitySystem());
 	}
 
 
