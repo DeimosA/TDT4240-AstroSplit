@@ -6,7 +6,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 
-import no.ntnu.tdt4240.astrosplit.game.GameWorld;
 import no.ntnu.tdt4240.astrosplit.game.abilities.Attack;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
@@ -37,7 +36,6 @@ public class UnitSystem extends IteratingSystem {
 	private ComponentMapper<ActionComponent> am;
 	private ComponentMapper<HealthComponent> hm;
 	private ComponentMapper<PositionComponent> pm;
-	private ComponentMapper<MovementComponent> mm;
 	private ComponentMapper<TypeComponent> tm;
 
 
@@ -46,7 +44,6 @@ public class UnitSystem extends IteratingSystem {
 		this.am = ComponentMapper.getFor(ActionComponent.class);
 		this.hm = ComponentMapper.getFor(HealthComponent.class);
 		this.pm = ComponentMapper.getFor(PositionComponent.class);
-		this.mm = ComponentMapper.getFor(MovementComponent.class);
 		this.tm = ComponentMapper.getFor(TypeComponent.class);
 	}
 
@@ -60,7 +57,6 @@ public class UnitSystem extends IteratingSystem {
 	protected void processEntity(Entity entity, float deltaTime) {
 		ActionComponent action 			= am.get(entity);
 		HealthComponent health 			= hm.get(entity);
-		MovementComponent movement 		= mm.get(entity);
 		PositionComponent position 		= pm.get(entity);
 
 		if(health.health <= 0)

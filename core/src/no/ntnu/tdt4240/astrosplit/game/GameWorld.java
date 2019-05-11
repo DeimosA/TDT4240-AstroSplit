@@ -42,13 +42,4 @@ public class GameWorld {
 		MarineMedicEntity marineMedicEntity3 = new MarineMedicEntity(engine);
 		marineMedicEntity3.create(new Vector2(-48,16),1);
 	}
-
-
-//	public void attack(Entity offender, Entity defender)
-//	{
-//		if(offender.getComponent(ActionComponent.class) != null)
-//			offender.getComponent(ActionComponent.class).attackList.add(defender);
-//	}
-
-
 }

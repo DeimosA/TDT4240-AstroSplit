@@ -208,8 +208,9 @@ public class GameView implements Screen {
 		return new MenuButton(assetManager.get(Assets.hud_button_endTurn, Texture.class)) {
 			@Override
 			public void click() {
-				System.out.println("End Turn!");
+				System.out.println("Clicked End Turn!");
 				// TODO end turn
+				interactionPresenter.endTurn();
 			}
 		};
 	}
