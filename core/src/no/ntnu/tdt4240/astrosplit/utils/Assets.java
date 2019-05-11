@@ -32,7 +32,7 @@ public class Assets {
 	/* Units */
 	// Grays (aliens)
 	private static boolean grayUnitsLoaded = false;
-	public static final String unit_gray_melee = "Units/alien_melee.png";
+	public static final String unit_gray_melee = "Units/gray_melee.png";
 	// Marines
 	private static boolean marineUnitsLoaded = false;
 	public static final String unit_marine_melee = "Units/marine_melee.png";
