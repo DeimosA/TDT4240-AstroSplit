@@ -196,8 +196,7 @@ public class GameView implements Screen {
 					firstEnabledButton = i;
 				}
 			}
-
-			if (firstEnabledButton > 0) {
+			if (firstEnabledButton > -1) {
 				actionButtons.getButton(firstEnabledButton).click();
 			} else {
 				setActionSelectPos(null);
