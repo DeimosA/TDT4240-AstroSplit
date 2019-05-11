@@ -26,33 +26,33 @@ public class UnitFactory {
 			case TEAM_GRAYS:
 				switch (classType) {
 					case MEDIC:
-						return new GrayMedicEntity().create(engine, assetManager, pos, playerNumber);
+						return new GrayMedicEntity().create(engine, assetManager, pos, playerNumber, classType);
 					case MELEE:
-						return new GrayMeleeEntity().create(engine, assetManager, pos, playerNumber);
+						return new GrayMeleeEntity().create(engine, assetManager, pos, playerNumber, classType);
 					case RANGE:
-						return new GrayRangeEntity().create(engine, assetManager, pos, playerNumber);
+						return new GrayRangeEntity().create(engine, assetManager, pos, playerNumber, classType);
 					default:
 						break;
 				}
 			case TEAM_MARINES:
 				switch (classType) {
 					case MEDIC:
-						return new MarineMedicEntity().create(engine, assetManager, pos, playerNumber);
+						return new MarineMedicEntity().create(engine, assetManager, pos, playerNumber, classType);
 					case MELEE:
-						return new MarineMeleeEntity().create(engine, assetManager, pos, playerNumber);
+						return new MarineMeleeEntity().create(engine, assetManager, pos, playerNumber, classType);
 					case RANGE:
-						return new MarineRangeEntity().create(engine, assetManager, pos, playerNumber);
+						return new MarineRangeEntity().create(engine, assetManager, pos, playerNumber, classType);
 					default:
 						break;
 				}
 			case TEAM_SECTOIDS:
 				switch (classType) {
 					case MEDIC:
-						return new SectoidMedicEntity().create(engine, assetManager, pos, playerNumber);
+						return new SectoidMedicEntity().create(engine, assetManager, pos, playerNumber, classType);
 					case MELEE:
-						return new SectoidMeleeEntity().create(engine, assetManager, pos, playerNumber);
+						return new SectoidMeleeEntity().create(engine, assetManager, pos, playerNumber, classType);
 					case RANGE:
-						return new SectoidRangeEntity().create(engine, assetManager, pos, playerNumber);
+						return new SectoidRangeEntity().create(engine, assetManager, pos, playerNumber, classType);
 					default:
 						break;
 				}

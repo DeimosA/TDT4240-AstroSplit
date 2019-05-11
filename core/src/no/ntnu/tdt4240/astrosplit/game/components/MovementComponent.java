@@ -7,7 +7,7 @@ public class MovementComponent implements Component {
 	//Distance is tile radius
 	public double distance = 1;
 	public Vector2 position = null;
-
+	public int movementPoints = 1;
 
 
 }

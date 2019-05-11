@@ -56,7 +56,7 @@ public class AbilitySystem extends IteratingSystem {
 		System.out.println("Pre-attack HP: " + victim.getComponent(HealthComponent.class).health);
 		ActionComponentAttack attackComponent = attacker.getComponent(ActionComponentAttack.class);
 
-		if(attacker.getComponent(TypeComponent.class).type == "unit"){
+		if(attacker.getComponent(TypeComponent.class) != null){
 			if (rangeCheck(attacker, victim, attackComponent.range)) {
 				HealthComponent health = victim.getComponent(HealthComponent.class);
 				ActionComponentAttack action = attacker.getComponent(ActionComponentAttack.class);
@@ -73,7 +73,7 @@ public class AbilitySystem extends IteratingSystem {
 		System.out.println("Pre-heal HP: " + target.getComponent(HealthComponent.class).health);
 		ActionComponentHeal healComponent = healer.getComponent(ActionComponentHeal.class);
 
-		if(healer.getComponent(TypeComponent.class).type == "unit"){
+		if(healer.getComponent(TypeComponent.class) != null){
 			if (rangeCheck(healer, target, healComponent.range)) {
 				HealthComponent health = target.getComponent(HealthComponent.class);
 				ActionComponentHeal heal = healer.getComponent(ActionComponentHeal.class);

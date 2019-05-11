@@ -262,7 +262,6 @@ public class UnitActor extends Actor {
 	}
 	private void drawAttackTiles()
 	{
-		System.out.println("Draw attack");
 		for(int posx = -attackComponent.range*32; posx <= attackComponent.range*32; posx +=32)
 		{
 			for(int posy = -attackComponent.range*32; posy <= attackComponent.range*32; posy +=32)
@@ -302,8 +301,6 @@ public class UnitActor extends Actor {
 
 	private void drawHealTiles()
 	{
-		System.out.println("Draw heal");
-
 		for(int posx = -healComponent.range*32; posx <= healComponent.range*32; posx +=32)
 		{
 			for(int posy = -healComponent.range*32; posy <= healComponent.range*32; posy +=32)
@@ -414,10 +411,8 @@ public class UnitActor extends Actor {
 		sprite.draw(batch);
 		// Draw intent if selected
 		if (isSelected) {
-			System.out.println(showHealRange);
-			System.out.println(tileList.size);
-			System.out.println(gridSizeHeal);
-			if(showMovementRange && tileList.size < gridSizeMovement) {
+			if(showMovementRange && tileList.size < gridSizeMovement)
+			{
 				drawMovementTiles();
 			}
 			else if(showAttackRange && tileList.size < gridSizeAttack)
@@ -426,7 +421,6 @@ public class UnitActor extends Actor {
 			}
 			else if(showHealRange && tileList.size < gridSizeHeal)
 			{
-				System.out.println("Drawing heal tiles");
 				drawHealTiles();
 			}
 		}
