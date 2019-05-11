@@ -14,10 +14,15 @@ import no.ntnu.tdt4240.astrosplit.game.entities.MarineMeleeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineRangeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.SectoidMeleeEntity;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import no.ntnu.tdt4240.astrosplit.game.systems.AbilitySystem;
 =======
 import no.ntnu.tdt4240.astrosplit.game.entities.TargetDummyEntity;
 >>>>>>> d781708f65e38379d5ef385e3bd2480bf8aa2cad
+=======
+import no.ntnu.tdt4240.astrosplit.game.systems.AbilitySystem;
+import no.ntnu.tdt4240.astrosplit.game.entities.TargetDummyEntity;
+>>>>>>> 532c038b5d713c82abc57fec48d6b79b8db24f04
 import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
@@ -42,6 +47,7 @@ public class GameWorld {
 		engine.addSystem(new RenderingSystem(new SpriteBatch(), stage));
 		engine.addSystem(new MovementSystem());
 <<<<<<< HEAD
+<<<<<<< HEAD
 		engine.addSystem(new AbilitySystem());
 =======
 
@@ -49,6 +55,12 @@ public class GameWorld {
 		Assets.loadTutorialAssets(assetManager);
 		assetManager.finishLoading();
 >>>>>>> d781708f65e38379d5ef385e3bd2480bf8aa2cad
+=======
+		engine.addSystem(new AbilitySystem());
+		Assets.loadMarineUnitAssets(assetManager);
+		Assets.loadTutorialAssets(assetManager);
+		assetManager.finishLoading();
+>>>>>>> 532c038b5d713c82abc57fec48d6b79b8db24f04
 	}
 
 

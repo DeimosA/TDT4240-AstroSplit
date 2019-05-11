@@ -41,6 +41,9 @@ public class MarineMedicEntity extends UnitEntity {
 		String type = "unit"; //Type of unit
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 532c038b5d713c82abc57fec48d6b79b8db24f04
 		ActionComponent actionComponent					= engine.createComponent(ActionComponent.class);
 		ActionComponentAttack actionComponentAttack 	= engine.createComponent(ActionComponentAttack.class);
 		ActionComponentTarget actionComponentTarget 	= engine.createComponent(ActionComponentTarget.class);
@@ -53,6 +56,7 @@ public class MarineMedicEntity extends UnitEntity {
 		TransformComponent transformComponent 			= engine.createComponent(TransformComponent.class);
 		TypeComponent typeComponent						= engine.createComponent(TypeComponent.class);
 		PlayerComponent playerComponent 				= engine.createComponent(PlayerComponent.class);
+<<<<<<< HEAD
 =======
 		ActionComponent			actionComponent			= engine.createComponent(ActionComponent.class);
 		ActionComponentAttack	actionComponentAttack 	= engine.createComponent(ActionComponentAttack.class);
@@ -65,6 +69,9 @@ public class MarineMedicEntity extends UnitEntity {
 		TypeComponent			typeComponent			= engine.createComponent(TypeComponent.class);
 		PlayerComponent			playerComponent 		= engine.createComponent(PlayerComponent.class);
 >>>>>>> d781708f65e38379d5ef385e3bd2480bf8aa2cad
+=======
+
+>>>>>>> 532c038b5d713c82abc57fec48d6b79b8db24f04
 
 		actionComponentAttack.damage = damage;
 		actionComponentAttack.range = range;
