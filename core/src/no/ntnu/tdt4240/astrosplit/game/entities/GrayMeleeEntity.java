@@ -21,11 +21,11 @@ import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
 import no.ntnu.tdt4240.astrosplit.utils.Assets;
 
 
-public class AlienMeleeEntity extends UnitEntity {
+public class GrayMeleeEntity extends UnitEntity {
 
 
 
-	public AlienMeleeEntity(){
+	public GrayMeleeEntity(){
 
 	}
 

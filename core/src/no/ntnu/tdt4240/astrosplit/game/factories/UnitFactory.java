@@ -5,6 +5,9 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector2;
 
+import no.ntnu.tdt4240.astrosplit.game.entities.GrayMedicEntity;
+import no.ntnu.tdt4240.astrosplit.game.entities.GrayMeleeEntity;
+import no.ntnu.tdt4240.astrosplit.game.entities.GrayRangeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineMedicEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineMeleeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineRangeEntity;
@@ -19,12 +22,12 @@ public class UnitFactory {
 		switch (teamType) {
 			case TEAM_GRAYS:
 				switch (classType) {
-					/*case MEDIC:
+					case MEDIC:
 						return new GrayMedicEntity().create(engine, assetManager, pos, playerNumber);
 					case MELEE:
 						return new GrayMeleeEntity().create(engine, assetManager, pos, playerNumber);
 					case RANGE:
-						return new GrayRangeEntity().create(engine, assetManager, pos, playerNumber);*/
+						return new GrayRangeEntity().create(engine, assetManager, pos, playerNumber);
 					default:
 						break;
 				}
