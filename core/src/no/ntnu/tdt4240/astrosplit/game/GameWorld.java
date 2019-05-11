@@ -59,6 +59,8 @@ public class GameWorld {
 
 		new MarineRangeEntity().create(engine, assetManager, new Vector2(-48,16),1);
 
+		new MarineMedicEntity().create(engine, assetManager, new Vector2(-16, 48), 1);
+
 		new MarineMeleeEntity().create(engine, assetManager, new Vector2(-16,-16),2);
 
 		new TargetDummyEntity().create(engine, assetManager, new Vector2(-16, 16), 2);
