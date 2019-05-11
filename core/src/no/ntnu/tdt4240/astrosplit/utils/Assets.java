@@ -35,6 +35,8 @@ public class Assets {
 	// Grays (aliens)
 	private static boolean grayUnitsLoaded = false;
 	public static final String unit_gray_melee = "Units/gray_melee.png";
+	public static final String unit_gray_ranged = "Units/gray_ranged.png";
+	public static final String unit_gray_medic = "Units/gray_medic.png";
 	// Marines
 	private static boolean marineUnitsLoaded = false;
 	public static final String unit_marine_melee = "Units/marine_melee.png";
@@ -43,6 +45,8 @@ public class Assets {
 	// Sectoids
 	private static boolean sectoidUnitsLoaded = false;
 	public static final String unit_sectoid_melee = "Units/sectoid_melee.png";
+	public static final String unit_sectoid_ranged = "Units/sectoid_ranged.png";
+	public static final String unit_sectoid_medic = "Units/sectoid_medic.png";
 	// Target practice / tutorial assets
 	private static boolean tutorialLoaded = false;
 	public static final String unit_targetPractice = "Units/tutorial_scarecrow.png";
@@ -89,6 +93,8 @@ public class Assets {
 //		if (grayUnitsLoaded) return;
 
 		asm.load(unit_gray_melee, Texture.class);
+		asm.load(unit_gray_ranged, Texture.class);
+		asm.load(unit_gray_medic, Texture.class);
 
 		grayUnitsLoaded = true;
 	}
@@ -107,6 +113,8 @@ public class Assets {
 //		if (sectoidUnitsLoaded) return;
 
 		asm.load(unit_sectoid_melee, Texture.class);
+		asm.load(unit_sectoid_ranged, Texture.class);
+		asm.load(unit_sectoid_medic, Texture.class);
 
 		sectoidUnitsLoaded = true;
 	}

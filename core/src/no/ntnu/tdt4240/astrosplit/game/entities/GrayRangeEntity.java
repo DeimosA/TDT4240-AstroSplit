@@ -21,11 +21,11 @@ import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
 import no.ntnu.tdt4240.astrosplit.utils.Assets;
 
 
-public class AlienMeleeEntity extends UnitEntity {
+public class GrayRangeEntity extends UnitEntity {
 
 
 
-	public AlienMeleeEntity(){
+	public GrayRangeEntity(){
 
 	}
 
@@ -33,10 +33,10 @@ public class AlienMeleeEntity extends UnitEntity {
 	@Override
 	public Entity create(PooledEngine engine, AssetManager assetManager, Vector2 position, int playerNumber) {
 
-		int damage = 75; //Damage of units attack
-		int range = 1; //Range of units attack
-		int health = 250; //Health of unit
-		int movement = 3; //Number of tiles the unit can move
+		int damage = 40; //Damage of units attack
+		int range = 3; //Range of units attack
+		int health = 100; //Health of unit
+		int movement = 8; //Number of tiles the unit can move
 		String type = "unit"; //Type of unit
 
 		ActionComponent ac 								= engine.createComponent(ActionComponent.class);
@@ -54,10 +54,9 @@ public class AlienMeleeEntity extends UnitEntity {
 		aca.damage = damage;
 		aca.range = range;
 		hc.health = health;
-		hc.maxHealth = health;
 		mc.distance = movement;
 		pc.position = position;
-		tc.region = new TextureRegion(assetManager.get(Assets.unit_gray_melee, Texture.class));
+		tc.region = new TextureRegion(assetManager.get(Assets.unit_gray_ranged, Texture.class));
 		tm.scale.set(0.1f,0.1f);
 		tp.type = type;
 		playerComponent.id = playerNumber;
