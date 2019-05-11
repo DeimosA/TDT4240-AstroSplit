@@ -17,6 +17,9 @@ import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
 
 
+/**
+ * Used to initiate entities in the game world
+ */
 public class GameWorld {
 
 
