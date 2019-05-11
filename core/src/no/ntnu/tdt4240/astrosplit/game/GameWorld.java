@@ -38,9 +38,10 @@ public class GameWorld {
 		engine.addSystem(new RenderingSystem(new SpriteBatch(), stage));
 		engine.addSystem(new MovementSystem());
 		engine.addSystem(new AbilitySystem());
-
+		//Todo: Make sure to only load what is used
 		Assets.loadMarineUnitAssets(assetManager);
 		Assets.loadGrayUnitAssets(assetManager);
+		Assets.loadSectoidUnitAssets(assetManager);
 		Assets.loadTutorialAssets(assetManager);
 		assetManager.finishLoading();
 
@@ -56,11 +57,11 @@ public class GameWorld {
 
 		UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_MARINES, ClassType.RANGE, new Vector2(-16,-16),1);
 
-		UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_GRAYS, ClassType.MEDIC, new Vector2(16,48),2);
+		UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_SECTOIDS, ClassType.MEDIC, new Vector2(16,48),2);
 
-		UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_GRAYS, ClassType.MELEE, new Vector2(-48,48),2);
+		UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_SECTOIDS, ClassType.MELEE, new Vector2(-48,48),2);
 
-		UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_GRAYS, ClassType.RANGE, new Vector2(-16,80),2);
+		UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_SECTOIDS, ClassType.RANGE, new Vector2(-16,80),2);
 
 
 		//new TargetDummyEntity().create(engine, assetManager, new Vector2(-48, -16), 2);

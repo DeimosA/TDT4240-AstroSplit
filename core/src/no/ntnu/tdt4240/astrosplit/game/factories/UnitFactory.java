@@ -11,6 +11,9 @@ import no.ntnu.tdt4240.astrosplit.game.entities.GrayRangeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineMedicEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineMeleeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineRangeEntity;
+import no.ntnu.tdt4240.astrosplit.game.entities.SectoidMedicEntity;
+import no.ntnu.tdt4240.astrosplit.game.entities.SectoidMeleeEntity;
+import no.ntnu.tdt4240.astrosplit.game.entities.SectoidRangeEntity;
 import no.ntnu.tdt4240.astrosplit.models.ClassType;
 import no.ntnu.tdt4240.astrosplit.models.TeamType;
 
@@ -44,12 +47,12 @@ public class UnitFactory {
 				}
 			case TEAM_SECTOIDS:
 				switch (classType) {
-					/*case MEDIC:
+					case MEDIC:
 						return new SectoidMedicEntity().create(engine, assetManager, pos, playerNumber);
 					case MELEE:
 						return new SectoidMeleeEntity().create(engine, assetManager, pos, playerNumber);
 					case RANGE:
-						return new SectoidRangeEntity().create(engine, assetManager, pos, playerNumber);*/
+						return new SectoidRangeEntity().create(engine, assetManager, pos, playerNumber);
 					default:
 						break;
 				}
