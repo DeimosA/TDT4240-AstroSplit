@@ -14,9 +14,12 @@ import no.ntnu.tdt4240.astrosplit.game.entities.MarineMeleeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.MarineRangeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.SectoidMeleeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.TargetDummyEntity;
+import no.ntnu.tdt4240.astrosplit.game.factory.Factory;
 import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
+import no.ntnu.tdt4240.astrosplit.models.ClassType;
+import no.ntnu.tdt4240.astrosplit.models.TeamType;
 import no.ntnu.tdt4240.astrosplit.utils.Assets;
 
 
@@ -47,7 +50,7 @@ public class GameWorld {
 	//this method should create all units to be shown
 	public void create()
 	{
-		new MarineRangeEntity().create(engine, assetManager, new Vector2(16,16),1);
+		Factory.createEntity(engine, assetManager, TeamType.TEAM_MARINES, ClassType.MEDIC, new Vector2(16,16),1);
 
 		new MarineRangeEntity().create(engine, assetManager, new Vector2(-48,16),1);
 
