@@ -6,7 +6,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 
-import no.ntnu.tdt4240.astrosplit.game.abilities.Attack;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
@@ -78,7 +77,7 @@ public class UnitSystem extends IteratingSystem {
 	}
 
 	//Attack another entity of type UNIT
-	public void attack(Entity offender, Entity victim)
+	/*public void attack(Entity offender, Entity victim)
 	{
 		//Is unit entity
 		if(!family.matches(offender) || !family.matches(victim)) return;
@@ -90,7 +89,8 @@ public class UnitSystem extends IteratingSystem {
 		if (health.health <= 0) killUnit(victim);
 
 
-	}
+	}*/
+
 
 	/*Checks if Move is possible, performs Move if yes
 	TODO

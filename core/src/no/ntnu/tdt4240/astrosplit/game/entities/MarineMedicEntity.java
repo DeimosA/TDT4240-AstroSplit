@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Vector2;
 
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentHeal;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentTarget;
 import no.ntnu.tdt4240.astrosplit.game.components.ActorComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
@@ -38,16 +40,19 @@ public class MarineMedicEntity extends UnitEntity {
 		int movement = 3; //Number of tiles the unit can move
 		String type = "unit"; //Type of unit
 
-		ActionComponent			actionComponent			= engine.createComponent(ActionComponent.class);
-		ActionComponentAttack	actionComponentAttack 	= engine.createComponent(ActionComponentAttack.class);
-		ActorComponent			actorComponent 			= engine.createComponent(ActorComponent.class);
-		HealthComponent			healthComponent 		= engine.createComponent(HealthComponent.class);
-		MovementComponent		movementComponent 		= engine.createComponent(MovementComponent.class);
-		PositionComponent		positionComponent 		= engine.createComponent(PositionComponent.class);
-		TextureComponent		textureComponent 		= engine.createComponent(TextureComponent.class);
-		TransformComponent		transformComponent 		= engine.createComponent(TransformComponent.class);
-		TypeComponent			typeComponent			= engine.createComponent(TypeComponent.class);
-		PlayerComponent			playerComponent 		= engine.createComponent(PlayerComponent.class);
+		ActionComponent actionComponent					= engine.createComponent(ActionComponent.class);
+		ActionComponentAttack actionComponentAttack 	= engine.createComponent(ActionComponentAttack.class);
+		ActionComponentTarget actionComponentTarget 	= engine.createComponent(ActionComponentTarget.class);
+		ActionComponentHeal actionComponentHeal 		= engine.createComponent(ActionComponentHeal.class);
+		ActorComponent actorComponent 					= engine.createComponent(ActorComponent.class);
+		HealthComponent healthComponent 				= engine.createComponent(HealthComponent.class);
+		MovementComponent movementComponent 			= engine.createComponent(MovementComponent.class);
+		PositionComponent positionComponent 			= engine.createComponent(PositionComponent.class);
+		TextureComponent textureComponent 				= engine.createComponent(TextureComponent.class);
+		TransformComponent transformComponent 			= engine.createComponent(TransformComponent.class);
+		TypeComponent typeComponent						= engine.createComponent(TypeComponent.class);
+		PlayerComponent playerComponent 				= engine.createComponent(PlayerComponent.class);
+
 
 		actionComponentAttack.damage = damage;
 		actionComponentAttack.range = range;
@@ -59,6 +64,7 @@ public class MarineMedicEntity extends UnitEntity {
 		typeComponent.type = type;
 		playerComponent.id = playerNumber;
 
+		this.add(actionComponentTarget);
 		this.add(positionComponent);
 		this.add(textureComponent);
 		this.add(actionComponent);
@@ -68,6 +74,7 @@ public class MarineMedicEntity extends UnitEntity {
 		this.add(healthComponent);
 		this.add(movementComponent);
 		this.add(actionComponentAttack);
+		this.add(actionComponentHeal);
 		this.add(playerComponent);
 
 		engine.addEntity(this);
