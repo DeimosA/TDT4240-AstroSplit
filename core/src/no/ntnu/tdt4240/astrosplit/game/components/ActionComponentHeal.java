@@ -4,5 +4,5 @@ import com.badlogic.ashley.core.Component;
 
 public class ActionComponentHeal implements Component {
 	public int heal = 25;
-	public int range = 10;
+	public int range = 3;
 }

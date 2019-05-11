@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentTarget;
 import no.ntnu.tdt4240.astrosplit.game.components.ActorComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
@@ -37,6 +38,8 @@ public class TargetDummyEntity extends UnitEntity {
 
 		ActionComponent			actionComponent			= engine.createComponent(ActionComponent.class);
 		ActionComponentAttack	actionComponentAttack 	= engine.createComponent(ActionComponentAttack.class);
+
+		ActionComponentTarget actionComponentTarget = engine.createComponent(ActionComponentTarget.class);
 		MovementComponent		movementComponent 		= engine.createComponent(MovementComponent.class);
 		TypeComponent			typeComponent			= engine.createComponent(TypeComponent.class);
 
@@ -55,6 +58,7 @@ public class TargetDummyEntity extends UnitEntity {
 
 		this.add(actionComponent);
 		this.add(actionComponentAttack);
+		this.add(actionComponentTarget);
 		this.add(movementComponent);
 		this.add(typeComponent);
 
