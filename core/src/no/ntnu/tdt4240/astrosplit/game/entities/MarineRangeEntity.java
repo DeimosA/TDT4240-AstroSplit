@@ -2,6 +2,7 @@ package no.ntnu.tdt4240.astrosplit.game.entities;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -16,27 +17,25 @@ import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
+import no.ntnu.tdt4240.astrosplit.utils.Assets;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
 
-public class MarineRangeEntity extends Entity {
+public class MarineRangeEntity extends UnitEntity {
 
 
-	private PooledEngine engine;
+	public MarineRangeEntity(){
 
-
-	public MarineRangeEntity(PooledEngine engine){
-		this.engine = engine;
 	}
 
 
-	public Entity create(Vector2 pos, int player){
+	@Override
+	public Entity create(PooledEngine engine, AssetManager assetManager, Vector2 position, int playerNumber) {
 
 		int damage = 20; //Damage of units attack
 		int range = 3; //Range of units attack
 		int health = 100; //Health of unit
 		int movement = 3; //Number of tiles the unit can move
-		TextureRegion texture = new TextureRegion(new Texture("Units/marine_ranged.png")); // Texture of the unit
 		String type = "unit"; //Type of unit
 
 		ActionComponent ac 					= engine.createComponent(ActionComponent.class);
@@ -54,11 +53,11 @@ public class MarineRangeEntity extends Entity {
 		aca.range = range;
 		hc.health = health;
 		mc.distance = movement;
-		pc.position = pos;
-		tc.region = texture;
+		pc.position = position;
+		tc.region = new TextureRegion(assetManager.get(Assets.unit_marine_ranged, Texture.class));
 		tm.scale.set(0.1f,0.1f);
 		tp.type = type;
-		playerComponent.id = player;
+		playerComponent.id = playerNumber;
 
 		this.add(pc);
 		this.add(tc);
@@ -70,6 +69,7 @@ public class MarineRangeEntity extends Entity {
 		this.add(mc);
 		this.add(aca);
 		this.add(playerComponent);
+
 		engine.addEntity(this);
 
 		return this;
