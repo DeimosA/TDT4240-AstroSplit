@@ -177,7 +177,6 @@ public class UnitActor extends Actor {
 
 	public void attack(Vector2 pos) {
 
-		System.out.println("Attack");
 		for(Actor actor : this.getStage().getActors())
 		{
 			if(actor.getClass() == UnitActor.class)
@@ -185,6 +184,7 @@ public class UnitActor extends Actor {
 				if(pos.equals(((UnitActor) actor).getPosition()))
 
 					entity.getComponent(ActionComponentTarget.class).target = (((UnitActor) actor).getEntity());
+					System.out.println(entity.getComponent(ActionComponentTarget.class).target);
 
 			}
 		}
@@ -193,7 +193,6 @@ public class UnitActor extends Actor {
 	}
 
 	public void heal(Vector2 pos) {
-		System.out.println("Heal");
 		for(Actor actor : this.getStage().getActors())
 		{
 			if(actor.getClass() == UnitActor.class)
@@ -320,7 +319,7 @@ public class UnitActor extends Actor {
 					gridSizeHeal-=1;
 					continue;
 				}
-				if(!friendCheck(new Vector2(posx+positionComponent.position.x,posy+positionComponent.position.y)))
+				if(friendCheck(new Vector2(posx+positionComponent.position.x,posy+positionComponent.position.y)))
 				{
 					gridSizeHeal-=1;
 					continue;
