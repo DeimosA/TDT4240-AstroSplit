@@ -109,6 +109,8 @@ public class UnitActor extends Actor {
 		} else if (intent == ActionComponentAttack.class) {
 			showAttackRange = true;
 			// TODO something attack related
+		} else if (intent == ActionComponentHeal.class){
+			showHealRange = true;
 		}
 	}
 
@@ -169,6 +171,8 @@ public class UnitActor extends Actor {
 
 
 	public void attack(Vector2 pos) {
+
+		System.out.println("Attack");
 		for(Actor actor : this.getStage().getActors())
 		{
 			if(actor.getClass() == UnitActor.class)
@@ -184,6 +188,7 @@ public class UnitActor extends Actor {
 	}
 
 	public void heal(Vector2 pos) {
+		System.out.println("Heal");
 		for(Actor actor : this.getStage().getActors())
 		{
 			if(actor.getClass() == UnitActor.class)
@@ -252,7 +257,7 @@ public class UnitActor extends Actor {
 	}
 	private void drawAttackTiles()
 	{
-
+		System.out.println("Draw attack");
 		for(int posx = -attackComponent.range*32; posx <= attackComponent.range*32; posx +=32)
 		{
 			for(int posy = -attackComponent.range*32; posy <= attackComponent.range*32; posy +=32)
@@ -292,6 +297,7 @@ public class UnitActor extends Actor {
 
 	private void drawHealTiles()
 	{
+		System.out.println("Draw heal");
 
 		for(int posx = -healComponent.range*32; posx <= healComponent.range*32; posx +=32)
 		{
@@ -322,7 +328,7 @@ public class UnitActor extends Actor {
 					gridSizeHeal-=1;
 					continue;
 				}
-				HighlightedTileActor tile = new HighlightedTileActor(this,'A');
+				HighlightedTileActor tile = new HighlightedTileActor(this,'H');
 				this.getStage().addActor(tile);
 				tile.setPosition(posx+144+positionComponent.position.x,posy+144+positionComponent.position.y);
 				tileList.add(tile);
@@ -366,7 +372,7 @@ public class UnitActor extends Actor {
 				tileActor.remove();
 			}
 			tileList.clear();
-			gridSizeAttack = (int) Math.pow(healComponent.range,2);
+			gridSizeHeal = (int) Math.pow(healComponent.range,2);
 		}
 
 	}
@@ -404,6 +410,9 @@ public class UnitActor extends Actor {
 		sprite.draw(batch);
 		// Draw intent if selected
 		if (isSelected) {
+			System.out.println(showHealRange);
+			System.out.println(tileList.size);
+			System.out.println(gridSizeHeal);
 			if(showMovementRange && tileList.size < gridSizeMovement) {
 				drawMovementTiles();
 			}
@@ -411,8 +420,9 @@ public class UnitActor extends Actor {
 			{
 				drawAttackTiles();
 			}
-			else if(showHealRange && tileList.size < gridSizeAttack)
+			else if(showHealRange && tileList.size < gridSizeHeal)
 			{
+				System.out.println("Drawing heal tiles");
 				drawHealTiles();
 			}
 		}

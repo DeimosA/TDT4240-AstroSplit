@@ -54,6 +54,7 @@ public class MarineMedicEntity extends UnitEntity {
 
 		healthComponent.health = health;
 		healthComponent.maxHealth = health;
+		actionComponentHeal.range = range;
 		movementComponent.distance = movement;
 		positionComponent.position = position;
 		textureComponent.region = new TextureRegion(assetManager.get(Assets.unit_marine_medic, Texture.class));
