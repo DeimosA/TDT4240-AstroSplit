@@ -42,6 +42,8 @@ public class InteractionPresenter {
 		return INSTANCE;
 	}
 
+	/* --- Public methods --- */
+
 	/**
 	 * Set the game view that this should interact with
 	 * @param gameView
@@ -72,6 +74,10 @@ public class InteractionPresenter {
 
 		gameView.unitSelectionChanged(selected);
 //		GameView.updateRange(0, null);
+	}
+
+	public void endTurn() {
+		// TODO end turn stuff
 	}
 
 	public void disableIntent(Class intent) {
