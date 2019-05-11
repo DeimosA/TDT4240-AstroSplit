@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
-import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentHeal;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentTarget;
 import no.ntnu.tdt4240.astrosplit.game.components.ActorComponent;
@@ -41,7 +40,6 @@ public class MarineMedicEntity extends UnitEntity {
 		String type = "unit"; //Type of unit
 
 		ActionComponent actionComponent					= engine.createComponent(ActionComponent.class);
-		ActionComponentAttack actionComponentAttack 	= engine.createComponent(ActionComponentAttack.class);
 		ActionComponentTarget actionComponentTarget 	= engine.createComponent(ActionComponentTarget.class);
 		ActionComponentHeal actionComponentHeal 		= engine.createComponent(ActionComponentHeal.class);
 		ActorComponent actorComponent 					= engine.createComponent(ActorComponent.class);
@@ -54,9 +52,8 @@ public class MarineMedicEntity extends UnitEntity {
 		PlayerComponent playerComponent 				= engine.createComponent(PlayerComponent.class);
 
 
-		actionComponentAttack.damage = damage;
-		actionComponentAttack.range = range;
 		healthComponent.health = health;
+		healthComponent.maxHealth = health;
 		movementComponent.distance = movement;
 		positionComponent.position = position;
 		textureComponent.region = new TextureRegion(assetManager.get(Assets.unit_marine_medic, Texture.class));
@@ -73,7 +70,6 @@ public class MarineMedicEntity extends UnitEntity {
 		this.add(typeComponent);
 		this.add(healthComponent);
 		this.add(movementComponent);
-		this.add(actionComponentAttack);
 		this.add(actionComponentHeal);
 		this.add(playerComponent);
 
