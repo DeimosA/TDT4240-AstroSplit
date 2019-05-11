@@ -140,6 +140,7 @@ public class GameView implements Screen {
 		engine = new PooledEngine();
 		GameWorld gameWorld = new GameWorld(engine, stage, assetManager);
 		gameWorld.create();
+		interactionPresenter.setGameEngine(engine);
 
 		/* In-game UI */
 		actionsBgTex = assetManager.get(Assets.hud_bg_actions, Texture.class);

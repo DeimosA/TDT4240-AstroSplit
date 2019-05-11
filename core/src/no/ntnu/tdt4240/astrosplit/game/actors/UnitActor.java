@@ -300,7 +300,6 @@ public class UnitActor extends Actor {
 
 	private void drawHealTiles()
 	{
-
 		for(int posx = -healComponent.range*32; posx <= healComponent.range*32; posx +=32)
 		{
 			for(int posy = -healComponent.range*32; posy <= healComponent.range*32; posy +=32)
@@ -411,7 +410,8 @@ public class UnitActor extends Actor {
 		sprite.draw(batch);
 		// Draw intent if selected
 		if (isSelected) {
-			if(showMovementRange && tileList.size < gridSizeMovement) {
+			if(showMovementRange && tileList.size < gridSizeMovement)
+			{
 				drawMovementTiles();
 			}
 			else if(showAttackRange && tileList.size < gridSizeAttack)
