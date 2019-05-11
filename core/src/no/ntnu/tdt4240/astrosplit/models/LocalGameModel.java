@@ -67,9 +67,9 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 	}
 
 	// Overrides the saved model with the units param
-	public void saveUnits(Array<UnitModel> units) {
+	private void saveUnits(Array<UnitModel> units) {
 		prefStore.putString(unitsModel, json.toJson(units, Array.class));
-		prefStore.flush();
+		save();
 	}
 
 	// Returns the current saved units model

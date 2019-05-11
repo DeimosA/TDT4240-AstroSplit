@@ -65,6 +65,10 @@ public class UnitActor extends Actor {
 		//Every UnitActor is constructed with an eventlistener, TouchDown method.
 		setTouchable(Touchable.enabled);
 		addListener(inputListener);
+
+		if (movementComponent != null) gridSizeMovement = (int) Math.pow(movementComponent.distance, 2);
+		if (attackComponent != null) gridSizeAttack = (int) Math.pow(attackComponent.range, 2);
+		if (healComponent != null) gridSizeHeal = (int) Math.pow(healComponent.range, 2);
 	}
 
 	private InputListener inputListener = new InputListener() {
@@ -103,6 +107,7 @@ public class UnitActor extends Actor {
 		//destroyTiles();
 		destroyMovementTiles();
 		destroyAttackTiles();
+		destroyHealTiles();
 
 		if (intent == MovementComponent.class) {
 			showMovementRange = true;
@@ -337,16 +342,17 @@ public class UnitActor extends Actor {
 	}
 
 
-	private void destroyMovementTiles() {
-		showMovementRange = false;
-		for(HighlightedTileActor tileActor: tileList)
-		{
-			tileActor.remove();
-
+	private void destroyMovementTiles()
+	{
+		if (movementComponent != null) {
+			showMovementRange = false;
+			for(HighlightedTileActor tileActor: tileList)
+			{
+				tileActor.remove();
+			}
+			tileList.clear();
+			gridSizeMovement = (int) Math.pow(movementComponent.distance,2);
 		}
-		tileList.clear();
-		gridSizeMovement = (int) Math.pow(movementComponent.distance,2);
-
 	}
 
 	private void destroyAttackTiles()
@@ -360,7 +366,6 @@ public class UnitActor extends Actor {
 			tileList.clear();
 			gridSizeAttack = (int) Math.pow(attackComponent.range,2);
 		}
-
 	}
 
 	private void destroyHealTiles()
@@ -374,7 +379,6 @@ public class UnitActor extends Actor {
 			tileList.clear();
 			gridSizeHeal = (int) Math.pow(healComponent.range,2);
 		}
-
 	}
 
 	private boolean collisionCheck(Vector2 pos)
