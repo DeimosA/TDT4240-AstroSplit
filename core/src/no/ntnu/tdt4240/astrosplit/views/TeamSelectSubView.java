@@ -200,7 +200,7 @@ class TeamSelectSubView extends SubView {
 							localGameModel.setPlayer2(selectedTeam);
 							// So start the game
 							ViewStateManager.getInstance().setScreen(
-								new LocalGameView(localGameModel));
+								new GameView(localGameModel));
 
 						} else {
 							// Other game types
