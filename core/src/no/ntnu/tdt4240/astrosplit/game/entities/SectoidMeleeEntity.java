@@ -53,6 +53,7 @@ public class SectoidMeleeEntity extends UnitEntity {
 		aca.damage = damage;
 		aca.range = range;
 		hc.health = health;
+		hc.maxHealth = health;
 		mc.distance = movement;
 		pc.position = position;
 		tc.region = new TextureRegion(assetManager.get(Assets.unit_sectoid_melee, Texture.class));

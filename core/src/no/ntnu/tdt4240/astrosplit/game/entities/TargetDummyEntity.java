@@ -51,6 +51,7 @@ public class TargetDummyEntity extends UnitEntity {
 		PlayerComponent		playerComponent 		= engine.createComponent(PlayerComponent.class);
 
 		healthComponent.health = 200;
+		healthComponent.maxHealth = 200;
 		positionComponent.position = position;
 		textureComponent.region = new TextureRegion(assetManager.get(Assets.unit_targetPractice, Texture.class));
 		transformComponent.scale.set(0.1f, 0.1f);

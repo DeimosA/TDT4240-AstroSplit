@@ -178,6 +178,21 @@ public class UnitActor extends Actor {
 
 	}
 
+	public void heal(Vector2 pos) {
+		for(Actor actor : this.getStage().getActors())
+		{
+			if(actor.getClass() == UnitActor.class)
+			{
+				if(pos.equals(((UnitActor) actor).getPosition()))
+
+					entity.getComponent(ActionComponentTarget.class).target = (((UnitActor) actor).getEntity());
+
+			}
+		}
+		destroyAttackTiles();
+
+	}
+
 	public Entity getEntity()
 	{
 		return this.entity;
