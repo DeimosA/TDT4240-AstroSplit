@@ -8,7 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
-import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttacking;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentHeal;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentTarget;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
@@ -36,10 +37,9 @@ public class AbilitySystem extends IteratingSystem {
 
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
-		if(entity.getComponent(ActionComponentAttacking.class).attacking != null){
-			attack(entity, entity.getComponent(ActionComponentAttacking.class).attacking);
-			entity.getComponent(ActionComponentAttacking.class).attacking = null;
-
+		if(entity.getComponent(ActionComponentTarget.class).target != null){
+			attack(entity, entity.getComponent(ActionComponentTarget.class).target);
+			entity.getComponent(ActionComponentTarget.class).target = null;
 		}
 
 	}
@@ -60,6 +60,24 @@ public class AbilitySystem extends IteratingSystem {
 
 		System.out.println("Post-attack HP: " + victim.getComponent(HealthComponent.class).health);
 	}
+
+	public void heal(Entity healer, Entity target) {
+		System.out.println("Pre-heal HP: " + target.getComponent(HealthComponent.class).health);
+		ActionComponentHeal healComponent = healer.getComponent(ActionComponentHeal.class);
+
+		if(healer.getComponent(TypeComponent.class).type == "unit"){
+			if (rangeCheck(healer, target, healComponent.range)) {
+				HealthComponent health = target.getComponent(HealthComponent.class);
+				ActionComponentHeal heal = healer.getComponent(ActionComponentHeal.class);
+				health.health = health.health + heal.heal;
+			}else {
+				System.out.println("Out of range");
+			}
+		}
+
+		System.out.println("Post-heal HP: " + target.getComponent(HealthComponent.class).health);
+	}
+
 
 	private boolean rangeCheck(Entity attacker, Entity victim, int range)
 	{

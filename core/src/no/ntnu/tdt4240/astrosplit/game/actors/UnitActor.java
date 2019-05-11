@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Array;
 
 
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
-import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttacking;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentTarget;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PlayerComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
@@ -34,7 +34,7 @@ public class UnitActor extends Actor {
 	private MovementComponent movementComponent = null;
 	private ActionComponentAttack attackComponent;
 	private PlayerComponent playerComponent;
-	private ActionComponentAttacking attackingComponent;
+	private ActionComponentTarget targetComponent;
 
 	private boolean isSelected = false;
 	private Class actionIntent;
@@ -55,7 +55,7 @@ public class UnitActor extends Actor {
 		this.playerComponent = entity.getComponent(PlayerComponent.class);
 		this.entity = entity;
 		this.sprite = new Sprite(textureComponent.region.getTexture());
-		this.attackingComponent = entity.getComponent(ActionComponentAttacking.class);
+		this.targetComponent = entity.getComponent(ActionComponentTarget.class);
 
 		//Every UnitActor is constructed with an eventlistener, TouchDown method.
 		setTouchable(Touchable.enabled);
@@ -170,7 +170,7 @@ public class UnitActor extends Actor {
 			{
 				if(pos.equals(((UnitActor) actor).getPosition()))
 
-					entity.getComponent(ActionComponentAttacking.class).attacking = (((UnitActor) actor).getEntity());
+					entity.getComponent(ActionComponentTarget.class).target = (((UnitActor) actor).getEntity());
 
 			}
 		}

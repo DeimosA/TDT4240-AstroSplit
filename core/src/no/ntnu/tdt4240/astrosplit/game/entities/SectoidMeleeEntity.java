@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
-import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttacking;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentTarget;
 import no.ntnu.tdt4240.astrosplit.game.components.ActorComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
@@ -41,7 +41,7 @@ public class SectoidMeleeEntity extends Entity {
 
 		ActionComponent ac 					= engine.createComponent(ActionComponent.class);
 		ActionComponentAttack aca 			= engine.createComponent(ActionComponentAttack.class);
-		ActionComponentAttacking actionComponentAttacking = engine.createComponent(ActionComponentAttacking.class);
+		ActionComponentTarget actionComponentTarget = engine.createComponent(ActionComponentTarget.class);
 		ActorComponent am 					= engine.createComponent(ActorComponent.class);
 		HealthComponent hc 					= engine.createComponent(HealthComponent.class);
 		MovementComponent mc 				= engine.createComponent(MovementComponent.class);
@@ -61,7 +61,7 @@ public class SectoidMeleeEntity extends Entity {
 		tp.type = type;
 		playerComponent.id = player;
 
-		this.add(actionComponentAttacking);
+		this.add(actionComponentTarget);
 		this.add(pc);
 		this.add(tc);
 		this.add(ac);
