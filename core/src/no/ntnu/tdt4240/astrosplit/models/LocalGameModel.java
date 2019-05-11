@@ -22,10 +22,9 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 	// Saves P1 and P2 units.
 	private Array<UnitModel> units = new Array();
 
-
-
 	private TeamType player1;
 	private TeamType player2;
+
 
 	public LocalGameModel() {
 		super(GameType.LOCAL_GAME);
@@ -58,26 +57,6 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 		prefStore.putInteger(playerTurn, 1);
 	}
 
-	public void endGame() {
-		prefStore.clear();
-	}
-
-	public void endTurn() {
-		prefStore.putInteger(playerTurn, (getPlayerTurn() == 1) ? 2 : 1);
-		saveUnits(units);
-	}
-
-	@Override
-	public void load() {
-		// Loads an existing game state or creates a new
-		prefStore = Gdx.app.getPreferences(saveGameName);
-	}
-
-	@Override
-	public void save() {
-		prefStore.flush();
-	}
-
 	/**
 	 * Static function to check if a saved game exists
 	 * @return
@@ -87,9 +66,15 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 		return prefs.contains(ongoingGame);
 	}
 
-	public int getPlayerTurn() {
-		Preferences prefs = Gdx.app.getPreferences(saveGameName);
-		return prefs.getInteger(playerTurn);
+	// Overrides the saved model with the units param
+	public void saveUnits(Array<UnitModel> units) {
+		prefStore.putString(unitsModel, json.toJson(units, Array.class));
+		prefStore.flush();
+	}
+
+	// Returns the current saved units model
+	public Array<UnitModel> getUnits() {
+		return json.fromJson(Array.class, prefStore.getString(unitsModel));
 	}
 
 	@Override
@@ -102,14 +87,31 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 
 	}
 
-	// Overrides the saved model with the units param
-	public void saveUnits(Array<UnitModel> units) {
-		prefStore.putString(unitsModel, json.toJson(units, Array.class));
-		prefStore.flush();
+	@Override
+	public int getPlayerTurn() {
+		Preferences prefs = Gdx.app.getPreferences(saveGameName);
+		return prefs.getInteger(playerTurn);
 	}
 
-	// Returns the current saved units model
-	public Array<UnitModel> getUnits() {
-		return json.fromJson(Array.class, prefStore.getString(unitsModel));
+	@Override
+	public void endTurn() {
+		prefStore.putInteger(playerTurn, (getPlayerTurn() == 1) ? 2 : 1);
+		saveUnits(units);
+	}
+
+	@Override
+	public void endGame() {
+		prefStore.clear();
+	}
+
+	@Override
+	public void load() {
+		// Loads an existing game state or creates a new
+		prefStore = Gdx.app.getPreferences(saveGameName);
+	}
+
+	@Override
+	public void save() {
+		prefStore.flush();
 	}
 }

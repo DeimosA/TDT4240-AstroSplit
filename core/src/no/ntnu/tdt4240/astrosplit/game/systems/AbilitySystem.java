@@ -38,8 +38,16 @@ public class AbilitySystem extends IteratingSystem {
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
 		if(entity.getComponent(ActionComponentTarget.class).target != null){
-			attack(entity, entity.getComponent(ActionComponentTarget.class).target);
-			entity.getComponent(ActionComponentTarget.class).target = null;
+			// If Attacker
+			if(entity.getComponent(ActionComponentAttack.class) != null){
+				attack(entity, entity.getComponent(ActionComponentTarget.class).target);
+				entity.getComponent(ActionComponentTarget.class).target = null;
+			}
+			// If healer
+			if(entity.getComponent(ActionComponentHeal.class) != null){
+				heal(entity, entity.getComponent(ActionComponentTarget.class).target);
+				entity.getComponent(ActionComponentTarget.class).target = null;
+			}
 		}
 
 	}
@@ -69,7 +77,11 @@ public class AbilitySystem extends IteratingSystem {
 			if (rangeCheck(healer, target, healComponent.range)) {
 				HealthComponent health = target.getComponent(HealthComponent.class);
 				ActionComponentHeal heal = healer.getComponent(ActionComponentHeal.class);
-				health.health = health.health + heal.heal;
+				if((health.health + heal.heal) > health.maxHealth){
+					health.health = health.maxHealth;
+				}else {
+					health.health = health.health + heal.heal;
+				}
 			}else {
 				System.out.println("Out of range");
 			}
