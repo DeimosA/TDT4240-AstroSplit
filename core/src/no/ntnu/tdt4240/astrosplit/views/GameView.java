@@ -17,18 +17,15 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
-import java.awt.Menu;
 
 import no.ntnu.tdt4240.astrosplit.game.GameWorld;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentHeal;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
-import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
-import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
-import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
 import no.ntnu.tdt4240.astrosplit.game.Map;
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
+import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
 import no.ntnu.tdt4240.astrosplit.presenters.InteractionPresenter;
 import no.ntnu.tdt4240.astrosplit.utils.Assets;
 import no.ntnu.tdt4240.astrosplit.views.widgets.ButtonList;
@@ -39,7 +36,6 @@ public class GameView implements Screen {
 
 	// Disposables
 	private SpriteBatch spriteBatch;
-//	private ShapeRenderer shape;
 	private Stage stage;
 	private Map map;
 	private Texture playerNumberTex;
@@ -61,13 +57,9 @@ public class GameView implements Screen {
 	private Viewport viewport;
 	private Vector3 cursorPos = new Vector3();
 
-//	private static int rangeIndicator;
-//	private static Vector2 selectedPosition = null;
-
 	// Game engine and related
 	private PooledEngine engine;
 	private InteractionPresenter interactionPresenter;
-//	private GameWorld world;
 	private GameModel gameModel;
 	private Entity selectedEntity = null;
 
@@ -99,6 +91,13 @@ public class GameView implements Screen {
 
 			case LOCAL_GAME:
 				gameModel.save();
+				Assets.loadHudPlayerIndicators(assetManager);
+				assetManager.finishLoading();
+				if (gameModel.getPlayerTurn() == 1) {
+					playerNumberTex = assetManager.get(Assets.hud_Player1_red, Texture.class);
+				} else if (gameModel.getPlayerTurn() == 2) {
+					playerNumberTex = assetManager.get(Assets.hud_Player2_blue, Texture.class);
+				}
 				break;
 		}
 		// Setup rendering
@@ -143,10 +142,6 @@ public class GameView implements Screen {
 		gameWorld.create();
 
 		/* In-game UI */
-//		shape = new ShapeRenderer();
-//		shape.setProjectionMatrix(camera.combined);
-//		UI.Start();
-//		playerNumberTex = assetManager.get(Assets.hud_Player1_red, Texture.class);
 		actionsBgTex = assetManager.get(Assets.hud_bg_actions, Texture.class);
 		unitBgTex = assetManager.get(Assets.hud_bg_unitInfo, Texture.class);
 		float actionButtonsScale = 3f;
@@ -180,6 +175,18 @@ public class GameView implements Screen {
 	/* --- Public methods --- */
 
 	/**
+	 * To be run when the turn ended
+	 * @param nextPlayerNumber
+	 */
+	public void turnEnded(int nextPlayerNumber) {
+		if (nextPlayerNumber == 1) {
+			playerNumberTex = assetManager.get(Assets.hud_Player1_red, Texture.class);
+		} else if (nextPlayerNumber == 2) {
+			playerNumberTex = assetManager.get(Assets.hud_Player2_blue, Texture.class);
+		}
+	}
+
+	/**
 	 * To notify view of selection change
 	 * @param selectedUnit
 	 */
@@ -190,7 +197,7 @@ public class GameView implements Screen {
 			for (int i = 0; i < actionButtons.getButtonCount(); i++) {
 				MenuButton button = actionButtons.getButton(i);
 
-				// TODO also check if remaining actions!
+				// TODO also check if unit has remaining actions!
 				button.setEnabled(selectedUnit.getComponent(button.actionIntent) != null);
 				if (firstEnabledButton < 0 && button.isEnabled()) {
 					firstEnabledButton = i;
@@ -224,7 +231,6 @@ public class GameView implements Screen {
 			@Override
 			public void click() {
 				System.out.println("Clicked End Turn!");
-				// TODO end turn
 				interactionPresenter.endTurn();
 			}
 		};
