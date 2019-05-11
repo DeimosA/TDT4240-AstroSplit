@@ -5,6 +5,8 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
+import no.ntnu.tdt4240.astrosplit.utils.AudioManager;
+
 
 /**
  * Configuration class contains config settings that are stored locally on the users device.

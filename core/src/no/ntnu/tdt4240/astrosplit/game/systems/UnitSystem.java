@@ -6,17 +6,14 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 
-import no.ntnu.tdt4240.astrosplit.game.World;
+import no.ntnu.tdt4240.astrosplit.game.GameWorld;
 import no.ntnu.tdt4240.astrosplit.game.abilities.Attack;
 //import no.ntnu.tdt4240.astrosplit.game.abilities.AttackKt;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
-import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
-
-import com.badlogic.gdx.math.Vector2;
 
 /*TODO
 	Should try to make this a general unit system later, and find specific info about attributes from type component or inheritance
@@ -37,7 +34,7 @@ public class UnitSystem extends IteratingSystem {
 			TypeComponent.class
 		).get();
 
-	private World world;
+	private GameWorld gameWorld;
 
 	private ComponentMapper<ActionComponent> am;
 	private ComponentMapper<HealthComponent> hm;
@@ -45,14 +42,14 @@ public class UnitSystem extends IteratingSystem {
 	private ComponentMapper<MovementComponent> mm;
 	private ComponentMapper<TypeComponent> tm;
 
-	public UnitSystem(World world) {
+	public UnitSystem(GameWorld gameWorld) {
 		super(family);
 		this.am = ComponentMapper.getFor(ActionComponent.class);
 		this.hm = ComponentMapper.getFor(HealthComponent.class);
 		this.pm = ComponentMapper.getFor(PositionComponent.class);
 		this.mm = ComponentMapper.getFor(MovementComponent.class);
 		this.tm = ComponentMapper.getFor(TypeComponent.class);
-		this.world = world;
+		this.gameWorld = gameWorld;
 
 
 	}
@@ -97,7 +94,7 @@ public class UnitSystem extends IteratingSystem {
 		Attack.attack(offender,victim);
 
 		HealthComponent health = hm.get(victim);
-		if (health.health <= 0) world.killUnit(victim);
+		if (health.health <= 0) gameWorld.killUnit(victim);
 
 
 	}
@@ -129,7 +126,7 @@ public class UnitSystem extends IteratingSystem {
 
 	public void killUnit(Entity entity)
 	{
-		world.killUnit(entity);
+		gameWorld.killUnit(entity);
 	}
 
 }

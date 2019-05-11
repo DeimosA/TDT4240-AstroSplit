@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
-import no.ntnu.tdt4240.astrosplit.game.World;
+import no.ntnu.tdt4240.astrosplit.game.GameWorld;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
@@ -64,7 +64,7 @@ public class GameView implements Screen {
 	// Game engine and related
 	private PooledEngine engine;
 	private InteractionPresenter interactionPresenter;
-//	private World world;
+//	private GameWorld world;
 	private GameModel gameModel;
 	private Entity selectedEntity = null;
 
@@ -136,13 +136,13 @@ public class GameView implements Screen {
 
 		/* Engine and stuff */
 		engine = new PooledEngine();
-		World world = new World(engine);
+		GameWorld gameWorld = new GameWorld(engine);
 
-		engine.addSystem(new UnitSystem(world));
+		engine.addSystem(new UnitSystem(gameWorld));
 		engine.addSystem(new RenderingSystem(new SpriteBatch(), stage));
 		engine.addSystem(new MovementSystem());
 
-		world.create();
+		gameWorld.create();
 
 		/* In-game UI */
 //		shape = new ShapeRenderer();

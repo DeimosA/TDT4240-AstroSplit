@@ -15,13 +15,13 @@ import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
 
 
-public class World {
+public class GameWorld {
 
 
 	private PooledEngine engine;
 
 
-	public World(PooledEngine engine) {
+	public GameWorld(PooledEngine engine) {
 		this.engine = engine;
 	}
 

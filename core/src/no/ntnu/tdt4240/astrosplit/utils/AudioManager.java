@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.astrosplit.models;
+package no.ntnu.tdt4240.astrosplit.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -6,6 +6,9 @@ import com.badlogic.gdx.audio.Sound;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import no.ntnu.tdt4240.astrosplit.models.Configuration;
+import no.ntnu.tdt4240.astrosplit.models.Model;
 
 /**
  * Configuration class contains config settings that are stored locally on the users device.

@@ -4,7 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
-import no.ntnu.tdt4240.astrosplit.models.AudioManager;
+import no.ntnu.tdt4240.astrosplit.utils.AudioManager;
 import no.ntnu.tdt4240.astrosplit.views.ViewStateManager;
 
 

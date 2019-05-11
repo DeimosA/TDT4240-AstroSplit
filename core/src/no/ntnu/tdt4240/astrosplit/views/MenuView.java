@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
-import no.ntnu.tdt4240.astrosplit.models.AudioManager;
+import no.ntnu.tdt4240.astrosplit.utils.AudioManager;
 import no.ntnu.tdt4240.astrosplit.presenters.MenuPresenter;
 
 
