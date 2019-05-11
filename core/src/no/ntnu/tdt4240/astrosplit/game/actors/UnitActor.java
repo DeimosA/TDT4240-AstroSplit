@@ -12,9 +12,7 @@ import com.badlogic.gdx.utils.Array;
 
 
 import no.ntnu.tdt4240.astrosplit.game.abilities.Attack;
-import no.ntnu.tdt4240.astrosplit.game.abilities.Move;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
-import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PlayerComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
@@ -149,11 +147,14 @@ public class UnitActor extends Actor {
 	}
 
 	/* --- Protected methods --- */
-	public void move(Vector2 pos)
+	public void move(Vector2 position)
 	{
-		if(collisionCheck(pos))
-			Move.move(entity,pos); // TODO use entity-component
-
+		if(collisionCheck(position)) {
+			if(entity.getComponent(MovementComponent.class) != null)
+			{
+				entity.getComponent(MovementComponent.class).position = position;
+			}
+		}
 		destroyMovementTiles();
 		// TODO temporary thing
 		InteractionPresenter.getInstance().disableIntent(MovementComponent.class);
