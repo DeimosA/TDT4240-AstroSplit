@@ -30,13 +30,21 @@ public class Assets {
 //	public static final String aaa = "";
 
 	/* Units */
-	private static boolean unitsLoaded = false;
-	// Aliens
-	public static final String unit_alien_melee = "Units/alien_melee.png";
+	// Grays (aliens)
+	private static boolean grayUnitsLoaded = false;
+	public static final String unit_gray_melee = "Units/alien_melee.png";
 	// Marines
+	private static boolean marineUnitsLoaded = false;
 	public static final String unit_marine_melee = "Units/marine_melee.png";
+	public static final String unit_marine_ranged = "Units/marine_ranged.png";
+	public static final String unit_marine_medic = "Units/marine_medic.png";
 	// Sectoids
+	private static boolean sectoidUnitsLoaded = false;
 	public static final String unit_sectoid_melee = "Units/sectoid_melee.png";
+	// Target practice / tutorial assets
+	private static boolean tutorialLoaded = false;
+	public static final String unit_targetPractice = "Units/tutorial_scarecrow.png";
+
 
 //	public static final String aaa = "";
 
@@ -46,7 +54,7 @@ public class Assets {
 	 * @param asm
 	 */
 	public static void loadHudAssets(AssetManager asm) {
-		if (hudLoaded) return;
+//		if (hudLoaded) return;
 
 		asm.load(hud_bg_actions, Texture.class);
 		asm.load(hud_bg_unitInfo, Texture.class);
@@ -65,7 +73,7 @@ public class Assets {
 	 * @param asm
 	 */
 	public static void loadHudPlayerIndicators(AssetManager asm) {
-		if (playerIndicatorsLoaded) return;
+//		if (playerIndicatorsLoaded) return;
 
 		asm.load(hud_Player1_red, Texture.class);
 		asm.load(hud_Player2_blue, Texture.class);
@@ -73,14 +81,38 @@ public class Assets {
 		playerIndicatorsLoaded = true;
 	}
 
-	public static void loadUnitAssets(AssetManager asm) {
-		if (unitsLoaded) return;
+	public static void loadGrayUnitAssets(AssetManager asm) {
+//		if (grayUnitsLoaded) return;
 
-		asm.load(unit_alien_melee, Texture.class);
+		asm.load(unit_gray_melee, Texture.class);
+
+		grayUnitsLoaded = true;
+	}
+
+	public static void loadMarineUnitAssets(AssetManager asm) {
+//		if (marineUnitsLoaded) return;
+
 		asm.load(unit_marine_melee, Texture.class);
+		asm.load(unit_marine_ranged, Texture.class);
+		asm.load(unit_marine_medic, Texture.class);
+
+		marineUnitsLoaded = true;
+	}
+
+	public static void loadSectoidUnitAssets(AssetManager asm) {
+//		if (sectoidUnitsLoaded) return;
+
 		asm.load(unit_sectoid_melee, Texture.class);
 
-		unitsLoaded = true;
+		sectoidUnitsLoaded = true;
+	}
+
+	public static void loadTutorialAssets(AssetManager asm) {
+//		if (tutorialLoaded) return;
+
+		asm.load(unit_targetPractice, Texture.class);
+
+		tutorialLoaded = true;
 	}
 
 }
