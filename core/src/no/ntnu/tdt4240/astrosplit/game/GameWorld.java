@@ -1,9 +1,10 @@
 package no.ntnu.tdt4240.astrosplit.game;
 
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.entities.AlienMeleeEntity;
@@ -13,6 +14,7 @@ import no.ntnu.tdt4240.astrosplit.game.entities.MarineRangeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.SectoidMeleeEntity;
 import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
+import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
 
 
 public class GameWorld {
@@ -21,8 +23,12 @@ public class GameWorld {
 	private PooledEngine engine;
 
 
-	public GameWorld(PooledEngine engine) {
+	public GameWorld(PooledEngine engine, Stage stage) {
 		this.engine = engine;
+
+		engine.addSystem(new UnitSystem());
+		engine.addSystem(new RenderingSystem(new SpriteBatch(), stage));
+		engine.addSystem(new MovementSystem());
 	}
 
 
@@ -38,16 +44,11 @@ public class GameWorld {
 	}
 
 
-	public void attack(Entity offender, Entity defender)
-	{
-		if(offender.getComponent(ActionComponent.class) != null)
-			offender.getComponent(ActionComponent.class).attackList.add(defender);
-	}
+//	public void attack(Entity offender, Entity defender)
+//	{
+//		if(offender.getComponent(ActionComponent.class) != null)
+//			offender.getComponent(ActionComponent.class).attackList.add(defender);
+//	}
 
 
-	public void killUnit(Entity entity)
-	{
-		engine.getSystem(RenderingSystem.class).removeActor(entity);
-		engine.removeEntity(entity);
-	}
 }

@@ -136,12 +136,7 @@ public class GameView implements Screen {
 
 		/* Engine and stuff */
 		engine = new PooledEngine();
-		GameWorld gameWorld = new GameWorld(engine);
-
-		engine.addSystem(new UnitSystem(gameWorld));
-		engine.addSystem(new RenderingSystem(new SpriteBatch(), stage));
-		engine.addSystem(new MovementSystem());
-
+		GameWorld gameWorld = new GameWorld(engine, stage);
 		gameWorld.create();
 
 		/* In-game UI */

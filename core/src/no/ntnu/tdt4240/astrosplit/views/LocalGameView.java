@@ -22,11 +22,11 @@ class LocalGameView implements Screen {
 	LocalGameView(LocalGameModel gameModel) {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 
-		assetManager = new AssetManager();
-		Assets.loadHudPlayerIndicators(assetManager);
-		assetManager.finishLoading();
+//		assetManager = new AssetManager();
+//		Assets.loadHudPlayerIndicators(assetManager);
+//		assetManager.finishLoading();
 
-		viewPlayer1 = new GameView(gameModel, assetManager);
+//		viewPlayer1 = new GameView(gameModel, assetManager);
 
 	}
 

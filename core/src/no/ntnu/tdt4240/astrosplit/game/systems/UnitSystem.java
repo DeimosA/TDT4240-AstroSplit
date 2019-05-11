@@ -8,7 +8,6 @@ import com.badlogic.ashley.systems.IteratingSystem;
 
 import no.ntnu.tdt4240.astrosplit.game.GameWorld;
 import no.ntnu.tdt4240.astrosplit.game.abilities.Attack;
-//import no.ntnu.tdt4240.astrosplit.game.abilities.AttackKt;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
@@ -24,6 +23,7 @@ import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
  */
 public class UnitSystem extends IteratingSystem {
 
+
 	//All units have these essential components
 	private static final Family family =
 		Family.all(
@@ -34,25 +34,22 @@ public class UnitSystem extends IteratingSystem {
 			TypeComponent.class
 		).get();
 
-	private GameWorld gameWorld;
-
 	private ComponentMapper<ActionComponent> am;
 	private ComponentMapper<HealthComponent> hm;
 	private ComponentMapper<PositionComponent> pm;
 	private ComponentMapper<MovementComponent> mm;
 	private ComponentMapper<TypeComponent> tm;
 
-	public UnitSystem(GameWorld gameWorld) {
+
+	public UnitSystem() {
 		super(family);
 		this.am = ComponentMapper.getFor(ActionComponent.class);
 		this.hm = ComponentMapper.getFor(HealthComponent.class);
 		this.pm = ComponentMapper.getFor(PositionComponent.class);
 		this.mm = ComponentMapper.getFor(MovementComponent.class);
 		this.tm = ComponentMapper.getFor(TypeComponent.class);
-		this.gameWorld = gameWorld;
-
-
 	}
+
 
 	// Iterates over each entity every time the entity system is updated.
 	/*
@@ -94,7 +91,7 @@ public class UnitSystem extends IteratingSystem {
 		Attack.attack(offender,victim);
 
 		HealthComponent health = hm.get(victim);
-		if (health.health <= 0) gameWorld.killUnit(victim);
+		if (health.health <= 0) killUnit(victim);
 
 
 	}
@@ -126,7 +123,8 @@ public class UnitSystem extends IteratingSystem {
 
 	public void killUnit(Entity entity)
 	{
-		gameWorld.killUnit(entity);
+		getEngine().getSystem(RenderingSystem.class).removeActor(entity);
+		getEngine().removeEntity(entity);
 	}
 
 }
