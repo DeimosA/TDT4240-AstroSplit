@@ -21,6 +21,8 @@ public class Assets {
 	public static final String hud_button_move_disabled = "Hud/buttonMoveDisabled.png";
 	public static final String hud_button_sword = "Hud/buttonSword.png";
 	public static final String hud_button_sword_disabled = "Hud/buttonSwordDisabled.png";
+	public static final String hud_button_heal = "Hud/buttonHeal.png";
+	public static final String hud_button_heal_disabled = "Hud/buttonHealDisabled.png";
 	public static final String hud_button_endTurn = "Hud/buttonEndTurn.png";
 	// Active player indicators
 	private static boolean playerIndicatorsLoaded = false;
@@ -63,6 +65,8 @@ public class Assets {
 		asm.load(hud_button_move_disabled, Texture.class);
 		asm.load(hud_button_sword, Texture.class);
 		asm.load(hud_button_sword_disabled, Texture.class);
+		asm.load(hud_button_heal, Texture.class);
+		asm.load(hud_button_heal_disabled, Texture.class);
 		asm.load(hud_button_endTurn, Texture.class);
 
 		hudLoaded = true;
