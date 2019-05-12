@@ -27,7 +27,6 @@ import no.ntnu.tdt4240.astrosplit.game.Map;
 import no.ntnu.tdt4240.astrosplit.game.components.PlayerComponent;
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
-import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
 import no.ntnu.tdt4240.astrosplit.presenters.InteractionPresenter;
 import no.ntnu.tdt4240.astrosplit.utils.Assets;
 import no.ntnu.tdt4240.astrosplit.utils.AudioManager;
@@ -87,7 +86,7 @@ public class GameView implements Screen {
 		this.assetManager = assetManager;
 		this.interactionPresenter = InteractionPresenter.getInstance();
 		interactionPresenter.setGameModel(gameModel);
-		interactionPresenter.setGameWiew(this);
+		interactionPresenter.setGameView(this);
 
 		// Maybe do som game type specific stuff
 		switch (gameModel.getGameType()) {

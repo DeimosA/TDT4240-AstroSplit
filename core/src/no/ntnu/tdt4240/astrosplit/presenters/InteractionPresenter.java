@@ -33,8 +33,8 @@ public class InteractionPresenter {
 	private InteractionModel interactionModel;
 	private GameView gameView;
 	private static GameModel gameModel;
-	private PooledEngine engine;
-	private Family playerEntitiesFamily;
+	private static PooledEngine engine;
+	private static Family playerEntitiesFamily;
 
 
 	/**
@@ -63,7 +63,7 @@ public class InteractionPresenter {
 	 * Set the game view that this should interact with
 	 * @param gameView
 	 */
-	public void setGameWiew(GameView gameView) {
+	public void setGameView(GameView gameView) {
 		this.gameView = gameView;
 	}
 
@@ -121,18 +121,24 @@ public class InteractionPresenter {
 		}
 		// Save game state
 		if (gameModel.getGameType() == GameModel.GameType.LOCAL_GAME) {
-			ImmutableArray<Entity> entities = engine.getEntitiesFor(playerEntitiesFamily);
-			((LocalGameModel)gameModel).saveUnits(entities);
+			saveUnits(engine);
 		}
 		// Switch player
 		gameModel.endTurn();
 		// Tell the view to update
 		gameView.turnEnded(gameModel.getPlayerTurn());
+
+		System.out.println("Game still going? " + InteractionPresenter.checkWinCondition());
+	}
+
+	public static void saveUnits(PooledEngine engine) {
+		ImmutableArray<Entity> entities = engine.getEntitiesFor(playerEntitiesFamily);
+		((LocalGameModel)gameModel).saveUnits(entities);
 	}
 
 	public static Array<UnitModel> getUnits() {
 		return gameModel.getUnits();
-  }
+  	}
 
 	public int getPlayerTurn() {
 		return gameModel.getPlayerTurn();
@@ -153,5 +159,19 @@ public class InteractionPresenter {
 	 */
 	public void updateIntent(Class intent) {
 		interactionModel.setIntent(intent);
+	}
+
+	public static boolean checkWinCondition() {
+		boolean p1HasUnits = false;
+		boolean p2HasUnits = false;
+		saveUnits(engine);
+		for (UnitModel unit : gameModel.getUnits()) {
+
+			if (unit.player == 1) {
+				p1HasUnits = true;
+			} else if (unit.player == 2) {
+				p2HasUnits = true;
+			}
+		} return p1HasUnits && p2HasUnits;
 	}
 }
