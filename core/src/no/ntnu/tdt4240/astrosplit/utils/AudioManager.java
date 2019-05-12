@@ -21,6 +21,7 @@ public final class AudioManager implements Model {
 
 	/* Music */
 	private Music musicMenu;
+	private Music musicGame;
 
 	/* Sound */
 	private Sound soundButton;
@@ -69,8 +70,10 @@ public final class AudioManager implements Model {
 	@Override
 	public void load() {
 		/* TODO Load all assets, add to array */
-		musicMenu = Gdx.audio.newMusic(Gdx.files.internal("Audio/musicPlaceholder.mp3"));
+		musicMenu = Gdx.audio.newMusic(Gdx.files.internal("Audio/musicMenu.mp3"));
 		musicArray.add(musicMenu);
+		musicGame = Gdx.audio.newMusic(Gdx.files.internal("Audio/musicGame.mp3"));
+		musicArray.add(musicGame);
 
 		soundButton = Gdx.audio.newSound(Gdx.files.internal("Audio/soundButton.mp3"));
 		soundArray.add(soundButton);
@@ -81,7 +84,7 @@ public final class AudioManager implements Model {
 	}
 
 	/**
-	 * Play music
+	 * Play menu music
 	 */
 	public void PlayMusicMenu() {
 		/* Main menu  */
@@ -91,11 +94,29 @@ public final class AudioManager implements Model {
 	}
 
 	/**
-	 * Stop music
+	 * Play in-game music
+	 */
+	public void PlayMusicGame() {
+		/* In-game  */
+		if(musicMenu.isPlaying()){
+			musicMenu.stop();
+		}
+		musicGame.setLooping(true);
+		musicGame.setVolume(0.5f); //50%
+		musicGame.play();
+	}
+
+	/**
+	 * Stop menu or in-game music
 	 */
 	public void stopMusicMenu() {
 		if (!isMusicOn()) {
-			musicMenu.stop();
+			if(musicMenu.isPlaying()) {
+				musicMenu.stop();
+			}
+			else if(musicGame.isPlaying()){
+				musicGame.stop();
+			}
 		}
 	}
 

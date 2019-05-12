@@ -28,6 +28,7 @@ import no.ntnu.tdt4240.astrosplit.models.GameModel;
 import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
 import no.ntnu.tdt4240.astrosplit.presenters.InteractionPresenter;
 import no.ntnu.tdt4240.astrosplit.utils.Assets;
+import no.ntnu.tdt4240.astrosplit.utils.AudioManager;
 import no.ntnu.tdt4240.astrosplit.views.widgets.ButtonList;
 import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 
@@ -170,6 +171,9 @@ public class GameView implements Screen {
 			mapBounds.x + mapBounds.width + (renderWidth - mapBounds.width - mapBounds.x) / 2f,
 			75
 		);
+
+		/* Music */
+		playMusicGame();
 	}
 
 
@@ -291,6 +295,13 @@ public class GameView implements Screen {
 		} else {
 			actionSelectBounds.y = -100;
 		}
+	}
+
+	/**
+	 * Play in-game music
+	 */
+	public void playMusicGame(){
+		AudioManager.getInstance().PlayMusicGame();
 	}
 
 	/**
