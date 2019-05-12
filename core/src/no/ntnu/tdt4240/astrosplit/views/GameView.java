@@ -45,6 +45,7 @@ public class GameView implements Screen {
 	private ButtonList actionButtons;
 	private MenuButton endTurnButton;
 	private AssetManager assetManager;
+	private UnitInfoSubView unitInfoSubView;
 
 	// Some metrics
 	private int renderHeight;
@@ -170,6 +171,13 @@ public class GameView implements Screen {
 			mapBounds.x + mapBounds.width + (renderWidth - mapBounds.width - mapBounds.x) / 2f,
 			75
 		);
+
+		unitInfoSubView = new UnitInfoSubView(new Rectangle(
+			mapBounds.x + mapBounds.width,
+			0,
+			renderWidth - mapBounds.width - mapBounds.x,
+			mapBounds.height
+		));
 	}
 
 
@@ -385,6 +393,10 @@ public class GameView implements Screen {
 			);
 		}
 
+		// Selected
+		unitInfoSubView.render(spriteBatch, delta);
+
+
 		spriteBatch.end();
 		//Todo: add "selected" indicator
 //		if (rangeIndicator > 0 && selectedPosition != null) {
@@ -437,5 +449,6 @@ public class GameView implements Screen {
 		actionSelectTex.dispose();
 		actionButtons.dispose();
 		assetManager.dispose();
+		unitInfoSubView.dispose();
 	}
 }

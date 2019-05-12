@@ -17,6 +17,9 @@ abstract class SubView {
 		this.bounds = bounds;
 		this.menuView = menuView;
 	}
+	SubView(){
+
+	}
 
 	/**
 	 * Get the bounding box for this sub view
