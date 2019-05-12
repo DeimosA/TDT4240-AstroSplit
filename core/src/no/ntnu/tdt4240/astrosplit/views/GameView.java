@@ -88,22 +88,6 @@ public class GameView implements Screen {
 		interactionPresenter.setGameModel(gameModel);
 		interactionPresenter.setGameWiew(this);
 
-		// Maybe do som game type specific stuff
-		switch (gameModel.getGameType()) {
-			case TUTORIAL_GAME:
-				break;
-
-			case LOCAL_GAME:
-				gameModel.save();
-				Assets.loadHudPlayerIndicators(assetManager);
-				assetManager.finishLoading();
-				if (gameModel.getPlayerTurn() == 1) {
-					playerNumberTex = assetManager.get(Assets.hud_Player1_red, Texture.class);
-				} else if (gameModel.getPlayerTurn() == 2) {
-					playerNumberTex = assetManager.get(Assets.hud_Player2_blue, Texture.class);
-				}
-				break;
-		}
 		// Setup rendering
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		spriteBatch = new SpriteBatch();
@@ -145,6 +129,27 @@ public class GameView implements Screen {
 		GameWorld gameWorld = new GameWorld(engine, stage, assetManager);
 		gameWorld.create();
 		interactionPresenter.setGameEngine(engine);
+
+		// GameType specifics
+		Assets.loadHudPlayerIndicators(assetManager);
+		assetManager.finishLoading();
+
+		switch (gameModel.getGameType()) {
+			case TUTORIAL_GAME:
+				gameWorld.createTutorialUnits();
+				playerNumberTex = assetManager.get(Assets.hud_Player1_red, Texture.class);
+				break;
+
+			case LOCAL_GAME:
+				gameModel.save();
+
+				if (gameModel.getPlayerTurn() == 1) {
+					playerNumberTex = assetManager.get(Assets.hud_Player1_red, Texture.class);
+				} else if (gameModel.getPlayerTurn() == 2) {
+					playerNumberTex = assetManager.get(Assets.hud_Player2_blue, Texture.class);
+				}
+				break;
+		}
 
 		/* In-game UI */
 		actionsBgTex = assetManager.get(Assets.hud_bg_actions, Texture.class);

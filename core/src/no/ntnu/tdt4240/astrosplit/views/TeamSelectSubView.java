@@ -204,11 +204,7 @@ class TeamSelectSubView extends SubView {
 
 						} else {
 							// Other game types
-							if (gameType == GameModel.GameType.TUTORIAL_GAME) {
-								TutorialGameModel gameModel = new TutorialGameModel();
-								gameModel.setPlayerTeam(selectedTeam);
-								ViewStateManager.getInstance().setScreen(new GameView(gameModel));
-							}
+
 						}
 					}
 				}

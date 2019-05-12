@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Rectangle;
 
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
 import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
+import no.ntnu.tdt4240.astrosplit.models.TeamType;
+import no.ntnu.tdt4240.astrosplit.models.TutorialGameModel;
 import no.ntnu.tdt4240.astrosplit.presenters.MenuPresenter;
 import no.ntnu.tdt4240.astrosplit.views.widgets.ButtonList;
 import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
@@ -76,8 +78,10 @@ class GameModeSubView extends SubView {
 					public void click() {
 						// #4 - Tutorial
 						System.out.println("Chose: Tutorial");
-						menuView.setSubView(new TeamSelectSubView(
-							bounds, menuView, menuPresenter, GameModel.GameType.TUTORIAL_GAME));
+						TutorialGameModel gameModel = new TutorialGameModel();
+						gameModel.setPlayerTeam(TeamType.TEAM_MARINES);
+						ViewStateManager.getInstance().setScreen(new GameView(gameModel));
+
 					}
 				},
 				// Empty space

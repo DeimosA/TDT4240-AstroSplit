@@ -13,6 +13,7 @@ import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.RenderingSystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
 import no.ntnu.tdt4240.astrosplit.models.ClassType;
+import no.ntnu.tdt4240.astrosplit.models.GameModel;
 import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
 import no.ntnu.tdt4240.astrosplit.models.TeamType;
 import no.ntnu.tdt4240.astrosplit.utils.Assets;
@@ -52,7 +53,6 @@ public class GameWorld {
 	public void create() //TODO: Use save or selected teams to create the units
 	{
 		if (!LocalGameModel.hasOngoingGame()) {
-
 			TeamType[] playerTeams = LocalGameModel.getPlayerTypes();
 			createInitialUnits(playerTeams[0], playerTeams[1]);
 		}
@@ -69,5 +69,10 @@ public class GameWorld {
 		UnitFactory.createEntity(engine, assetManager, p2Team, ClassType.MEDIC, p2DefaultPos[0],2);
 		UnitFactory.createEntity(engine, assetManager, p2Team, ClassType.MELEE, p2DefaultPos[1],2);
 		UnitFactory.createEntity(engine, assetManager, p2Team, ClassType.RANGE, p2DefaultPos[2],2);
+	}
+
+	public void createTutorialUnits()
+	{
+		UnitFactory.createEntity(engine, assetManager,TeamType.TEAM_MARINES, ClassType.MEDIC, new Vector2(-16,-16),1);
 	}
 }
