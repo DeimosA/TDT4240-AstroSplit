@@ -19,6 +19,7 @@ import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
+import no.ntnu.tdt4240.astrosplit.models.ClassType;
 import no.ntnu.tdt4240.astrosplit.utils.Assets;
 
 
@@ -31,16 +32,21 @@ public class SectoidMedicEntity extends UnitEntity {
 
 
 	@Override
-	public Entity create(PooledEngine engine, AssetManager assetManager, Vector2 position, int playerNumber) {
+	public Entity create(
+		PooledEngine engine,
+		AssetManager assetManager,
+		Vector2 position,
+		int playerNumber,
+		ClassType unitClassType
+	) {
 
 		int heal = 25; //Damage of units attack
 		int range = 10; //Range of units attack
 		int health = 50; //Health of unit
 		int movement = 6; //Number of tiles the unit can move
-		String type = "unit"; //Type of unit
 
 		ActionComponent ac 					= engine.createComponent(ActionComponent.class);
-		ActionComponentHeal actionComponentHeal 		= engine.createComponent(ActionComponentHeal.class);
+		ActionComponentHeal actionComponentHeal 	= engine.createComponent(ActionComponentHeal.class);
 		ActionComponentTarget actionComponentTarget = engine.createComponent(ActionComponentTarget.class);
 		ActorComponent am 					= engine.createComponent(ActorComponent.class);
 		HealthComponent hc 					= engine.createComponent(HealthComponent.class);
@@ -59,7 +65,7 @@ public class SectoidMedicEntity extends UnitEntity {
 		pc.position = position;
 		tc.region = new TextureRegion(assetManager.get(Assets.unit_sectoid_medic, Texture.class));
 		tm.scale.set(0.1f,0.1f);
-		tp.type = type;
+		tp.unitClassType = unitClassType;
 		playerComponent.id = playerNumber;
 
 		this.add(actionComponentTarget);

@@ -18,6 +18,7 @@ import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
+import no.ntnu.tdt4240.astrosplit.models.ClassType;
 import no.ntnu.tdt4240.astrosplit.utils.Assets;
 
 
@@ -33,15 +34,20 @@ public class TargetDummyEntity extends UnitEntity {
 
 
 	@Override
-	public Entity create(PooledEngine engine, AssetManager assetManager, Vector2 position, int playerNumber) {
+	public Entity create(
+		PooledEngine engine,
+		AssetManager assetManager,
+		Vector2 position,
+		int playerNumber,
+		ClassType unitClassType
+	) {
 
 
 		ActionComponent			actionComponent			= engine.createComponent(ActionComponent.class);
 		ActionComponentAttack	actionComponentAttack 	= engine.createComponent(ActionComponentAttack.class);
 
 		ActionComponentTarget actionComponentTarget = engine.createComponent(ActionComponentTarget.class);
-		MovementComponent		movementComponent 		= engine.createComponent(MovementComponent.class);
-		TypeComponent			typeComponent			= engine.createComponent(TypeComponent.class);
+//		MovementComponent		movementComponent 		= engine.createComponent(MovementComponent.class);
 
 		ActorComponent		actorComponent 			= engine.createComponent(ActorComponent.class);
 		HealthComponent		healthComponent 		= engine.createComponent(HealthComponent.class);
@@ -49,6 +55,7 @@ public class TargetDummyEntity extends UnitEntity {
 		TextureComponent	textureComponent 		= engine.createComponent(TextureComponent.class);
 		TransformComponent	transformComponent 		= engine.createComponent(TransformComponent.class);
 		PlayerComponent		playerComponent 		= engine.createComponent(PlayerComponent.class);
+		TypeComponent		typeComponent			= engine.createComponent(TypeComponent.class);
 
 		healthComponent.health = 200;
 		healthComponent.maxHealth = 200;
@@ -56,11 +63,12 @@ public class TargetDummyEntity extends UnitEntity {
 		textureComponent.region = new TextureRegion(assetManager.get(Assets.unit_targetPractice, Texture.class));
 		transformComponent.scale.set(0.1f, 0.1f);
 		playerComponent.id = playerNumber; // Always opponent
+		typeComponent.unitClassType = unitClassType;
 
 		this.add(actionComponent);
 		this.add(actionComponentAttack);
 		this.add(actionComponentTarget);
-		this.add(movementComponent);
+//		this.add(movementComponent);
 		this.add(typeComponent);
 
 		this.add(actorComponent);

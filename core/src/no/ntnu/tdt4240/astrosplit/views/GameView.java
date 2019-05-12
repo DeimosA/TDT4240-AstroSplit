@@ -90,6 +90,7 @@ public class GameView implements Screen {
 				break;
 
 			case LOCAL_GAME:
+				gameModel.save();
 				Assets.loadHudPlayerIndicators(assetManager);
 				assetManager.finishLoading();
 				if (gameModel.getPlayerTurn() == 1) {
@@ -139,6 +140,7 @@ public class GameView implements Screen {
 		engine = new PooledEngine();
 		GameWorld gameWorld = new GameWorld(engine, stage, assetManager);
 		gameWorld.create();
+		interactionPresenter.setGameEngine(engine);
 
 		/* In-game UI */
 		actionsBgTex = assetManager.get(Assets.hud_bg_actions, Texture.class);
