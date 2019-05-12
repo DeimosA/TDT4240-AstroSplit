@@ -21,13 +21,16 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import no.ntnu.tdt4240.astrosplit.game.GameWorld;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentHeal;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionInterface;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.Map;
+import no.ntnu.tdt4240.astrosplit.game.components.PlayerComponent;
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
 import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
 import no.ntnu.tdt4240.astrosplit.presenters.InteractionPresenter;
 import no.ntnu.tdt4240.astrosplit.utils.Assets;
+import no.ntnu.tdt4240.astrosplit.utils.AudioManager;
 import no.ntnu.tdt4240.astrosplit.views.widgets.ButtonList;
 import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 
@@ -57,6 +60,7 @@ public class GameView implements Screen {
 	private OrthographicCamera camera;
 	private Viewport viewport;
 	private Vector3 cursorPos = new Vector3();
+	private boolean drawActionBox = false;
 
 	// Game engine and related
 	private PooledEngine engine;
@@ -178,6 +182,9 @@ public class GameView implements Screen {
 			renderWidth - mapBounds.width - mapBounds.x,
 			renderHeight
 		));
+    
+		/* Music */
+		playMusicGame();
 	}
 
 
@@ -201,22 +208,34 @@ public class GameView implements Screen {
 	 */
 	public void unitSelectionChanged(Entity selectedUnit) {
 		selectedEntity = selectedUnit;
-		if (selectedUnit != null) {
+		// Check if unit selected & current players unit
+		if (selectedUnit != null &&
+			interactionPresenter.getPlayerTurn() == selectedUnit.getComponent(PlayerComponent.class).id) {
+			this.drawActionBox = true;
 			int firstEnabledButton = -1;
+			// Check if each button should be enabled
 			for (int i = 0; i < actionButtons.getButtonCount(); i++) {
 				MenuButton button = actionButtons.getButton(i);
-
-				// TODO also check if unit has remaining actions!
-				button.setEnabled(selectedUnit.getComponent(button.actionIntent) != null);
-				if (firstEnabledButton < 0 && button.isEnabled()) {
-					firstEnabledButton = i;
+				if (selectedUnit.getComponent(button.actionIntent) != null &&
+					((ActionInterface)selectedUnit.getComponent(button.actionIntent)).isActionAllowed()
+				) {
+					button.setEnabled(true);
+					if (firstEnabledButton < 0 && button.isEnabled()) {
+						firstEnabledButton = i;
+					}
+				} else {
+					button.setEnabled(false);
 				}
 			}
+			// Set intent as the first enabled button
 			if (firstEnabledButton > -1) {
 				actionButtons.getButton(firstEnabledButton).click();
 			} else {
 				setActionSelectPos(null);
 			}
+		} else {
+			this.drawActionBox = false;
+			setActionSelectPos(null);
 		}
 	}
 
@@ -224,10 +243,9 @@ public class GameView implements Screen {
 		setActionSelectPos(null);
 	}
 
-//		public static void updateRange(int range, Vector2 pos) {
-//		rangeIndicator = range;
-//		selectedPosition = pos;
-//	}
+	public void disableIntent(Class actionIntent) {
+
+	}
 
 	/* --- Private methods --- */
 
@@ -240,6 +258,8 @@ public class GameView implements Screen {
 			@Override
 			public void click() {
 				System.out.println("Clicked End Turn!");
+				selectedEntity = null;
+				setActionSelectPos(null);
 				interactionPresenter.endTurn();
 			}
 		};
@@ -302,6 +322,13 @@ public class GameView implements Screen {
 	}
 
 	/**
+	 * Play in-game music
+	 */
+	public void playMusicGame(){
+		AudioManager.getInstance().PlayMusicGame();
+	}
+
+	/**
 	 * Handle input
 	 */
 	private void handleInput() {
@@ -315,16 +342,6 @@ public class GameView implements Screen {
 				actionButtons.handleInput(cursorPos);
 			}
 			endTurnButton.handleInput(cursorPos.x, cursorPos.y);
-			//Hitboxes for the different intentions
-//			if (cursorPos.x <= 106 && cursorPos.x >= 68) {
-//				if (cursorPos.y <= 64 && cursorPos.y >= 0) {
-//					UI.getInteractionPresenter().updateIntent(ActionComponent.class);
-//				} else if (cursorPos.y <= 128 && cursorPos.y >= 64) {
-//					UI.getInteractionPresenter().updateIntent(ActionComponentAttack.class);
-//				} else if (cursorPos.y <= 192 && cursorPos.y >= 128) {
-//					UI.getInteractionPresenter().updateIntent(MovementComponent.class);
-//				}
-//			}
 		}
 	}
 
@@ -371,7 +388,7 @@ public class GameView implements Screen {
 		);
 
 		// Buttons
-		if (selectedEntity != null) {
+		if (drawActionBox && selectedEntity != null) {
 			actionButtons.render(spriteBatch, delta);
 		}
 		if (actionSelectBounds.y > 0) spriteBatch.draw(
@@ -397,13 +414,6 @@ public class GameView implements Screen {
 
 
 		spriteBatch.end();
-		//Todo: add "selected" indicator
-//		if (rangeIndicator > 0 && selectedPosition != null) {
-//			shape.setColor(0.1f,0.1f,0.1f,1);
-//			shape.begin(ShapeRenderer.ShapeType.Line);
-//			shape.circle(selectedPosition.x + map.getMapWidthInPixels() / 2f, selectedPosition.y + map.getMapHeightInPixels() / 2f, rangeIndicator);
-//			shape.end();
-//		}
 	}
 
 	@Override

@@ -33,8 +33,8 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 	// Saves P1 and P2 units.
 	private Array<UnitModel> units = new Array<UnitModel>();
 
-	private TeamType player1;
-	private TeamType player2;
+	private static TeamType player1;
+	private static TeamType player2;
 
 
 	public LocalGameModel() {
@@ -59,12 +59,15 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 		this.player2 = team;
 	}
 
+	public static TeamType[] getPlayerTypes() {
+		TeamType[] teams = {player1, player2};
+		return teams;
+	}
 	/**
 	 * Clear any existing game state and start a new local game
 	 */
 	public void startNewGame() { // Should use a function that creates the initial units
 		prefStore.clear();
-		prefStore.putBoolean(ongoingGame, true);
 		prefStore.putInteger(playerTurn, 1);
 	}
 
@@ -95,7 +98,6 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 			));
 		}
 		System.out.println("Entities saved: " + units.size);
-		save();
 	}
 
 	// Returns the current saved units model
@@ -121,7 +123,11 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 
 	@Override
 	public void endTurn() {
+		if (!prefStore.contains(ongoingGame)) {
+			prefStore.putBoolean(ongoingGame, true);
+		}
 		prefStore.putInteger(playerTurn, (getPlayerTurn() == 1) ? 2 : 1);
+		prefStore.flush();
 		save();
 	}
 
