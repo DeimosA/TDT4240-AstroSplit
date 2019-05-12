@@ -17,19 +17,29 @@ public class HighlightedTileActor extends Actor {
 
 	public HighlightedTileActor(final UnitActor actor, char type)
 	{
-		Texture texture = new Texture("map/tile_green.png");
 
-		sprite = new Sprite(texture);
-		sprite.setAlpha(0.5f);
 		this.actor = actor;
 		setTouchable(Touchable.enabled);
+
+		//Setting texture and listener for action tiles
+		Texture texture = new Texture("map/tile_green.png");
 
 		if(type == 'M')
 			addListener(moveListener);
 		if(type == 'A')
+		{
 			addListener(attackListener);
+			texture = new Texture("map/tile_red.png");
+		}
 		if(type == 'H')
+		{
 			addListener(healListener);
+			texture = new Texture("map/tile_blue.png");
+
+		}
+
+		sprite = new Sprite(texture);
+		sprite.setAlpha(0.5f);
 
 	}
 

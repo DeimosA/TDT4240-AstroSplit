@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
 
 
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentHeal;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentTarget;
@@ -22,8 +23,10 @@ import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
 import no.ntnu.tdt4240.astrosplit.presenters.InteractionPresenter;
 
 
-//Object has sprite and position,
-//Handles on click events
+/**
+ * Helper class for LibGDX scene system
+ * Handles unit selection events
+ */
 public class UnitActor extends Actor {
 
 
@@ -37,8 +40,10 @@ public class UnitActor extends Actor {
 	private ActionComponentHeal healComponent;
 	private PlayerComponent playerComponent;
 	private ActionComponentTarget targetComponent;
+	private ActionComponent actionComponent;
 
 	private boolean isSelected = false;
+	private boolean shouldUpdateInteraction;
 	private Class actionIntent;
 	private boolean showMovementRange = false;
 	private boolean showAttackRange = false;
@@ -61,6 +66,7 @@ public class UnitActor extends Actor {
 		this.entity = entity;
 		this.sprite = new Sprite(textureComponent.region.getTexture());
 		this.targetComponent = entity.getComponent(ActionComponentTarget.class);
+		this.actionComponent = entity.getComponent(ActionComponent.class);
 
 		//Every UnitActor is constructed with an eventlistener, TouchDown method.
 		setTouchable(Touchable.enabled);
@@ -87,10 +93,15 @@ public class UnitActor extends Actor {
 	 */
 	public void select(boolean select)
 	{
-		isSelected = select;
+		if (InteractionPresenter.getInstance().getPlayerTurn() == playerComponent.id) {
+			isSelected = select;
+		} else {
+			isSelected = false;
+			actionIntent = null;
+		}
 		if (select) {
 			// On select
-			InteractionPresenter.getInstance().updateInteraction(entity, actionIntent, positionComponent.position);
+			updateInteraction();
 		} else {
 			// On unselect
 			destroyMovementTiles();
@@ -102,20 +113,21 @@ public class UnitActor extends Actor {
 	 * @param intent Component class
 	 */
 	public void setActionIntent(Class intent) {
-		this.actionIntent = intent;
 		// Remove all intent visualisations first
-		//destroyTiles();
 		destroyMovementTiles();
 		destroyAttackTiles();
 		destroyHealTiles();
 
-		if (intent == MovementComponent.class) {
-			showMovementRange = true;
-		} else if (intent == ActionComponentAttack.class) {
-			showAttackRange = true;
-			// TODO something attack related
-		} else if (intent == ActionComponentHeal.class){
-			showHealRange = true;
+		if (isSelected) {
+			this.actionIntent = intent;
+
+			if (intent == MovementComponent.class) {
+				showMovementRange = true;
+			} else if (intent == ActionComponentAttack.class) {
+				showAttackRange = true;
+			} else if (intent == ActionComponentHeal.class){
+				showHealRange = true;
+			}
 		}
 	}
 
@@ -163,48 +175,64 @@ public class UnitActor extends Actor {
 	/* --- Protected methods --- */
 	public void move(Vector2 position)
 	{
-		if(collisionCheck(position)) {
-			if(entity.getComponent(MovementComponent.class) != null)
-			{
-				entity.getComponent(MovementComponent.class).position = position;
+		if (isSelected && movementComponent.isActionAllowed()) {
+			if(collisionCheck(position)) {
+				if(entity.getComponent(MovementComponent.class) != null)
+				{
+					entity.getComponent(MovementComponent.class).position = position;
+				}
+			}
+			destroyMovementTiles();
+			movementComponent.remainingPoints -= 1;
+			if ( ! movementComponent.isActionAllowed()) {
+				actionIntent = null;
+				shouldUpdateInteraction = true;
 			}
 		}
-		destroyMovementTiles();
-		// TODO temporary thing
-		InteractionPresenter.getInstance().disableIntent(MovementComponent.class);
 	}
 
 
-	public void attack(Vector2 pos) {
-
-		for(Actor actor : this.getStage().getActors())
-		{
-			if(actor.getClass() == UnitActor.class)
+	public void attack(Vector2 pos)
+	{
+		if (isSelected && actionComponent.remainingPoints > 0) {
+			for(Actor actor : this.getStage().getActors())
 			{
-				if(pos.equals(((UnitActor) actor).getPosition()))
-
-					entity.getComponent(ActionComponentTarget.class).target = (((UnitActor) actor).getEntity());
-					System.out.println(entity.getComponent(ActionComponentTarget.class).target);
-
+				if(actor.getClass() == UnitActor.class)
+				{
+					if(pos.equals(((UnitActor) actor).getPosition())) {
+						entity.getComponent(ActionComponentTarget.class).target = (((UnitActor) actor).getEntity());
+						actionComponent.remainingPoints -= 1;
+						if (actionComponent.remainingPoints <= 0) {
+							attackComponent.actionEnabled = false;
+							actionIntent = null;
+							shouldUpdateInteraction = true;
+						}
+					}
+				}
 			}
+			destroyAttackTiles();
 		}
-		destroyAttackTiles();
-
 	}
 
-	public void heal(Vector2 pos) {
-		for(Actor actor : this.getStage().getActors())
-		{
-			if(actor.getClass() == UnitActor.class)
+	public void heal(Vector2 pos)
+	{
+		if (isSelected && actionComponent.remainingPoints > 0) {
+			for(Actor actor : this.getStage().getActors())
 			{
-				if(pos.equals(((UnitActor) actor).getPosition()))
-
-					entity.getComponent(ActionComponentTarget.class).target = (((UnitActor) actor).getEntity());
-
+				if(actor.getClass() == UnitActor.class)
+				{
+					if(pos.equals(((UnitActor) actor).getPosition()))
+						entity.getComponent(ActionComponentTarget.class).target = (((UnitActor) actor).getEntity());
+						actionComponent.remainingPoints -= 1;
+						if (actionComponent.remainingPoints <= 0) {
+							healComponent.actionEnabled = false;
+							actionIntent = null;
+							shouldUpdateInteraction = true;
+						}
+				}
 			}
+			destroyHealTiles();
 		}
-		destroyHealTiles();
-
 	}
 
 	public Entity getEntity()
@@ -218,6 +246,12 @@ public class UnitActor extends Actor {
 
 	/* --- Private methods --- */
 
+	/**
+	 * Update UI with interaction
+	 */
+	private void updateInteraction() {
+		InteractionPresenter.getInstance().updateInteraction(entity, actionIntent, positionComponent.position);
+	}
 
 	private void drawMovementTiles()
 	{
@@ -422,6 +456,10 @@ public class UnitActor extends Actor {
 			{
 				drawHealTiles();
 			}
+		}
+		if (shouldUpdateInteraction) {
+			shouldUpdateInteraction = false;
+			updateInteraction();
 		}
 	}
 
