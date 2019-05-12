@@ -19,6 +19,7 @@ import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TransformComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
 import no.ntnu.tdt4240.astrosplit.models.ClassType;
+import no.ntnu.tdt4240.astrosplit.models.TeamType;
 import no.ntnu.tdt4240.astrosplit.utils.Assets;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
@@ -66,6 +67,7 @@ public class MarineRangeEntity extends UnitEntity {
 		tc.region = new TextureRegion(assetManager.get(Assets.unit_marine_ranged, Texture.class));
 		tm.scale.set(0.1f,0.1f);
 		tp.unitClassType = unitClassType;
+		tp.teamType = TeamType.TEAM_MARINES;
 		playerComponent.id = playerNumber;
 
 		this.add(actionComponentTarget);
