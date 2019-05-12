@@ -181,8 +181,8 @@ public class GameView implements Screen {
 			renderHeight
 		), assetManager);
     
-		/* Music */
-		playMusicGame();
+		/* In-game music */
+		AudioManager.getInstance().playMusicGame();
 	}
 
 
@@ -329,13 +329,6 @@ public class GameView implements Screen {
 		} else {
 			actionSelectBounds.y = -100;
 		}
-	}
-
-	/**
-	 * Play in-game music
-	 */
-	public void playMusicGame(){
-		AudioManager.getInstance().PlayMusicGame();
 	}
 
 	/**
