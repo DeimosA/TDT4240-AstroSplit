@@ -7,6 +7,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
+import no.ntnu.tdt4240.astrosplit.enums.GameType;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentHeal;
@@ -16,7 +17,7 @@ import no.ntnu.tdt4240.astrosplit.game.components.PlayerComponent;
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
 import no.ntnu.tdt4240.astrosplit.models.InteractionModel;
 import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
-import no.ntnu.tdt4240.astrosplit.models.TeamType;
+import no.ntnu.tdt4240.astrosplit.enums.TeamType;
 import no.ntnu.tdt4240.astrosplit.models.UnitModel;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
@@ -118,8 +119,9 @@ public class InteractionPresenter {
 		for (Entity entity : engine.getEntitiesFor(Family.all(MovementComponent.class).get())) {
 			entity.getComponent(MovementComponent.class).resetAction();
 		}
+
 		// Save game state
-		if (gameModel.getGameType() == GameModel.GameType.LOCAL_GAME) {
+		if (gameModel.getGameType() == GameType.LOCAL_GAME) {
 			saveUnits(engine);
 			// Switch player
 			gameModel.endTurn();
@@ -162,7 +164,6 @@ public class InteractionPresenter {
 	public int checkWinCondition() {
 		boolean p1HasUnits = false;
 		boolean p2HasUnits = false;
-		saveUnits(engine);
 		for (UnitModel unit : gameModel.getUnits()) {
 
 			if (unit.player == 1) {
@@ -176,5 +177,16 @@ public class InteractionPresenter {
 		} else {
 			return p1HasUnits ? 1 : 2;
 		}
+	}
+
+	public void dispose() {
+
+		INSTANCE = null;
+		interactionModel = null;
+		gameView = null;
+		gameModel = null;
+		engine = null;
+		playerEntitiesFamily = null;
+
 	}
 }

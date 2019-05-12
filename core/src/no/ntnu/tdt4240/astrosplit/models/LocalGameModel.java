@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 
+import no.ntnu.tdt4240.astrosplit.enums.GameType;
+import no.ntnu.tdt4240.astrosplit.enums.TeamType;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
@@ -75,6 +77,7 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 		System.out.println("Starts a new game!");
 		prefStore.clear();
 		prefStore.putInteger(playerTurn, 1);
+		prefStore.flush();
 	}
 
 	/**
@@ -134,7 +137,6 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 			prefStore.putBoolean(ongoingGame, true);
 		}
 		prefStore.putInteger(playerTurn, (getPlayerTurn() == 1) ? 2 : 1);
-		prefStore.flush();
 		save();
 	}
 

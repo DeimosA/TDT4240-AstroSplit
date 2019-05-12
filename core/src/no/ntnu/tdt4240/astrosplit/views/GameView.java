@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
-
+import no.ntnu.tdt4240.astrosplit.enums.GameType;
 import no.ntnu.tdt4240.astrosplit.game.GameWorld;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentHeal;
@@ -205,8 +205,8 @@ public class GameView implements Screen {
 			renderHeight
 		), assetManager);
     
-		/* Music */
-		playMusicGame();
+		/* In-game music */
+		AudioManager.getInstance().playMusicGame();
 	}
 
 
@@ -220,18 +220,20 @@ public class GameView implements Screen {
 		selectedEntity = null;
 		setActionSelectPos(null);
 
-		int playerWonMaybe = interactionPresenter.checkWinCondition();
-		if (playerWonMaybe > 0) {
-			// Someone won
-			gameModel.endGame();
-			ViewStateManager.getInstance().setScreen(new GameOverView(playerWonMaybe));
-			return;
-		}
+		if (gameModel.getGameType() == GameType.LOCAL_GAME) { // Because tutorial bugged
+			int playerWonMaybe = interactionPresenter.checkWinCondition();
+			if (playerWonMaybe > 0) {
+				// Someone won
+				gameModel.endGame();
+				ViewStateManager.getInstance().setScreen(new GameOverView(playerWonMaybe));
+				return;
+			}
 
-		if (nextPlayerNumber == 1) {
-			playerNumberTex = assetManager.get(Assets.hud_Player1_red, Texture.class);
-		} else if (nextPlayerNumber == 2) {
-			playerNumberTex = assetManager.get(Assets.hud_Player2_blue, Texture.class);
+			if (nextPlayerNumber == 1) {
+				playerNumberTex = assetManager.get(Assets.hud_Player1_red, Texture.class);
+			} else if (nextPlayerNumber == 2) {
+				playerNumberTex = assetManager.get(Assets.hud_Player2_blue, Texture.class);
+			}
 		}
 	}
 
@@ -385,13 +387,6 @@ public class GameView implements Screen {
 	}
 
 	/**
-	 * Play in-game music
-	 */
-	public void playMusicGame(){
-		AudioManager.getInstance().PlayMusicGame();
-	}
-
-	/**
 	 * Handle input
 	 */
 	private void handleInput() {
@@ -404,9 +399,9 @@ public class GameView implements Screen {
 			if (actionButtons.getBounds().contains(cursorPos.x, cursorPos.y) && selectedEntity != null) {
 				actionButtons.handleInput(cursorPos);
 			}
-			if(gameModel.getGameType() == GameModel.GameType.LOCAL_GAME)
+			if(gameModel.getGameType() == GameType.LOCAL_GAME)
 				endTurnButton.handleInput(cursorPos.x, cursorPos.y);
-			if(gameModel.getGameType() == GameModel.GameType.TUTORIAL_GAME)
+			if(gameModel.getGameType() == GameType.TUTORIAL_GAME)
 				nextButton.handleInput(cursorPos.x,cursorPos.y);
 		}
 	}
@@ -474,7 +469,7 @@ public class GameView implements Screen {
 		if (selectedEntity != null) unitInfoSubView.render(spriteBatch, delta);
 
 		//Local EndTurn Button
-		if(gameModel.getGameType() == GameModel.GameType.LOCAL_GAME)
+		if(gameModel.getGameType() == GameType.LOCAL_GAME)
 		{
 			spriteBatch.draw(
 				endTurnButton.getTexture(),
@@ -484,7 +479,7 @@ public class GameView implements Screen {
 		}
 
 		//Tutorial Next Button
-		if(gameModel.getGameType() == GameModel.GameType.TUTORIAL_GAME)
+		if(gameModel.getGameType() == GameType.TUTORIAL_GAME)
 		{
 			spriteBatch.draw(
 				nextButton.getTexture(),
@@ -605,5 +600,6 @@ public class GameView implements Screen {
 		actionButtons.dispose();
 		assetManager.dispose();
 		unitInfoSubView.dispose();
+		interactionPresenter.dispose();
 	}
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
+import no.ntnu.tdt4240.astrosplit.utils.AudioManager;
 import no.ntnu.tdt4240.astrosplit.views.widgets.MenuButton;
 
 
@@ -55,9 +56,10 @@ class GameOverView implements View {
 			playerWins = new Texture("GameOver/textPlayer2Wins.png");
 		}
 
+		/* Game over music */
+		AudioManager.getInstance().playMusicGameOver();
+
 	}
-
-
 
 	private MenuButton[] buttons = new MenuButton[] {
 		// Main menu
@@ -65,6 +67,7 @@ class GameOverView implements View {
 			@Override
 			public void click() {
 				ViewStateManager.getInstance().setScreen(new MenuView());
+				AudioManager.getInstance().playMusicMenu();
 			}
 		},
 		// Quit

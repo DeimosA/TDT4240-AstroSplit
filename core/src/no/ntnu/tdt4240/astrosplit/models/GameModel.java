@@ -3,18 +3,13 @@ package no.ntnu.tdt4240.astrosplit.models;
 
 import com.badlogic.gdx.utils.Array;
 
+import no.ntnu.tdt4240.astrosplit.enums.TeamType;
+import no.ntnu.tdt4240.astrosplit.enums.GameType;
+
 public abstract class GameModel implements Model {
 
 	public abstract TeamType[] getPlayerTypes();
 
-	/**
-	 * Valid types of game
-	 */
-	public enum GameType {
-		TUTORIAL_GAME,
-		LOCAL_GAME,
-//		ONLINE_GAME,
-	}
 
 	TeamType playerTeam;
 	GameType gameType;

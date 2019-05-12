@@ -22,6 +22,7 @@ public final class AudioManager implements Model {
 	/* Music */
 	private Music musicMenu;
 	private Music musicGame;
+	private Music musicGameOver;
 
 	/* Sound */
 	private Sound soundButton;
@@ -69,12 +70,19 @@ public final class AudioManager implements Model {
 
 	@Override
 	public void load() {
-		/* TODO Load all assets, add to array */
+		/* Main menu */
 		musicMenu = Gdx.audio.newMusic(Gdx.files.internal("Audio/musicMenu.mp3"));
 		musicArray.add(musicMenu);
+
+		/* In-game */
 		musicGame = Gdx.audio.newMusic(Gdx.files.internal("Audio/musicGame.mp3"));
 		musicArray.add(musicGame);
 
+		/* Victory */
+		musicGameOver = Gdx.audio.newMusic(Gdx.files.internal("Audio/musicGameOver.mp3"));
+		musicArray.add(musicGameOver);
+
+		/* Button click sound */
 		soundButton = Gdx.audio.newSound(Gdx.files.internal("Audio/soundButton.mp3"));
 		soundArray.add(soundButton);
 	}
@@ -86,9 +94,12 @@ public final class AudioManager implements Model {
 	/**
 	 * Play menu music
 	 */
-	public void PlayMusicMenu() {
+	public void playMusicMenu() {
 		/* Main menu  */
-		musicMenu.setLooping(false); //For now
+		if(musicGameOver.isPlaying()){
+			musicGameOver.stop();
+		}
+		musicMenu.setLooping(false);
 		musicMenu.setVolume(0.5f); //50%
 		musicMenu.play();
 	}
@@ -96,7 +107,7 @@ public final class AudioManager implements Model {
 	/**
 	 * Play in-game music
 	 */
-	public void PlayMusicGame() {
+	public void playMusicGame() {
 		/* In-game  */
 		if(musicMenu.isPlaying()){
 			musicMenu.stop();
@@ -107,15 +118,31 @@ public final class AudioManager implements Model {
 	}
 
 	/**
+	 * Play game over music
+	 */
+	public void playMusicGameOver() {
+		/* In-game  */
+		if(musicGame.isPlaying()){
+			musicGame.stop();
+		}
+		musicGameOver.setLooping(true);
+		musicGameOver.setVolume(0.5f); //50%
+		musicGameOver.play();
+	}
+
+	/**
 	 * Stop menu or in-game music
 	 */
-	public void stopMusicMenu() {
+	public void stopMusic() {
 		if (!isMusicOn()) {
 			if(musicMenu.isPlaying()) {
 				musicMenu.stop();
 			}
 			else if(musicGame.isPlaying()){
 				musicGame.stop();
+			}
+			else if(musicGameOver.isPlaying()){
+				musicGameOver.stop();
 			}
 		}
 	}
@@ -137,16 +164,14 @@ public final class AudioManager implements Model {
 		if (musicArray != null) {
 			for (Music music : musicArray) {
 				music.dispose();
-				System.out.println("Music disposed");
 			}
 		}
 
 		if (soundArray != null) {
 			for (Sound sound : soundArray) {
-				System.out.println("Sound disposed");
 				sound.dispose();
 			}
 		}
-//		System.out.println("Audio disposed");
+		System.out.println("Audio disposed");
 	}
 }

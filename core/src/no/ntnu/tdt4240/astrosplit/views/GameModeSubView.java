@@ -3,9 +3,9 @@ package no.ntnu.tdt4240.astrosplit.views;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
+import no.ntnu.tdt4240.astrosplit.enums.GameType;
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
 import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
-import no.ntnu.tdt4240.astrosplit.models.TeamType;
 import no.ntnu.tdt4240.astrosplit.models.TutorialGameModel;
 import no.ntnu.tdt4240.astrosplit.presenters.MenuPresenter;
 import no.ntnu.tdt4240.astrosplit.views.widgets.ButtonList;
@@ -53,15 +53,6 @@ class GameModeSubView extends SubView {
 			new MenuButton[] {
 				// Continue saved game
 				continueButton,
-				// Online game
-//					new MenuButton(new Texture("Astro/GameModeSelection/buttonOnline.png")) {
-//						@Override
-//						public void click() {
-//							// #2 - Online
-//							System.out.println("Chose: Online");
-//							menuView.setSubView(new TeamSelectSubView(bounds, menuView));
-//						}
-//					},
 				// Local vs game
 				new MenuButton(new Texture("Astro/GameModeSelection/buttonLocal.png")) {
 					@Override
@@ -69,7 +60,7 @@ class GameModeSubView extends SubView {
 						// #3 - Local
 						System.out.println("Chose: Local");
 						menuView.setSubView(new TeamSelectSubView(
-							bounds, menuView, menuPresenter, GameModel.GameType.LOCAL_GAME));
+							bounds, menuView, menuPresenter, GameType.LOCAL_GAME));
 					}
 				},
 				// Tutorial game
@@ -78,14 +69,13 @@ class GameModeSubView extends SubView {
 					public void click() {
 						// #4 - Tutorial
 						System.out.println("Chose: Tutorial");
+
 						TutorialGameModel gameModel = new TutorialGameModel();
-						gameModel.setPlayerTeam(TeamType.TEAM_MARINES);
+			//			gameModel.setPlayerTeam(TeamType.TEAM_MARINES);
 						ViewStateManager.getInstance().setScreen(new GameView(gameModel));
 
 					}
 				},
-				// Empty space
-//				new MenuButton(new Texture("Astro/GameModeSelection/buttonEmpty.png")),
 				// Go back
 				new MenuButton(new Texture("Astro/GameModeSelection/buttonBack.png")) {
 					@Override

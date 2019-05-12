@@ -3,6 +3,9 @@ package no.ntnu.tdt4240.astrosplit.models;
 
 import com.badlogic.gdx.utils.Array;
 
+import no.ntnu.tdt4240.astrosplit.enums.GameType;
+import no.ntnu.tdt4240.astrosplit.enums.TeamType;
+
 /**
  * Game model for the tutorial
  */
@@ -38,6 +41,6 @@ public class TutorialGameModel extends GameModel {
 	//Todo: Fix for tutorial
 	@Override
 	public Array<UnitModel> getUnits() {
-		return null;
+		return new Array<UnitModel>();
 	}
 }
