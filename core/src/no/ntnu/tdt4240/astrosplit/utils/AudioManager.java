@@ -164,16 +164,14 @@ public final class AudioManager implements Model {
 		if (musicArray != null) {
 			for (Music music : musicArray) {
 				music.dispose();
-				System.out.println("Music disposed");
 			}
 		}
 
 		if (soundArray != null) {
 			for (Sound sound : soundArray) {
-				System.out.println("Sound disposed");
 				sound.dispose();
 			}
 		}
-//		System.out.println("Audio disposed");
+		System.out.println("Audio disposed");
 	}
 }
