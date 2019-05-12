@@ -175,4 +175,15 @@ public class InteractionPresenter {
 			return p1HasUnits ? 1 : 2;
 		}
 	}
+
+	public void dispose() {
+
+		INSTANCE = null;
+		interactionModel = null;
+		gameView = null;
+		gameModel = null;
+		engine = null;
+		playerEntitiesFamily = null;
+
+	}
 }
