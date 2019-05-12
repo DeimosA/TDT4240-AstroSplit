@@ -172,7 +172,7 @@ public class InteractionPresenter {
 		if (p1HasUnits && p2HasUnits) {
 			return -1;
 		} else {
-			return p1HasUnits ? 2 : 1;
+			return p1HasUnits ? 1 : 2;
 		}
 	}
 }
