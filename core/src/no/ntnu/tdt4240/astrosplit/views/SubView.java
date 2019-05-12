@@ -17,8 +17,8 @@ abstract class SubView {
 		this.bounds = bounds;
 		this.menuView = menuView;
 	}
-	SubView(){
-
+	SubView(Rectangle bounds){
+		this(bounds, null);
 	}
 
 	/**

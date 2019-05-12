@@ -176,7 +176,7 @@ public class GameView implements Screen {
 			mapBounds.x + mapBounds.width,
 			0,
 			renderWidth - mapBounds.width - mapBounds.x,
-			mapBounds.height
+			renderHeight
 		));
 	}
 
@@ -384,7 +384,7 @@ public class GameView implements Screen {
 			endTurnButton.getBounds().x, endTurnButton.getBounds().y,
 			endTurnButton.getBounds().width, endTurnButton.getBounds().height
 		);
-
+		// Player number
 		if (playerNumberTex != null) {
 			spriteBatch.draw(
 				playerNumberTex,
@@ -392,8 +392,7 @@ public class GameView implements Screen {
 				playerNumberTex.getWidth(), playerNumberTex.getHeight()
 			);
 		}
-
-		// Selected
+		// Selected unit info
 		unitInfoSubView.render(spriteBatch, delta);
 
 
