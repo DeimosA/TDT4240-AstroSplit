@@ -181,8 +181,8 @@ public class GameView implements Screen {
 			renderHeight
 		), assetManager);
     
-		/* Music */
-		playMusicGame();
+		/* In-game music */
+		AudioManager.getInstance().playMusicGame();
 	}
 
 
@@ -332,13 +332,6 @@ public class GameView implements Screen {
 	}
 
 	/**
-	 * Play in-game music
-	 */
-	public void playMusicGame(){
-		AudioManager.getInstance().PlayMusicGame();
-	}
-
-	/**
 	 * Handle input
 	 */
 	private void handleInput() {
@@ -469,5 +462,6 @@ public class GameView implements Screen {
 		actionButtons.dispose();
 		assetManager.dispose();
 		unitInfoSubView.dispose();
+		interactionPresenter.dispose();
 	}
 }

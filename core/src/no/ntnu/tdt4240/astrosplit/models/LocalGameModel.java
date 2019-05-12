@@ -77,6 +77,7 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 		System.out.println("Starts a new game!");
 		prefStore.clear();
 		prefStore.putInteger(playerTurn, 1);
+		prefStore.flush();
 	}
 
 	/**
@@ -136,7 +137,6 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 			prefStore.putBoolean(ongoingGame, true);
 		}
 		prefStore.putInteger(playerTurn, (getPlayerTurn() == 1) ? 2 : 1);
-		prefStore.flush();
 		save();
 	}
 
