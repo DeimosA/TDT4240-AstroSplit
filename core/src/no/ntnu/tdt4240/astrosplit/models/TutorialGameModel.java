@@ -17,6 +17,8 @@ public class TutorialGameModel extends GameModel {
 		return 1;
 	}
 
+
+
 	@Override
 	public void endTurn() {
 

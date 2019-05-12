@@ -47,6 +47,7 @@ public class GameView implements Screen {
 	private Texture actionSelectTex;
 	private ButtonList actionButtons;
 	private MenuButton endTurnButton;
+	private MenuButton nextButton;
 	private AssetManager assetManager;
 	private UnitInfoSubView unitInfoSubView;
 
@@ -139,6 +140,11 @@ public class GameView implements Screen {
 			case TUTORIAL_GAME:
 				gameWorld.createTutorialUnits();
 				playerNumberTex = assetManager.get(Assets.hud_Player1_red, Texture.class);
+				nextButton = createNextButton();
+				nextButton.setCenterPosition(
+					mapBounds.x + mapBounds.width + (renderWidth - mapBounds.width - mapBounds.x)/2f,150
+				);
+
 				break;
 
 			case LOCAL_GAME:
@@ -270,6 +276,34 @@ public class GameView implements Screen {
 		};
 	}
 
+	private MenuButton createNextButton(){
+		return new MenuButton(assetManager.get(Assets.hud_button_endTurn, Texture.class))
+		{
+
+			private int level = 0;
+
+			public void showTutorialUI()
+			{
+				switch (this.level)
+				{
+					case 0:
+						//show text
+				}
+			}
+
+			@Override
+			public void click()
+			{
+				System.out.println("NEXT");
+				selectedEntity = null;
+				setActionSelectPos(null);
+				interactionPresenter.endTurn();
+				this.showTutorialUI();
+				this.level +=1;
+			}
+		};
+	}
+
 	/**
 	 * Create buttons for available actions
 	 * @param scale Scale of button icons
@@ -347,6 +381,7 @@ public class GameView implements Screen {
 				actionButtons.handleInput(cursorPos);
 			}
 			endTurnButton.handleInput(cursorPos.x, cursorPos.y);
+			nextButton.handleInput(cursorPos.x,cursorPos.y);
 		}
 	}
 
@@ -417,7 +452,15 @@ public class GameView implements Screen {
 		// Selected unit info
 		unitInfoSubView.render(spriteBatch, delta);
 
-
+		//Tutorial Next Button
+		if(gameModel.getGameType() == GameModel.GameType.TUTORIAL_GAME)
+		{
+			spriteBatch.draw(
+				nextButton.getTexture(),
+				nextButton.getBounds().x, nextButton.getBounds().y,
+				nextButton.getBounds().width, nextButton.getBounds().height
+			);
+		}
 		spriteBatch.end();
 	}
 

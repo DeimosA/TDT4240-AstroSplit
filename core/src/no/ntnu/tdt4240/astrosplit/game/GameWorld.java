@@ -1,12 +1,16 @@
 package no.ntnu.tdt4240.astrosplit.game;
 
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
+import no.ntnu.tdt4240.astrosplit.game.entities.TargetDummyEntity;
 import no.ntnu.tdt4240.astrosplit.game.factories.UnitFactory;
 import no.ntnu.tdt4240.astrosplit.game.systems.AbilitySystem;
 import no.ntnu.tdt4240.astrosplit.game.systems.MovementSystem;
@@ -57,7 +61,6 @@ public class GameWorld {
 			createInitialUnits(playerTeams[0], playerTeams[1]);
 		}
 
-		//new TargetDummyEntity().create(engine, assetManager, new Vector2(-48, -16), 2);
 	}
 
 	public void createInitialUnits(TeamType p1Team, TeamType p2Team) {
@@ -73,6 +76,10 @@ public class GameWorld {
 
 	public void createTutorialUnits()
 	{
-		UnitFactory.createEntity(engine, assetManager,TeamType.TEAM_MARINES, ClassType.MEDIC, new Vector2(-16,-16),1);
+		Entity tutorialUnit = UnitFactory.createEntity(engine, assetManager,TeamType.TEAM_MARINES, ClassType.MELEE, new Vector2(-16,-16),1);
+		tutorialUnit.getComponent(ActionComponent.class).actionPoints = 10000;
+		tutorialUnit.getComponent(MovementComponent.class).movementPoints = 10000;
+		new TargetDummyEntity().create(engine, assetManager, new Vector2(16,-16), 2,ClassType.DUMMY);
+
 	}
 }

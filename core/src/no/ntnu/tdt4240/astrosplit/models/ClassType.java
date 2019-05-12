@@ -7,6 +7,7 @@ public enum ClassType {
 
 	MELEE,
 	RANGE,
-	MEDIC
+	MEDIC,
+	DUMMY
 
 }
