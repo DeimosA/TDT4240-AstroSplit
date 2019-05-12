@@ -60,62 +60,7 @@ public class UnitSystem extends IteratingSystem {
 
 		if(health.health <= 0)
 			killUnit(entity);
-		/*
-		if(entity.getComponent(ActionComponentAttack.class) != null)
-		{
-			for(Entity attackedEntity : action.attackList)
-			{
-
-				System.out.println("Before attack health: " + hm.get(attackedEntity).health);
-				attack(entity, attackedEntity);
-				System.out.println("After attack health: " + hm.get(attackedEntity).health);
-			}
-			action.attackList.clear();
-		}
-		*/
-
 	}
-
-	//Attack another entity of type UNIT
-	/*public void attack(Entity offender, Entity victim)
-	{
-		//Is unit entity
-		if(!family.matches(offender) || !family.matches(victim)) return;
-
-
-		Attack.attack(offender,victim);
-
-		HealthComponent health = hm.get(victim);
-		if (health.health <= 0) killUnit(victim);
-
-
-	}*/
-
-
-	/*Checks if Move is possible, performs Move if yes
-	TODO
-	Add collisiontest
-	Add out of bounds(?). Out of bounds may simply not be chosen
-
-
-
-
-	public void move(Entity entity, Vector2 target_position)
-	{
-		if(!family.matches(entity)) return;
-
-		PositionComponent position = entity.getComponent(PositionComponent.class);
-		MovementComponent movement = entity.getComponent(MovementComponent.class);
-
-		double distance_travel =
-			Math.sqrt(Math.pow(target_position.x,2) + Math.pow(target_position.y,2))
-			-
-			Math.sqrt(Math.pow(position.position.x,2) + Math.pow(position.position.y,2));
-
-		if(distance_travel <= movement.distance) position.position.set(target_position);
-
-	}
-	*/
 
 	public void killUnit(Entity entity)
 	{
