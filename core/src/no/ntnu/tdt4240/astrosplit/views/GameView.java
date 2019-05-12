@@ -192,7 +192,7 @@ public class GameView implements Screen {
 			0,
 			renderWidth - mapBounds.width - mapBounds.x,
 			renderHeight
-		));
+		), assetManager);
     
 		/* Music */
 		playMusicGame();
@@ -206,6 +206,8 @@ public class GameView implements Screen {
 	 * @param nextPlayerNumber
 	 */
 	public void turnEnded(int nextPlayerNumber) {
+		selectedEntity = null;
+		setActionSelectPos(null);
 		if (nextPlayerNumber == 1) {
 			playerNumberTex = assetManager.get(Assets.hud_Player1_red, Texture.class);
 		} else if (nextPlayerNumber == 2) {
@@ -219,6 +221,7 @@ public class GameView implements Screen {
 	 */
 	public void unitSelectionChanged(Entity selectedUnit) {
 		selectedEntity = selectedUnit;
+		unitInfoSubView.setSelectedUnit(selectedUnit);
 		// Check if unit selected & current players unit
 		if (selectedUnit != null &&
 			interactionPresenter.getPlayerTurn() == selectedUnit.getComponent(PlayerComponent.class).id) {
@@ -377,11 +380,12 @@ public class GameView implements Screen {
 			cursorPos.y = Gdx.input.getY();
 			camera.unproject(cursorPos);
 			// Check if any buttons are pushed
-			if (actionButtons.getBounds().contains(cursorPos.x, cursorPos.y)) {
+			if (actionButtons.getBounds().contains(cursorPos.x, cursorPos.y) && selectedEntity != null) {
 				actionButtons.handleInput(cursorPos);
 			}
 			endTurnButton.handleInput(cursorPos.x, cursorPos.y);
-			nextButton.handleInput(cursorPos.x,cursorPos.y);
+			if(gameModel.getGameType() == GameModel.GameType.TUTORIAL_GAME)
+				nextButton.handleInput(cursorPos.x,cursorPos.y);
 		}
 	}
 
@@ -450,7 +454,7 @@ public class GameView implements Screen {
 			);
 		}
 		// Selected unit info
-		unitInfoSubView.render(spriteBatch, delta);
+		if (selectedEntity != null) unitInfoSubView.render(spriteBatch, delta);
 
 		//Tutorial Next Button
 		if(gameModel.getGameType() == GameModel.GameType.TUTORIAL_GAME)

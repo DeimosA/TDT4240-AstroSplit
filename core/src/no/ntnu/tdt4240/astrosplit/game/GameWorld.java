@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
@@ -20,6 +21,8 @@ import no.ntnu.tdt4240.astrosplit.models.ClassType;
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
 import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
 import no.ntnu.tdt4240.astrosplit.models.TeamType;
+import no.ntnu.tdt4240.astrosplit.models.UnitModel;
+import no.ntnu.tdt4240.astrosplit.presenters.InteractionPresenter;
 import no.ntnu.tdt4240.astrosplit.utils.Assets;
 
 
@@ -49,16 +52,18 @@ public class GameWorld {
 		Assets.loadSectoidUnitAssets(assetManager);
 		Assets.loadTutorialAssets(assetManager);
 		assetManager.finishLoading();
-
 	}
-
 
 	//this method should create all units to be shown
 	public void create() //TODO: Use save or selected teams to create the units
 	{
+
 		if (!LocalGameModel.hasOngoingGame()) {
-			TeamType[] playerTeams = LocalGameModel.getPlayerTypes();
+
+			TeamType[] playerTeams = InteractionPresenter.getPlayerTypes();
 			createInitialUnits(playerTeams[0], playerTeams[1]);
+		} else {
+			createFromSave(InteractionPresenter.getUnits());
 		}
 
 	}
@@ -74,12 +79,19 @@ public class GameWorld {
 		UnitFactory.createEntity(engine, assetManager, p2Team, ClassType.RANGE, p2DefaultPos[2],2);
 	}
 
-	public void createTutorialUnits()
-	{
-		Entity tutorialUnit = UnitFactory.createEntity(engine, assetManager,TeamType.TEAM_MARINES, ClassType.MELEE, new Vector2(-16,-16),1);
+
+	public void createTutorialUnits() {
+		Entity tutorialUnit = UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_MARINES, ClassType.MELEE, new Vector2(-16, -16), 1);
 		tutorialUnit.getComponent(ActionComponent.class).actionPoints = 10000;
 		tutorialUnit.getComponent(MovementComponent.class).movementPoints = 10000;
-		new TargetDummyEntity().create(engine, assetManager, new Vector2(16,-16), 2,ClassType.DUMMY);
+		new TargetDummyEntity().create(engine, assetManager, new Vector2(16, -16), 2, ClassType.DUMMY);
+	}
+
+	public void createFromSave(Array<UnitModel> units) {
+		System.out.println("Created units from save!");
+		for (UnitModel unit : units) {
+			UnitFactory.createEntity(engine, assetManager, unit.teamType, unit.classType, unit.pos,unit.player);
+		}
 
 	}
 }
