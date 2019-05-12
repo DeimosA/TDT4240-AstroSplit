@@ -11,6 +11,7 @@ import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentHeal;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentTarget;
 import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.PlayerComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
 
@@ -39,14 +40,16 @@ public class AbilitySystem extends IteratingSystem {
 
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
-		if(entity.getComponent(ActionComponentTarget.class).target != null){
+		Entity target = entity.getComponent(ActionComponentTarget.class).target;
+
+		if(target != null){
 			// If Attacker
-			if(entity.getComponent(ActionComponentAttack.class) != null){
+			if(entity.getComponent(ActionComponentAttack.class) != null && target.getComponent(PlayerComponent.class).id != entity.getComponent(PlayerComponent.class).id){
 				attack(entity, entity.getComponent(ActionComponentTarget.class).target);
 				entity.getComponent(ActionComponentTarget.class).target = null;
 			}
 			// If healer
-			if(entity.getComponent(ActionComponentHeal.class) != null){
+			if(entity.getComponent(ActionComponentHeal.class) != null && target.getComponent(PlayerComponent.class).id == entity.getComponent(PlayerComponent.class).id){
 				heal(entity, entity.getComponent(ActionComponentTarget.class).target);
 				entity.getComponent(ActionComponentTarget.class).target = null;
 			}

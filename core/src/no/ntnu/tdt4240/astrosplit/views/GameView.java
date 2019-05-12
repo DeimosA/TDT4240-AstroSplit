@@ -8,6 +8,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -71,6 +72,7 @@ public class GameView implements Screen {
 
 	// Tutorial
 	private int level = 0;
+	private BitmapFont font;
 
 
 
@@ -139,6 +141,9 @@ public class GameView implements Screen {
 		// GameType specifics
 		Assets.loadHudPlayerIndicators(assetManager);
 		assetManager.finishLoading();
+
+		font = new BitmapFont();
+		font.getData().setScale(2f);
 
 		switch (gameModel.getGameType()) {
 			case TUTORIAL_GAME:
@@ -303,8 +308,8 @@ public class GameView implements Screen {
 			public void click()
 			{
 				System.out.println("NEXT");
-				selectedEntity = null;
-				setActionSelectPos(null);
+				//selectedEntity = null;
+				//setActionSelectPos(null);
 				interactionPresenter.endTurn();
 				level+=1;
 			}
@@ -495,29 +500,58 @@ public class GameView implements Screen {
 			switch(level)
 			{
 				case 0:
-					//Move text
-					spriteBatch.draw(text,350,200,580,400);
+					//Welcome and abilities
+					spriteBatch.draw(text,350,120,580,500);
+					font.draw(spriteBatch,
+						"Welcome to the Tutorial!\n" +
+							"Here we will show you the basic steps\n" +
+							"to rule the Galaxy!\n" +
+							"Select one of the alien Straw Men\n" +
+							"and choose an Ability on the left.\n" +
+							"You may move around, attack enemies\n" +
+							"and heal allies.\n" +
+							"Straws don't get tired.\n" +
+							"Play as much as you like!\n" +
+							"Press Next for more info.",
+						380,550);
 					break;
 				case 1:
-					spriteBatch.draw(arrow, 250,390,100,100);
+					spriteBatch.draw(arrow, 250,600,100,100);
 					break;
 				case 2:
-					//Attack text
-					spriteBatch.draw(text,350,200,580,400);
+					//Unit info
+					spriteBatch.draw(text,350,120,580,500);
+					font.draw(spriteBatch,
+						"Good job!\n" +
+							"The Unit Info to the right\n" +
+							"is important in battle.\n" +
+							"Tap units to see their status...\n" +
+							"Attack your opponent or heal your ally!\n" +
+							"Their scores are at your hands!\n" +
+							"Use the Unit Info to your advantage!",
+						380,550);
 					break;
 				case 3:
-					spriteBatch.draw(arrow, 250, 275,100,100);
+					arrow.flip(true,false);
+					spriteBatch.draw(arrow, 900, 600,100,100);
 					break;
 				case 4:
-					//Ability text
+					//End of tutorial
 					spriteBatch.draw(text,350,200,580,400);
+					font.draw(spriteBatch,
+						"That's it!\n" +
+							"Welcome to the Astro Split!\n" +
+							"Fight for the Galaxy's limited resources.\n" +
+							"Play as Marines, Sectoids, or Grays and\n" +
+							"crush your friends in Multiplayer battle!\n" +
+							"Remember that only you,\n" +
+							"can make a difference...",
+						380,550);
 					break;
 				case 5:
-					spriteBatch.draw(arrow, 250, 160,100,100);
+					//Go to Main Menu
+					ViewStateManager.getInstance().setScreen(new MenuView());
 					break;
-				case 6:
-					break;
-					//Should be finished
 
 
 

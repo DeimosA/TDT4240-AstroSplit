@@ -94,10 +94,10 @@ public class GameWorld {
 
 
 	public void createTutorialUnits() {
-		Entity tutorialUnit = UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_MARINES, ClassType.MELEE, new Vector2(-16, -16), 1);
-		tutorialUnit.getComponent(ActionComponent.class).actionPoints = 10000;
-		tutorialUnit.getComponent(MovementComponent.class).movementPoints = 10000;
-		new TargetDummyEntity().create(engine, assetManager, new Vector2(16, -16), 2, ClassType.DUMMY);
+		Entity tutorialUnit = UnitFactory.createEntity(engine, assetManager, TeamType.TEAM_MARINES, ClassType.MELEE, new Vector2(-16, -16), 2);
+		new TargetDummyEntity().create(engine, assetManager, new Vector2(48, 48), 1, ClassType.DUMMY);
+		new TargetDummyEntity().create(engine, assetManager, new Vector2(48, -48), 1, ClassType.DUMMY);
+
 	}
 
 	private void createDummyPlayers() {

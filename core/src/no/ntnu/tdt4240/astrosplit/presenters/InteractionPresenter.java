@@ -121,11 +121,12 @@ public class InteractionPresenter {
 		// Save game state
 		if (gameModel.getGameType() == GameModel.GameType.LOCAL_GAME) {
 			saveUnits(engine);
+			// Switch player
+			gameModel.endTurn();
+			// Tell the view to update
+			gameView.turnEnded(gameModel.getPlayerTurn());
 		}
-		// Switch player
-		gameModel.endTurn();
-		// Tell the view to update
-		gameView.turnEnded(gameModel.getPlayerTurn());
+
 
 	}
 
