@@ -72,7 +72,7 @@ public class InteractionPresenter {
 	 * @param gameModel
 	 */
 	public void setGameModel(GameModel gameModel) {
-		this.gameModel = (LocalGameModel) gameModel;
+		this.gameModel = gameModel;
 	}
 
 	public void setGameEngine(PooledEngine engine) {

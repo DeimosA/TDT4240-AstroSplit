@@ -62,64 +62,66 @@ public class UnitInfoSubView extends SubView {
 
 			// Unit type
 			TypeComponent typeComponent = selectedEntity.getComponent(TypeComponent.class);
-			switch (typeComponent.teamType) {
-				case TEAM_GRAYS:
+			if (typeComponent != null && typeComponent.teamType != null) {
+				switch (typeComponent.teamType) {
+					case TEAM_GRAYS:
 
-					switch (typeComponent.unitClassType) {
-						case MELEE:
-							unitType = assetManager.get(Assets.unit_gray_melee_text);
-							break;
-						case RANGE:
-							unitType = assetManager.get(Assets.unit_gray_ranged_text);
-							break;
-						case MEDIC:
-							unitType = assetManager.get(Assets.unit_gray_medic_text);
-							break;
-					}
+						switch (typeComponent.unitClassType) {
+							case MELEE:
+								unitType = assetManager.get(Assets.unit_gray_melee_text);
+								break;
+							case RANGE:
+								unitType = assetManager.get(Assets.unit_gray_ranged_text);
+								break;
+							case MEDIC:
+								unitType = assetManager.get(Assets.unit_gray_medic_text);
+								break;
+						}
 
-					break;
-				case TEAM_MARINES:
+						break;
+					case TEAM_MARINES:
 
-					switch (typeComponent.unitClassType) {
-						case MELEE:
-							unitType = assetManager.get(Assets.unit_marine_melee_text);
-							break;
-						case RANGE:
-							unitType = assetManager.get(Assets.unit_marine_ranged_text);
-							break;
-						case MEDIC:
-							unitType = assetManager.get(Assets.unit_marine_medic_text);
-							break;
-					}
+						switch (typeComponent.unitClassType) {
+							case MELEE:
+								unitType = assetManager.get(Assets.unit_marine_melee_text);
+								break;
+							case RANGE:
+								unitType = assetManager.get(Assets.unit_marine_ranged_text);
+								break;
+							case MEDIC:
+								unitType = assetManager.get(Assets.unit_marine_medic_text);
+								break;
+						}
 
-					break;
-				case TEAM_SECTOIDS:
+						break;
+					case TEAM_SECTOIDS:
 
-					switch (typeComponent.unitClassType) {
-						case MELEE:
-							unitType = assetManager.get(Assets.unit_sectoid_melee_text);
-							break;
-						case RANGE:
-							unitType = assetManager.get(Assets.unit_sectoid_ranged_text);
-							break;
-						case MEDIC:
-							unitType = assetManager.get(Assets.unit_sectoid_medic_text);
-							break;
-					}
+						switch (typeComponent.unitClassType) {
+							case MELEE:
+								unitType = assetManager.get(Assets.unit_sectoid_melee_text);
+								break;
+							case RANGE:
+								unitType = assetManager.get(Assets.unit_sectoid_ranged_text);
+								break;
+							case MEDIC:
+								unitType = assetManager.get(Assets.unit_sectoid_medic_text);
+								break;
+						}
 
-					break;
-				default:
-					unitType = null;
-			}
-			if (unitType != null) {
-				sb.draw(
-					unitType,
-					x - 44,
-					y - spacing * n,
-					unitType.getWidth() * scale,
-					unitType.getHeight() * scale
-				);
-				n++;
+						break;
+					default:
+						unitType = null;
+				}
+				if (unitType != null) {
+					sb.draw(
+						unitType,
+						x - 44,
+						y - spacing * n,
+						unitType.getWidth() * scale,
+						unitType.getHeight() * scale
+					);
+					n++;
+				}
 			}
 			// Player number
 			font.draw(
