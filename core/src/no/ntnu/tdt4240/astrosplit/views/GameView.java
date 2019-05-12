@@ -90,6 +90,7 @@ public class GameView implements Screen {
 				break;
 
 			case LOCAL_GAME:
+				gameModel.save();
 				Assets.loadHudPlayerIndicators(assetManager);
 				assetManager.finishLoading();
 				if (gameModel.getPlayerTurn() == 1) {
