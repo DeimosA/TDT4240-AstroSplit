@@ -48,6 +48,7 @@ public class GameView implements Screen {
 	private ButtonList actionButtons;
 	private MenuButton endTurnButton;
 	private AssetManager assetManager;
+	private UnitInfoSubView unitInfoSubView;
 
 	// Some metrics
 	private int renderHeight;
@@ -175,6 +176,13 @@ public class GameView implements Screen {
 			75
 		);
 
+		unitInfoSubView = new UnitInfoSubView(new Rectangle(
+			mapBounds.x + mapBounds.width,
+			0,
+			renderWidth - mapBounds.width - mapBounds.x,
+			renderHeight
+		));
+    
 		/* Music */
 		playMusicGame();
 	}
@@ -393,7 +401,7 @@ public class GameView implements Screen {
 			endTurnButton.getBounds().x, endTurnButton.getBounds().y,
 			endTurnButton.getBounds().width, endTurnButton.getBounds().height
 		);
-
+		// Player number
 		if (playerNumberTex != null) {
 			spriteBatch.draw(
 				playerNumberTex,
@@ -401,6 +409,9 @@ public class GameView implements Screen {
 				playerNumberTex.getWidth(), playerNumberTex.getHeight()
 			);
 		}
+		// Selected unit info
+		unitInfoSubView.render(spriteBatch, delta);
+
 
 		spriteBatch.end();
 	}
@@ -447,5 +458,6 @@ public class GameView implements Screen {
 		actionSelectTex.dispose();
 		actionButtons.dispose();
 		assetManager.dispose();
+		unitInfoSubView.dispose();
 	}
 }
