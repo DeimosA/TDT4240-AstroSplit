@@ -37,6 +37,14 @@ public abstract class GameModel implements Model {
 	}
 
 	/**
+	 * Return selected team type
+	 * @return
+	 */
+	public TeamType getPlayerTeam() {
+		return playerTeam;
+	}
+
+	/**
 	 * Get the type of game for this model
 	 * @return
 	 */

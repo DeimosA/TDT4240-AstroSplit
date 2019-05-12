@@ -27,7 +27,6 @@ import no.ntnu.tdt4240.astrosplit.game.Map;
 import no.ntnu.tdt4240.astrosplit.game.components.PlayerComponent;
 import no.ntnu.tdt4240.astrosplit.models.Configuration;
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
-import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
 import no.ntnu.tdt4240.astrosplit.presenters.InteractionPresenter;
 import no.ntnu.tdt4240.astrosplit.utils.Assets;
 import no.ntnu.tdt4240.astrosplit.utils.AudioManager;
@@ -88,7 +87,7 @@ public class GameView implements Screen {
 		this.assetManager = assetManager;
 		this.interactionPresenter = InteractionPresenter.getInstance();
 		interactionPresenter.setGameModel(gameModel);
-		interactionPresenter.setGameWiew(this);
+		interactionPresenter.setGameView(this);
 
 		// Setup rendering
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -128,7 +127,7 @@ public class GameView implements Screen {
 
 		/* Engine and stuff */
 		engine = new PooledEngine();
-		GameWorld gameWorld = new GameWorld(engine, stage, assetManager);
+		GameWorld gameWorld = new GameWorld(engine, stage, assetManager, gameModel);
 		gameWorld.create();
 		interactionPresenter.setGameEngine(engine);
 

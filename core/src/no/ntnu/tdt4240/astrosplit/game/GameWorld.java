@@ -34,13 +34,15 @@ public class GameWorld {
 
 	private PooledEngine engine;
 	private AssetManager assetManager;
+	private GameModel gameModel;
 
 	private static final Vector2[] p1DefaultPos = {new Vector2(-16, -112), new Vector2(16, -80), new Vector2(48, -112)};
 	private static final Vector2[] p2DefaultPos = {new Vector2(-16, 112), new Vector2(16, 80), new Vector2(48, 112)};
 
-	public GameWorld(PooledEngine engine, Stage stage, AssetManager assetManager) {
+	public GameWorld(PooledEngine engine, Stage stage, AssetManager assetManager, GameModel gameModel) {
 		this.engine = engine;
 		this.assetManager = assetManager;
+		this.gameModel = gameModel;
 
 		engine.addSystem(new UnitSystem());
 		engine.addSystem(new RenderingSystem(new SpriteBatch(), stage));
@@ -58,21 +60,32 @@ public class GameWorld {
 	public void create() //TODO: Use save or selected teams to create the units
 	{
 
-		if (!LocalGameModel.hasOngoingGame()) {
 
-			TeamType[] playerTeams = InteractionPresenter.getPlayerTypes();
-			createInitialUnits(playerTeams[0], playerTeams[1]);
-		} else {
-			createFromSave(InteractionPresenter.getUnits());
+		switch (gameModel.getGameType()) {
+			case LOCAL_GAME:
+				if (!LocalGameModel.hasOngoingGame()) {
+					TeamType[] playerTeams = InteractionPresenter.getPlayerTypes();
+					createInitialPlayer1Units(playerTeams[0]);
+					createInitialPlayer2Units(playerTeams[1]);
+				} else {
+					createFromSave(InteractionPresenter.getUnits());
+				}
+				break;
+
+			case TUTORIAL_GAME:
+				createTutorialUnits();
+				break;
 		}
-
 	}
 
-	public void createInitialUnits(TeamType p1Team, TeamType p2Team) {
+	private void createInitialPlayer1Units(TeamType p1Team) {
 		//Player 1
 		UnitFactory.createEntity(engine, assetManager, p1Team, ClassType.MEDIC, p1DefaultPos[0],1);
 		UnitFactory.createEntity(engine, assetManager, p1Team, ClassType.MELEE, p1DefaultPos[1],1);
 		UnitFactory.createEntity(engine, assetManager, p1Team, ClassType.RANGE, p1DefaultPos[2],1);
+	}
+
+	private void createInitialPlayer2Units(TeamType p2Team) {
 		//Player 2
 		UnitFactory.createEntity(engine, assetManager, p2Team, ClassType.MEDIC, p2DefaultPos[0],2);
 		UnitFactory.createEntity(engine, assetManager, p2Team, ClassType.MELEE, p2DefaultPos[1],2);
@@ -87,7 +100,13 @@ public class GameWorld {
 		new TargetDummyEntity().create(engine, assetManager, new Vector2(16, -16), 2, ClassType.DUMMY);
 	}
 
-	public void createFromSave(Array<UnitModel> units) {
+	private void createDummyPlayers() {
+		new TargetDummyEntity().create(engine, assetManager, p2DefaultPos[0], 2, null);
+		new TargetDummyEntity().create(engine, assetManager, p2DefaultPos[1], 2, null);
+		new TargetDummyEntity().create(engine, assetManager, p2DefaultPos[2], 2, null);
+	}
+
+	private void createFromSave(Array<UnitModel> units) {
 		System.out.println("Created units from save!");
 		for (UnitModel unit : units) {
 			UnitFactory.createEntity(engine, assetManager, unit.teamType, unit.classType, unit.pos,unit.player);
