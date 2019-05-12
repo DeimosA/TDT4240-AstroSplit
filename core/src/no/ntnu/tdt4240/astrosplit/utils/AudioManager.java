@@ -56,7 +56,7 @@ public final class AudioManager implements Model {
 	 * Get music preference (on/off)
 	 *
 	 */
-	private boolean isMusicOn() {
+	private boolean isMusicEnabled() {
 		return config.isMusicOn();
 	}
 
@@ -101,9 +101,11 @@ public final class AudioManager implements Model {
 		} else if(musicGame.isPlaying()){
 			musicGame.stop();
 		}
-		musicMenu.setLooping(false);
-		musicMenu.setVolume(0.5f); //50%
-		musicMenu.play();
+		if(isMusicEnabled()) {
+			musicMenu.setLooping(false);
+			musicMenu.setVolume(0.5f); //50%
+			musicMenu.play();
+		}
 	}
 
 	/**
@@ -114,9 +116,12 @@ public final class AudioManager implements Model {
 		if(musicMenu.isPlaying()){
 			musicMenu.stop();
 		}
-		musicGame.setLooping(true);
-		musicGame.setVolume(0.5f); //50%
-		musicGame.play();
+
+		if(isMusicEnabled()) {
+			musicGame.setLooping(true);
+			musicGame.setVolume(0.5f); //50%
+			musicGame.play();
+		}
 	}
 
 	/**
@@ -127,16 +132,18 @@ public final class AudioManager implements Model {
 		if(musicGame.isPlaying()){
 			musicGame.stop();
 		}
-		musicGameOver.setLooping(true);
-		musicGameOver.setVolume(0.5f); //50%
-		musicGameOver.play();
+
+		if(isMusicEnabled()) {
+			musicGameOver.setLooping(true);
+			musicGameOver.setVolume(0.5f); //50%
+			musicGameOver.play();
+		}
 	}
 
 	/**
 	 * Stop menu or in-game music
 	 */
 	public void stopMusic() {
-		if (!isMusicOn()) {
 			if(musicMenu.isPlaying()) {
 				musicMenu.stop();
 			}
@@ -146,7 +153,6 @@ public final class AudioManager implements Model {
 			else if(musicGameOver.isPlaying()){
 				musicGameOver.stop();
 			}
-		}
 	}
 
 	/**

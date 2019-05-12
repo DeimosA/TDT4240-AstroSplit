@@ -88,7 +88,10 @@ public class Configuration implements Model {
 		}
 	}
 	public boolean isMusicOn() {
-		return prefStore.getBoolean(musicOn, true);
+		if(prefStore!=null) {
+			return prefStore.getBoolean(musicOn, true);
+		}
+		return false;
 	}
 
 	/**
