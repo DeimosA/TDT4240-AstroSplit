@@ -111,6 +111,5 @@ public class GameWorld {
 		for (UnitModel unit : units) {
 			UnitFactory.createEntity(engine, assetManager, unit.teamType, unit.classType, unit.pos,unit.player);
 		}
-
 	}
 }

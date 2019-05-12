@@ -8,6 +8,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -67,6 +68,10 @@ public class GameView implements Screen {
 	private InteractionPresenter interactionPresenter;
 	private GameModel gameModel;
 	private Entity selectedEntity = null;
+
+	// Tutorial
+	private int level = 0;
+
 
 
 	/**
@@ -137,11 +142,12 @@ public class GameView implements Screen {
 
 		switch (gameModel.getGameType()) {
 			case TUTORIAL_GAME:
-				gameWorld.createTutorialUnits();
+				Assets.loadTutorialAssets(assetManager);
 				playerNumberTex = assetManager.get(Assets.hud_Player1_red, Texture.class);
+
 				nextButton = createNextButton();
 				nextButton.setCenterPosition(
-					mapBounds.x + mapBounds.width + (renderWidth - mapBounds.width - mapBounds.x)/2f,150
+					mapBounds.x + mapBounds.width + (renderWidth - mapBounds.width - mapBounds.x)/2f,75
 				);
 
 				break;
@@ -154,6 +160,12 @@ public class GameView implements Screen {
 				} else if (gameModel.getPlayerTurn() == 2) {
 					playerNumberTex = assetManager.get(Assets.hud_Player2_blue, Texture.class);
 				}
+				// End turn button
+				endTurnButton = createEndTurnButton();
+				endTurnButton.setCenterPosition(
+					mapBounds.x + mapBounds.width + (renderWidth - mapBounds.width - mapBounds.x) / 2f,
+					75
+				);
 				break;
 		}
 
@@ -179,12 +191,7 @@ public class GameView implements Screen {
 			actionSelectTex.getHeight() * actionButtonsScale
 		);
 		actionSelectBounds.x = actionBounds.x + actionBounds.width / 2f - actionSelectBounds.width / 2f;
-		// End turn button
-		endTurnButton = createEndTurnButton();
-		endTurnButton.setCenterPosition(
-			mapBounds.x + mapBounds.width + (renderWidth - mapBounds.width - mapBounds.x) / 2f,
-			75
-		);
+
 
 		unitInfoSubView = new UnitInfoSubView(new Rectangle(
 			mapBounds.x + mapBounds.width,
@@ -279,19 +286,9 @@ public class GameView implements Screen {
 	}
 
 	private MenuButton createNextButton(){
-		return new MenuButton(assetManager.get(Assets.hud_button_endTurn, Texture.class))
+		return new MenuButton(assetManager.get(Assets.hud_tutorial_next, Texture.class))
 		{
-
-			private int level = 0;
-
-			public void showTutorialUI()
-			{
-				switch (this.level)
-				{
-					case 0:
-						//show text
-				}
-			}
+			//How deep into the tutorial we are
 
 			@Override
 			public void click()
@@ -300,10 +297,21 @@ public class GameView implements Screen {
 				selectedEntity = null;
 				setActionSelectPos(null);
 				interactionPresenter.endTurn();
-				this.showTutorialUI();
-				this.level +=1;
+				level+=1;
 			}
 		};
+	}
+
+	private void drawTutorialUI(SpriteBatch spriteBatch)
+	{
+		switch (this.level)
+		{
+			case 0:
+				Texture text = assetManager.get(Assets.hud_tutorial_text, Texture.class);
+
+		}
+
+
 	}
 
 	/**
@@ -382,7 +390,8 @@ public class GameView implements Screen {
 			if (actionButtons.getBounds().contains(cursorPos.x, cursorPos.y) && selectedEntity != null) {
 				actionButtons.handleInput(cursorPos);
 			}
-			endTurnButton.handleInput(cursorPos.x, cursorPos.y);
+			if(gameModel.getGameType() == GameModel.GameType.LOCAL_GAME)
+				endTurnButton.handleInput(cursorPos.x, cursorPos.y);
 			if(gameModel.getGameType() == GameModel.GameType.TUTORIAL_GAME)
 				nextButton.handleInput(cursorPos.x,cursorPos.y);
 		}
@@ -439,11 +448,6 @@ public class GameView implements Screen {
 			actionSelectBounds.x, actionSelectBounds.y,
 			actionSelectBounds.width, actionSelectBounds.height
 		);
-		spriteBatch.draw(
-			endTurnButton.getTexture(),
-			endTurnButton.getBounds().x, endTurnButton.getBounds().y,
-			endTurnButton.getBounds().width, endTurnButton.getBounds().height
-		);
 		// Player number
 		if (playerNumberTex != null) {
 			spriteBatch.draw(
@@ -455,6 +459,16 @@ public class GameView implements Screen {
 		// Selected unit info
 		if (selectedEntity != null) unitInfoSubView.render(spriteBatch, delta);
 
+		//Local EndTurn Button
+		if(gameModel.getGameType() == GameModel.GameType.LOCAL_GAME)
+		{
+			spriteBatch.draw(
+				endTurnButton.getTexture(),
+				endTurnButton.getBounds().x, endTurnButton.getBounds().y,
+				endTurnButton.getBounds().width, endTurnButton.getBounds().height
+			);
+		}
+
 		//Tutorial Next Button
 		if(gameModel.getGameType() == GameModel.GameType.TUTORIAL_GAME)
 		{
@@ -463,6 +477,44 @@ public class GameView implements Screen {
 				nextButton.getBounds().x, nextButton.getBounds().y,
 				nextButton.getBounds().width, nextButton.getBounds().height
 			);
+
+			Texture text = assetManager.get(Assets.hud_tutorial_text, Texture.class);
+			Texture tex = assetManager.get(Assets.hud_tutorial_arrow, Texture.class);
+			Sprite arrow = new Sprite(tex);
+			arrow.flip(true,false);
+
+			switch(level)
+			{
+				case 0:
+					//Move text
+					spriteBatch.draw(text,350,200,580,400);
+					break;
+				case 1:
+					spriteBatch.draw(arrow, 250,390,100,100);
+					break;
+				case 2:
+					//Attack text
+					spriteBatch.draw(text,350,200,580,400);
+					break;
+				case 3:
+					spriteBatch.draw(arrow, 250, 275,100,100);
+					break;
+				case 4:
+					//Ability text
+					spriteBatch.draw(text,350,200,580,400);
+					break;
+				case 5:
+					spriteBatch.draw(arrow, 250, 160,100,100);
+					break;
+				case 6:
+					break;
+					//Should be finished
+
+
+
+
+			}
+
 		}
 		spriteBatch.end();
 	}

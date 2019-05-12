@@ -4,6 +4,8 @@ package no.ntnu.tdt4240.astrosplit.utils;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 
+import no.ntnu.tdt4240.astrosplit.game.components.TextureComponent;
+
 /**
  * Convenience class for asset identifiers
  * Handy for asset manager
@@ -28,6 +30,12 @@ public class Assets {
 	public static final String hud_Player2_blue = "Hud/playerText/player2-blue.png";
 	public static final String hud_info_hp = "Hud/infoPanel/infoTextHP.png";
 	// Unit info
+
+	// Tutorial
+	public static final String hud_tutorial_text = "Tutorial/boxBlack.png";
+	public static final String hud_tutorial_arrow = "Tutorial/arrow.png";
+	public static final String hud_tutorial_next = "Tutorial/buttonNext.png";
+
 
 //	public static final String aaa = "";
 
@@ -127,7 +135,10 @@ public class Assets {
 	public static void loadTutorialAssets(AssetManager asm) {
 
 		asm.load(unit_targetPractice, Texture.class);
-
+		asm.load(hud_tutorial_next, Texture.class);
+		asm.load(hud_tutorial_arrow, Texture.class);
+		asm.load(hud_tutorial_text, Texture.class);
 	}
+
 
 }
