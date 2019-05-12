@@ -41,7 +41,7 @@ public class GrayRangeEntity extends UnitEntity {
 		ClassType unitClassType
 	) {
 
-		int damage = 500; //Damage of units attack
+		int damage = 40; //Damage of units attack
 		int range = 3; //Range of units attack
 		int health = 100; //Health of unit
 		int movement = 8; //Number of tiles the unit can move
