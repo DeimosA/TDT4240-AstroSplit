@@ -92,7 +92,6 @@ public class InteractionPresenter {
 		interactionModel.setSelectedPosition(position);
 
 		gameView.unitSelectionChanged(selected);
-//		GameView.updateRange(0, null);
 	}
 
 	/**
@@ -143,7 +142,6 @@ public class InteractionPresenter {
 	}
 
 	public void disableIntent(Class intent) {
-		// TODO use proper method in gameview
 		gameView.disableIntent(intent);
 	}
 
@@ -159,7 +157,7 @@ public class InteractionPresenter {
 		interactionModel.setIntent(intent);
 	}
 
-	public boolean checkWinCondition() {
+	public int checkWinCondition() {
 		boolean p1HasUnits = false;
 		boolean p2HasUnits = false;
 		saveUnits(engine);
@@ -170,6 +168,11 @@ public class InteractionPresenter {
 			} else if (unit.player == 2) {
 				p2HasUnits = true;
 			}
-		} return p1HasUnits && p2HasUnits;
+		}
+		if (p1HasUnits && p2HasUnits) {
+			return -1;
+		} else {
+			return p1HasUnits ? 2 : 1;
+		}
 	}
 }
