@@ -1,11 +1,15 @@
 package no.ntnu.tdt4240.astrosplit.presenters;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 
-import no.ntnu.tdt4240.astrosplit.game.components.ActorComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.PlayerComponent;
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
 import no.ntnu.tdt4240.astrosplit.models.InteractionModel;
+import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
 
@@ -21,6 +25,8 @@ public class InteractionPresenter {
 	private InteractionModel interactionModel;
 	private GameView gameView;
 	private GameModel gameModel;
+	private PooledEngine engine;
+	private Family playerEntitiesFamily;
 
 
 	/**
@@ -29,6 +35,7 @@ public class InteractionPresenter {
 	 */
 	private InteractionPresenter(InteractionModel interactionModel) {
 		this.interactionModel = interactionModel;
+		playerEntitiesFamily = Family.all(PlayerComponent.class).get();
 	}
 
 	/**
@@ -60,6 +67,10 @@ public class InteractionPresenter {
 		this.gameModel = gameModel;
 	}
 
+	public void setGameEngine(PooledEngine engine) {
+		this.engine = engine;
+	}
+
 	/**
 	 * Used for selecting a new entity, also updates the range indicator in the game view
 	 * @param selected
@@ -76,9 +87,19 @@ public class InteractionPresenter {
 //		GameView.updateRange(0, null);
 	}
 
+	/**
+	 * Runs when user ends turn
+	 */
 	public void endTurn() {
 		gameModel.endTurn();
 		// TODO end turn stuff
+
+		// Save game state
+		if (gameModel.getGameType() == GameModel.GameType.LOCAL_GAME) {
+			ImmutableArray<Entity> entities = engine.getEntitiesFor(playerEntitiesFamily);
+			((LocalGameModel)gameModel).saveUnits(entities);
+		}
+
 		gameView.turnEnded(gameModel.getPlayerTurn());
 	}
 
@@ -93,6 +114,5 @@ public class InteractionPresenter {
 	 */
 	public void updateIntent(Class intent) {
 		interactionModel.setIntent(intent);
-//		GameView.updateRange(interactionModel.getRange(intent), interactionModel.getSelectedPosition());
 	}
 }

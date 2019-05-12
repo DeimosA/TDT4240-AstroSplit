@@ -1,11 +1,22 @@
 package no.ntnu.tdt4240.astrosplit.models;
 
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
+import no.ntnu.tdt4240.astrosplit.game.components.HealthComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.PlayerComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.PositionComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.TypeComponent;
+
 
 public class LocalGameModel extends GameModel implements Json.Serializable {
 
@@ -20,7 +31,7 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 	private static final String unitsModel = "unitsModel";
 
 	// Saves P1 and P2 units.
-	private Array<UnitModel> units = new Array();
+	private Array<UnitModel> units = new Array<UnitModel>();
 
 	private static TeamType player1;
 	private static TeamType player2;
@@ -66,9 +77,24 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 		return prefs.contains(ongoingGame);
 	}
 
-	// Overrides the saved model with the units param
-	private void saveUnits(Array<UnitModel> units) {
-		prefStore.putString(unitsModel, json.toJson(units, Array.class));
+	/**
+	 * Overrides the saved model with the units param
+	 * @param entities
+	 */
+	public void saveUnits(ImmutableArray<Entity> entities) {
+		units.clear();
+		for (Entity entity : entities) {
+			units.add(new UnitModel(
+				entity.getComponent(PlayerComponent.class).id,
+				entity.getComponent(TypeComponent.class).unitClassType,
+				entity.getComponent(PlayerComponent.class).id == 1 ? this.player1 : this.player2,
+				entity.getComponent(PositionComponent.class).position,
+				entity.getComponent(MovementComponent.class).movementPoints,
+				entity.getComponent(ActionComponent.class).actionPoints,
+				entity.getComponent(HealthComponent.class).health
+			));
+		}
+		System.out.println("Entities saved: " + units.size);
 		save();
 	}
 
@@ -103,6 +129,7 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 		prefStore.putInteger(playerTurn, (getPlayerTurn() == 1) ? 2 : 1);
 		prefStore.flush();
 		saveUnits(units);
+		save();
 	}
 
 	@Override
@@ -122,6 +149,7 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 		if(!prefStore.contains(ongoingGame)) {
 			prefStore.putBoolean(ongoingGame, true);
 		}
+		prefStore.putString(unitsModel, json.toJson(units, Array.class));
 		prefStore.flush();
 	}
 }

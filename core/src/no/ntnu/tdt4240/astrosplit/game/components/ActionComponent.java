@@ -10,4 +10,6 @@ public class ActionComponent implements Component{
 	public Array<Entity> attackList = new Array<Entity>();
 	public Array<Entity> healList = new Array<Entity>();
 
+	public int actionPoints = 1;
+
 }
