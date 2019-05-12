@@ -7,6 +7,11 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
+import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentHeal;
+import no.ntnu.tdt4240.astrosplit.game.components.ActorComponent;
+import no.ntnu.tdt4240.astrosplit.game.components.MovementComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.PlayerComponent;
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
 import no.ntnu.tdt4240.astrosplit.models.InteractionModel;
@@ -94,25 +99,48 @@ public class InteractionPresenter {
 	 * Runs when user ends turn
 	 */
 	public void endTurn() {
-		gameModel.endTurn();
-		// TODO end turn stuff
-
+		// TODO end turn stuff (done?)
+		// Update game state
+		//Reset general action actions
+		for (Entity entity : engine.getEntitiesFor(Family.all(ActionComponent.class).get())) {
+			entity.getComponent(ActionComponent.class).resetAction();
+			entity.getComponent(ActorComponent.class).actor.setActionIntent(null);
+			entity.getComponent(ActorComponent.class).actor.select(false);
+		}
+		// reset attacks
+		for (Entity entity : engine.getEntitiesFor(Family.all(ActionComponentAttack.class).get())) {
+			entity.getComponent(ActionComponentAttack.class).resetAction();
+		}
+		// reset heal
+		for (Entity entity : engine.getEntitiesFor(Family.all(ActionComponentHeal.class).get())) {
+			entity.getComponent(ActionComponentHeal.class).resetAction();
+		}
+		// reset move
+		for (Entity entity : engine.getEntitiesFor(Family.all(MovementComponent.class).get())) {
+			entity.getComponent(MovementComponent.class).resetAction();
+		}
 		// Save game state
 		if (gameModel.getGameType() == GameModel.GameType.LOCAL_GAME) {
 			ImmutableArray<Entity> entities = engine.getEntitiesFor(playerEntitiesFamily);
 			((LocalGameModel)gameModel).saveUnits(entities);
 		}
-
+		// Switch player
+		gameModel.endTurn();
+		// Tell the view to update
 		gameView.turnEnded(gameModel.getPlayerTurn());
 	}
 
 	public static Array<UnitModel> getUnits() {
 		return gameModel.getUnits();
+  }
+
+	public int getPlayerTurn() {
+		return gameModel.getPlayerTurn();
 	}
 
 	public void disableIntent(Class intent) {
 		// TODO use proper method in gameview
-		gameView.unitIntentChanged(intent);
+		gameView.disableIntent(intent);
 	}
 
 	public static TeamType[] getPlayerTypes() {

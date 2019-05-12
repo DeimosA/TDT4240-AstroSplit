@@ -104,7 +104,6 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 			));
 		}
 		System.out.println("Entities saved: " + units.size);
-		save();
 	}
 
 	// Returns the current saved units model
