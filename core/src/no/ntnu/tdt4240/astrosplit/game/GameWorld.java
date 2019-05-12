@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 
 import no.ntnu.tdt4240.astrosplit.game.factories.UnitFactory;
 import no.ntnu.tdt4240.astrosplit.game.systems.AbilitySystem;
@@ -15,6 +16,8 @@ import no.ntnu.tdt4240.astrosplit.game.systems.UnitSystem;
 import no.ntnu.tdt4240.astrosplit.models.ClassType;
 import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
 import no.ntnu.tdt4240.astrosplit.models.TeamType;
+import no.ntnu.tdt4240.astrosplit.models.UnitModel;
+import no.ntnu.tdt4240.astrosplit.presenters.InteractionPresenter;
 import no.ntnu.tdt4240.astrosplit.utils.Assets;
 
 
@@ -44,17 +47,16 @@ public class GameWorld {
 		Assets.loadSectoidUnitAssets(assetManager);
 		Assets.loadTutorialAssets(assetManager);
 		assetManager.finishLoading();
-
 	}
-
 
 	//this method should create all units to be shown
 	public void create() //TODO: Use save or selected teams to create the units
 	{
 		if (!LocalGameModel.hasOngoingGame()) {
-
-			TeamType[] playerTeams = LocalGameModel.getPlayerTypes();
+			TeamType[] playerTeams = InteractionPresenter.getPlayerTypes();
 			createInitialUnits(playerTeams[0], playerTeams[1]);
+		} else {
+			createFromSave(InteractionPresenter.getUnits());
 		}
 
 		//new TargetDummyEntity().create(engine, assetManager, new Vector2(-48, -16), 2);
@@ -69,5 +71,12 @@ public class GameWorld {
 		UnitFactory.createEntity(engine, assetManager, p2Team, ClassType.MEDIC, p2DefaultPos[0],2);
 		UnitFactory.createEntity(engine, assetManager, p2Team, ClassType.MELEE, p2DefaultPos[1],2);
 		UnitFactory.createEntity(engine, assetManager, p2Team, ClassType.RANGE, p2DefaultPos[2],2);
+	}
+
+	public void createFromSave(Array<UnitModel> units) {
+		System.out.println("Created units from save!");
+		for (UnitModel unit : units) {
+			UnitFactory.createEntity(engine, assetManager, unit.teamType, unit.classType, unit.pos,unit.player);
+		}
 	}
 }

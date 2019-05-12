@@ -5,11 +5,14 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 import no.ntnu.tdt4240.astrosplit.game.components.PlayerComponent;
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
 import no.ntnu.tdt4240.astrosplit.models.InteractionModel;
 import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
+import no.ntnu.tdt4240.astrosplit.models.TeamType;
+import no.ntnu.tdt4240.astrosplit.models.UnitModel;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
 
@@ -24,7 +27,7 @@ public class InteractionPresenter {
 
 	private InteractionModel interactionModel;
 	private GameView gameView;
-	private GameModel gameModel;
+	private static GameModel gameModel;
 	private PooledEngine engine;
 	private Family playerEntitiesFamily;
 
@@ -64,7 +67,7 @@ public class InteractionPresenter {
 	 * @param gameModel
 	 */
 	public void setGameModel(GameModel gameModel) {
-		this.gameModel = gameModel;
+		this.gameModel = (LocalGameModel) gameModel;
 	}
 
 	public void setGameEngine(PooledEngine engine) {
@@ -103,9 +106,17 @@ public class InteractionPresenter {
 		gameView.turnEnded(gameModel.getPlayerTurn());
 	}
 
+	public static Array<UnitModel> getUnits() {
+		return gameModel.getUnits();
+	}
+
 	public void disableIntent(Class intent) {
 		// TODO use proper method in gameview
 		gameView.unitIntentChanged(intent);
+	}
+
+	public static TeamType[] getPlayerTypes() {
+		return gameModel.getPlayerTypes();
 	}
 
 	/**

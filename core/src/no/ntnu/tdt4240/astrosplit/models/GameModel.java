@@ -1,8 +1,11 @@
 package no.ntnu.tdt4240.astrosplit.models;
 
 
+import com.badlogic.gdx.utils.Array;
 
 public abstract class GameModel implements Model {
+
+	public abstract TeamType[] getPlayerTypes();
 
 	/**
 	 * Valid types of game
@@ -56,6 +59,11 @@ public abstract class GameModel implements Model {
 	 * End the current game
 	 */
 	public abstract void endGame();
+
+	/**
+	 * Returns the units from the game model
+	 */
+	public abstract Array<UnitModel> getUnits();
 
 	@Override
 	public void load() {
