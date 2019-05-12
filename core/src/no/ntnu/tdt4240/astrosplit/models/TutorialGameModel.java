@@ -1,6 +1,8 @@
 package no.ntnu.tdt4240.astrosplit.models;
 
 
+import com.badlogic.gdx.utils.Array;
+
 /**
  * Game model for the tutorial
  */
@@ -11,6 +13,11 @@ public class TutorialGameModel extends GameModel {
 		super(GameType.TUTORIAL_GAME);
 	}
 
+	//Todo: fix
+	@Override
+	public TeamType[] getPlayerTypes() {
+		return null;
+	}
 
 	@Override
 	public int getPlayerTurn() {
@@ -25,5 +32,10 @@ public class TutorialGameModel extends GameModel {
 	@Override
 	public void endGame() {
 
+	}
+	//Todo: Fix for tutorial
+	@Override
+	public Array<UnitModel> getUnits() {
+		return null;
 	}
 }
