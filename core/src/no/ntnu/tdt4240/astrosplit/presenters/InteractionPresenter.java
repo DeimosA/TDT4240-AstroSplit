@@ -32,9 +32,9 @@ public class InteractionPresenter {
 
 	private InteractionModel interactionModel;
 	private GameView gameView;
-	private static GameModel gameModel;
-	private static PooledEngine engine;
-	private static Family playerEntitiesFamily;
+	private GameModel gameModel;
+	private PooledEngine engine;
+	private Family playerEntitiesFamily;
 
 
 	/**
@@ -127,16 +127,14 @@ public class InteractionPresenter {
 		gameModel.endTurn();
 		// Tell the view to update
 		gameView.turnEnded(gameModel.getPlayerTurn());
-
-		System.out.println("Game still going? " + InteractionPresenter.checkWinCondition());
 	}
 
-	public static void saveUnits(PooledEngine engine) {
+	public void saveUnits(PooledEngine engine) {
 		ImmutableArray<Entity> entities = engine.getEntitiesFor(playerEntitiesFamily);
 		((LocalGameModel)gameModel).saveUnits(entities);
 	}
 
-	public static Array<UnitModel> getUnits() {
+	public Array<UnitModel> getUnits() {
 		return gameModel.getUnits();
   	}
 
@@ -149,7 +147,7 @@ public class InteractionPresenter {
 		gameView.disableIntent(intent);
 	}
 
-	public static TeamType[] getPlayerTypes() {
+	public TeamType[] getPlayerTypes() {
 		return gameModel.getPlayerTypes();
 	}
 
@@ -161,7 +159,7 @@ public class InteractionPresenter {
 		interactionModel.setIntent(intent);
 	}
 
-	public static boolean checkWinCondition() {
+	public boolean checkWinCondition() {
 		boolean p1HasUnits = false;
 		boolean p2HasUnits = false;
 		saveUnits(engine);
