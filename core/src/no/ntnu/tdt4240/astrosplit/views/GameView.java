@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
-
+import no.ntnu.tdt4240.astrosplit.enums.GameType;
 import no.ntnu.tdt4240.astrosplit.game.GameWorld;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentHeal;
@@ -196,18 +196,20 @@ public class GameView implements Screen {
 		selectedEntity = null;
 		setActionSelectPos(null);
 
-		int playerWonMaybe = interactionPresenter.checkWinCondition();
-		if (playerWonMaybe > 0) {
-			// Someone won
-			gameModel.endGame();
-			ViewStateManager.getInstance().setScreen(new GameOverView(playerWonMaybe));
-			return;
-		}
+		if (gameModel.getGameType() == GameType.LOCAL_GAME) { // Because tutorial bugged
+			int playerWonMaybe = interactionPresenter.checkWinCondition();
+			if (playerWonMaybe > 0) {
+				// Someone won
+				gameModel.endGame();
+				ViewStateManager.getInstance().setScreen(new GameOverView(playerWonMaybe));
+				return;
+			}
 
-		if (nextPlayerNumber == 1) {
-			playerNumberTex = assetManager.get(Assets.hud_Player1_red, Texture.class);
-		} else if (nextPlayerNumber == 2) {
-			playerNumberTex = assetManager.get(Assets.hud_Player2_blue, Texture.class);
+			if (nextPlayerNumber == 1) {
+				playerNumberTex = assetManager.get(Assets.hud_Player1_red, Texture.class);
+			} else if (nextPlayerNumber == 2) {
+				playerNumberTex = assetManager.get(Assets.hud_Player2_blue, Texture.class);
+			}
 		}
 	}
 
