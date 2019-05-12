@@ -7,6 +7,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
+import no.ntnu.tdt4240.astrosplit.enums.GameType;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponent;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentAttack;
 import no.ntnu.tdt4240.astrosplit.game.components.ActionComponentHeal;
@@ -16,7 +17,7 @@ import no.ntnu.tdt4240.astrosplit.game.components.PlayerComponent;
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
 import no.ntnu.tdt4240.astrosplit.models.InteractionModel;
 import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
-import no.ntnu.tdt4240.astrosplit.models.TeamType;
+import no.ntnu.tdt4240.astrosplit.enums.TeamType;
 import no.ntnu.tdt4240.astrosplit.models.UnitModel;
 import no.ntnu.tdt4240.astrosplit.views.GameView;
 
@@ -120,7 +121,7 @@ public class InteractionPresenter {
 		}
 
 		// Save game state
-		if (gameModel.getGameType() == GameModel.GameType.LOCAL_GAME) {
+		if (gameModel.getGameType() == GameType.LOCAL_GAME) {
 			saveUnits(engine);
 		}
 		// Switch player

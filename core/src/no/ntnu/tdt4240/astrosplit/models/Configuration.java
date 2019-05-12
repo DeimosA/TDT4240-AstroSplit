@@ -2,8 +2,6 @@ package no.ntnu.tdt4240.astrosplit.models;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 
 import no.ntnu.tdt4240.astrosplit.utils.AudioManager;
 
@@ -21,11 +19,6 @@ public class Configuration implements Model {
     public final String gameName = "Astro Split";
     public final int viewPortRenderHeight = 720;
     public float defaultAspect = 16f/9;
-
-    /* Audio */
-	private AudioManager smg;
-	private Music music;
-	private Sound sound;
 
     /* Allowed settings */
 	private String fullscreen = "fullscreen";
@@ -88,12 +81,10 @@ public class Configuration implements Model {
 	public void setMusic(Boolean on) {
 		if(on) {
 			prefStore.putBoolean(musicOn, true);
-//			musicEnabled();
-			smg.getInstance().PlayMusicMenu();
+			AudioManager.getInstance().playMusicMenu();
 		} else {
 			prefStore.putBoolean(musicOn, false);
-//			musicDisabled();
-			smg.getInstance().stopMusicMenu();
+			AudioManager.getInstance().stopMusic();
 		}
 	}
 	public boolean isMusicOn() {

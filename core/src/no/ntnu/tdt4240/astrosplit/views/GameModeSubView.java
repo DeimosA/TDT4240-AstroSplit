@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.astrosplit.views;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
+import no.ntnu.tdt4240.astrosplit.enums.GameType;
 import no.ntnu.tdt4240.astrosplit.models.GameModel;
 import no.ntnu.tdt4240.astrosplit.models.LocalGameModel;
 import no.ntnu.tdt4240.astrosplit.presenters.MenuPresenter;
@@ -58,7 +59,7 @@ class GameModeSubView extends SubView {
 						// #3 - Local
 						System.out.println("Chose: Local");
 						menuView.setSubView(new TeamSelectSubView(
-							bounds, menuView, menuPresenter, GameModel.GameType.LOCAL_GAME));
+							bounds, menuView, menuPresenter, GameType.LOCAL_GAME));
 					}
 				},
 				// Tutorial game
@@ -68,7 +69,7 @@ class GameModeSubView extends SubView {
 						// #4 - Tutorial
 						System.out.println("Chose: Tutorial");
 						menuView.setSubView(new TeamSelectSubView(
-							bounds, menuView, menuPresenter, GameModel.GameType.TUTORIAL_GAME));
+							bounds, menuView, menuPresenter, GameType.TUTORIAL_GAME));
 					}
 				},
 				// Go back

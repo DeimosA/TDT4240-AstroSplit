@@ -2,6 +2,9 @@ package no.ntnu.tdt4240.astrosplit.models;
 
 import com.badlogic.gdx.math.Vector2;
 
+import no.ntnu.tdt4240.astrosplit.enums.ClassType;
+import no.ntnu.tdt4240.astrosplit.enums.TeamType;
+
 public class UnitModel {
 	public int player;
 	public ClassType classType;
