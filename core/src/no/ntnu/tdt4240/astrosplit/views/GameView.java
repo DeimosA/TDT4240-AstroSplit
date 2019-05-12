@@ -214,6 +214,15 @@ public class GameView implements Screen {
 	public void turnEnded(int nextPlayerNumber) {
 		selectedEntity = null;
 		setActionSelectPos(null);
+
+		int playerWonMaybe = interactionPresenter.checkWinCondition();
+		if (playerWonMaybe > 0) {
+			// Someone won
+			gameModel.endGame();
+			ViewStateManager.getInstance().setScreen(new GameOverView(playerWonMaybe));
+			return;
+		}
+
 		if (nextPlayerNumber == 1) {
 			playerNumberTex = assetManager.get(Assets.hud_Player1_red, Texture.class);
 		} else if (nextPlayerNumber == 2) {

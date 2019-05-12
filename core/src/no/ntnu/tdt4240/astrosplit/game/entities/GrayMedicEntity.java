@@ -61,6 +61,7 @@ public class GrayMedicEntity extends UnitEntity {
 		actionComponentHeal.heal = heal;
 		actionComponentHeal.range = range;
 		hc.health = health;
+		hc.maxHealth = health;
 		mc.distance = movement;
 		pc.position = position;
 		tc.region = new TextureRegion(assetManager.get(Assets.unit_gray_medic, Texture.class));

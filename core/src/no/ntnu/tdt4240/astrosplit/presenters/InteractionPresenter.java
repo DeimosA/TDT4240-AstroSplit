@@ -32,9 +32,9 @@ public class InteractionPresenter {
 
 	private InteractionModel interactionModel;
 	private GameView gameView;
-	private static GameModel gameModel;
-	private static PooledEngine engine;
-	private static Family playerEntitiesFamily;
+	private GameModel gameModel;
+	private PooledEngine engine;
+	private Family playerEntitiesFamily;
 
 
 	/**
@@ -92,7 +92,6 @@ public class InteractionPresenter {
 		interactionModel.setSelectedPosition(position);
 
 		gameView.unitSelectionChanged(selected);
-//		GameView.updateRange(0, null);
 	}
 
 	/**
@@ -128,17 +127,14 @@ public class InteractionPresenter {
 		// Tell the view to update
 		gameView.turnEnded(gameModel.getPlayerTurn());
 
-		//Do not check win condition in tutorial
-		if (gameModel.getGameType() == GameModel.GameType.LOCAL_GAME)
-			System.out.println("Game still going? " + InteractionPresenter.checkWinCondition());
 	}
 
-	public static void saveUnits(PooledEngine engine) {
+	public void saveUnits(PooledEngine engine) {
 		ImmutableArray<Entity> entities = engine.getEntitiesFor(playerEntitiesFamily);
 		((LocalGameModel)gameModel).saveUnits(entities);
 	}
 
-	public static Array<UnitModel> getUnits() {
+	public Array<UnitModel> getUnits() {
 		return gameModel.getUnits();
   	}
 
@@ -147,11 +143,10 @@ public class InteractionPresenter {
 	}
 
 	public void disableIntent(Class intent) {
-		// TODO use proper method in gameview
 		gameView.disableIntent(intent);
 	}
 
-	public static TeamType[] getPlayerTypes() {
+	public TeamType[] getPlayerTypes() {
 		return gameModel.getPlayerTypes();
 	}
 
@@ -163,7 +158,7 @@ public class InteractionPresenter {
 		interactionModel.setIntent(intent);
 	}
 
-	public static boolean checkWinCondition() {
+	public int checkWinCondition() {
 		boolean p1HasUnits = false;
 		boolean p2HasUnits = false;
 		saveUnits(engine);
@@ -174,6 +169,11 @@ public class InteractionPresenter {
 			} else if (unit.player == 2) {
 				p2HasUnits = true;
 			}
-		} return p1HasUnits && p2HasUnits;
+		}
+		if (p1HasUnits && p2HasUnits) {
+			return -1;
+		} else {
+			return p1HasUnits ? 1 : 2;
+		}
 	}
 }

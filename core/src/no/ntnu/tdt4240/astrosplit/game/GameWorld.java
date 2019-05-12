@@ -64,11 +64,11 @@ public class GameWorld {
 		switch (gameModel.getGameType()) {
 			case LOCAL_GAME:
 				if (!LocalGameModel.hasOngoingGame()) {
-					TeamType[] playerTeams = InteractionPresenter.getPlayerTypes();
+					TeamType[] playerTeams = InteractionPresenter.getInstance().getPlayerTypes();
 					createInitialPlayer1Units(playerTeams[0]);
 					createInitialPlayer2Units(playerTeams[1]);
 				} else {
-					createFromSave(InteractionPresenter.getUnits());
+					createFromSave(InteractionPresenter.getInstance().getUnits());
 				}
 				break;
 

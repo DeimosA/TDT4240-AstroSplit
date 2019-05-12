@@ -16,7 +16,7 @@ public class TutorialGameModel extends GameModel {
 	//Todo: fix
 	@Override
 	public TeamType[] getPlayerTypes() {
-		return null;
+		return new TeamType[]{getPlayerTeam()};
 	}
 
 	@Override
