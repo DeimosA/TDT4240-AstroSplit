@@ -462,5 +462,6 @@ public class GameView implements Screen {
 		actionButtons.dispose();
 		assetManager.dispose();
 		unitInfoSubView.dispose();
+		interactionPresenter.dispose();
 	}
 }

@@ -118,6 +118,7 @@ public class InteractionPresenter {
 		for (Entity entity : engine.getEntitiesFor(Family.all(MovementComponent.class).get())) {
 			entity.getComponent(MovementComponent.class).resetAction();
 		}
+
 		// Save game state
 		if (gameModel.getGameType() == GameModel.GameType.LOCAL_GAME) {
 			saveUnits(engine);
@@ -160,7 +161,6 @@ public class InteractionPresenter {
 	public int checkWinCondition() {
 		boolean p1HasUnits = false;
 		boolean p2HasUnits = false;
-		saveUnits(engine);
 		for (UnitModel unit : gameModel.getUnits()) {
 
 			if (unit.player == 1) {
@@ -174,5 +174,16 @@ public class InteractionPresenter {
 		} else {
 			return p1HasUnits ? 1 : 2;
 		}
+	}
+
+	public void dispose() {
+
+		INSTANCE = null;
+		interactionModel = null;
+		gameView = null;
+		gameModel = null;
+		engine = null;
+		playerEntitiesFamily = null;
+
 	}
 }
