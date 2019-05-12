@@ -141,6 +141,7 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 	@Override
 	public void endGame() {
 		prefStore.clear();
+		prefStore.flush();
 	}
 
 	@Override

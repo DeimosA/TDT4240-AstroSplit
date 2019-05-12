@@ -199,6 +199,7 @@ public class GameView implements Screen {
 		int playerWonMaybe = interactionPresenter.checkWinCondition();
 		if (playerWonMaybe > 0) {
 			// Someone won
+			gameModel.endGame();
 			ViewStateManager.getInstance().setScreen(new GameOverView(playerWonMaybe));
 			return;
 		}
