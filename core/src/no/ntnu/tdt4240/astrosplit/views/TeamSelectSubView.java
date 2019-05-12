@@ -190,7 +190,6 @@ class TeamSelectSubView extends SubView {
 						if (gameType == GameModel.GameType.LOCAL_GAME && localGameModel == null) {
 							// Player 1 have selected their team
 							LocalGameModel gameModel = new LocalGameModel();
-							System.out.println("Should be first :D");
 							gameModel.startNewGame();
 							gameModel.setPlayer1(selectedTeam);
 							// So let player 2 select
