@@ -11,5 +11,9 @@ public class ActionComponent implements Component{
 	public Array<Entity> healList = new Array<Entity>();
 
 	public int actionPoints = 1;
+	public int remainingPoints = actionPoints;
 
+	public void resetAction() {
+		remainingPoints = actionPoints;
+	}
 }
