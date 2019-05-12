@@ -1,8 +1,8 @@
 package no.ntnu.tdt4240.astrosplit.game.components;
 import com.badlogic.ashley.core.Component;
 
-import no.ntnu.tdt4240.astrosplit.models.ClassType;
-import no.ntnu.tdt4240.astrosplit.models.TeamType;
+import no.ntnu.tdt4240.astrosplit.enums.ClassType;
+import no.ntnu.tdt4240.astrosplit.enums.TeamType;
 
 public class TypeComponent implements Component
 {

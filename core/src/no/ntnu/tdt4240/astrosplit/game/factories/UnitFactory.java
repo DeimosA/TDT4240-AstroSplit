@@ -14,8 +14,8 @@ import no.ntnu.tdt4240.astrosplit.game.entities.MarineRangeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.SectoidMedicEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.SectoidMeleeEntity;
 import no.ntnu.tdt4240.astrosplit.game.entities.SectoidRangeEntity;
-import no.ntnu.tdt4240.astrosplit.models.ClassType;
-import no.ntnu.tdt4240.astrosplit.models.TeamType;
+import no.ntnu.tdt4240.astrosplit.enums.ClassType;
+import no.ntnu.tdt4240.astrosplit.enums.TeamType;
 
 public class UnitFactory {
 

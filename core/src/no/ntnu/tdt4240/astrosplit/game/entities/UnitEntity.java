@@ -5,7 +5,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector2;
 
-import no.ntnu.tdt4240.astrosplit.models.ClassType;
+import no.ntnu.tdt4240.astrosplit.enums.ClassType;
 
 public abstract class UnitEntity extends Entity {
 

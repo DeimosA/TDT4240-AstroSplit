@@ -3,6 +3,9 @@ package no.ntnu.tdt4240.astrosplit.models;
 
 import com.badlogic.gdx.utils.Array;
 
+import no.ntnu.tdt4240.astrosplit.enums.GameType;
+import no.ntnu.tdt4240.astrosplit.enums.TeamType;
+
 /**
  * Game model for the tutorial
  */

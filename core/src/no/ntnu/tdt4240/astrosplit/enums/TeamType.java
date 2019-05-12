@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.astrosplit.models;
+package no.ntnu.tdt4240.astrosplit.enums;
 
 /**
  * Types of teams the player can play as
