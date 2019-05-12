@@ -63,7 +63,7 @@ public class TargetDummyEntity extends UnitEntity {
 		textureComponent.region = new TextureRegion(assetManager.get(Assets.unit_targetPractice, Texture.class));
 		transformComponent.scale.set(0.1f, 0.1f);
 		playerComponent.id = playerNumber; // Always opponent
-		typeComponent.unitClassType = unitClassType;
+		typeComponent.unitClassType = null;
 
 		this.add(actionComponent);
 		this.add(actionComponentAttack);
