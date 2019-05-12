@@ -98,6 +98,8 @@ public final class AudioManager implements Model {
 		/* Main menu  */
 		if(musicGameOver.isPlaying()){
 			musicGameOver.stop();
+		} else if(musicGame.isPlaying()){
+			musicGame.stop();
 		}
 		musicMenu.setLooping(false);
 		musicMenu.setVolume(0.5f); //50%

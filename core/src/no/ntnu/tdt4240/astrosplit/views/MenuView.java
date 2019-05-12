@@ -70,6 +70,9 @@ public class MenuView implements View {
 			renderWidth - 2 * padding, titlePosY - padding - paddingBottom
 		);
 		subView = new MainMenuSubView(subViewBounds, this, menuPresenter);
+
+		/* Main menu music */
+		AudioManager.getInstance().playMusicMenu();
 	}
 
 	/* Private methods */
