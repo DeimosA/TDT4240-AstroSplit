@@ -102,7 +102,6 @@ public class LocalGameModel extends GameModel implements Json.Serializable {
 	public void endTurn() {
 		prefStore.putInteger(playerTurn, (getPlayerTurn() == 1) ? 2 : 1);
 		prefStore.flush();
-		saveUnits(units);
 	}
 
 	@Override
