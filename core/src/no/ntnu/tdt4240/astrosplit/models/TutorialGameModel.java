@@ -36,6 +36,6 @@ public class TutorialGameModel extends GameModel {
 	//Todo: Fix for tutorial
 	@Override
 	public Array<UnitModel> getUnits() {
-		return null;
+		return new Array<UnitModel>();
 	}
 }

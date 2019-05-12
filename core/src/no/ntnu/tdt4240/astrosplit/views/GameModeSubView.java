@@ -51,15 +51,6 @@ class GameModeSubView extends SubView {
 			new MenuButton[] {
 				// Continue saved game
 				continueButton,
-				// Online game
-//					new MenuButton(new Texture("Astro/GameModeSelection/buttonOnline.png")) {
-//						@Override
-//						public void click() {
-//							// #2 - Online
-//							System.out.println("Chose: Online");
-//							menuView.setSubView(new TeamSelectSubView(bounds, menuView));
-//						}
-//					},
 				// Local vs game
 				new MenuButton(new Texture("Astro/GameModeSelection/buttonLocal.png")) {
 					@Override
@@ -80,8 +71,6 @@ class GameModeSubView extends SubView {
 							bounds, menuView, menuPresenter, GameModel.GameType.TUTORIAL_GAME));
 					}
 				},
-				// Empty space
-//				new MenuButton(new Texture("Astro/GameModeSelection/buttonEmpty.png")),
 				// Go back
 				new MenuButton(new Texture("Astro/GameModeSelection/buttonBack.png")) {
 					@Override
