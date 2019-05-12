@@ -1,0 +1,9 @@
+{
+  "player" : "1",
+  "classType" : "MELEE",
+  "teamType" : "TEAM_MARINES",
+  "pos" : "new Vector2(10, 10)",
+  "movementPoints" : "10",
+  "attackPoints" : "1",
+  "hitPoints" : "100"
+}
